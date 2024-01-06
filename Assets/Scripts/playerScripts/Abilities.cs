@@ -21,6 +21,7 @@ public class Abilities : MonoBehaviour
     private int dashAmount;
     
     #endregion
+    
 
     #region Pogo Jumpy up up variables
     public Vector3 jumpForce;
@@ -134,7 +135,7 @@ public class Abilities : MonoBehaviour
             
         }
 
-        if (groundedScript.isOnGround())
+        if (groundedScript.isGrounded())
         {
             if (Input.GetKeyUp(abilityKey))
             {
@@ -154,7 +155,7 @@ public class Abilities : MonoBehaviour
             }
         }
 
-        if (!groundedScript.isOnGround() && bonusCharges > 0)//if player has bonus charges and presses space do a super jump but only while the player is not on the ground
+        if (!groundedScript.isGrounded() && bonusCharges > 0)//if player has bonus charges and presses space do a super jump but only while the player is not on the ground
         {
             if (Input.GetKeyDown(abilityKey))
             {

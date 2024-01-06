@@ -1,18 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class isGroundedScript : MonoBehaviour
 {
     GameObject player;
-    GameObject groundPoint;
-    LayerMask groundMask;
+    [SerializeField] LayerMask groundLayer;
     // Start is called before the first frame update
     void Start()
     {
         player = GameObject.Find("Player");
-        groundPoint = this.gameObject;
     }
 
     // Update is called once per frame
@@ -21,12 +18,12 @@ public class isGroundedScript : MonoBehaviour
         
     }
     private void FixedUpdate() {
-        this.transform.position = player.GetComponent<Transform>().position + new Vector3(0, 2.5f, 0);
+        transform.position = player.transform.position + new Vector3(0, -2.5f, 0);
     }
 
-    public bool isOnGround()
+    public bool isGrounded()
     {
-        if (Physics2D.Raycast(groundPoint.GetComponent<Transform>().position, Vector2.up, 1.5f, groundMask))
+        if (Physics2D.Raycast(transform.position, Vector2.down, 1.5f, groundLayer))
         {
             return true;
         }

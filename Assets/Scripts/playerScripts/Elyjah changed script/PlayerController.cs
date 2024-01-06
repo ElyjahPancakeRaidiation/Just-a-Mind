@@ -98,7 +98,7 @@ public class PlayerController : MonoBehaviour
         if (canMove){
             checkDirection();
             Movements();
-            if (groundedScript.isOnGround())
+            if (groundedScript.isGrounded())
             {
                 Friction();
             }

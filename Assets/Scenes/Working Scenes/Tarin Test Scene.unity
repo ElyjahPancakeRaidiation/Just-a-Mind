@@ -200,6 +200,8 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 0
+  coefficientOfAirResistence: 0
+  coefficientOfFriction: 0
   pogoCol: {fileID: 0}
   ballCol: {fileID: 0}
   maxSpeedCopy: 0
@@ -248,7 +250,8 @@ Transform:
   m_LocalPosition: {x: -4.84, y: -1.665, z: 0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1054124875}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &646895167
@@ -423,12 +426,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1054124873}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.84, y: -1.665, z: 0.5}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 276955334}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1208862867
 GameObject:
@@ -530,4 +533,3 @@ SceneRoots:
   - {fileID: 646895167}
   - {fileID: 910065349}
   - {fileID: 276955334}
-  - {fileID: 1054124875}
