@@ -47,7 +47,7 @@ public class playerMovementScript : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         rb.centerOfMass = COM;
         hJ = this.GetComponent<HingeJoint2D>();
-        hJ.active = false;
+        hJ.enabled = false;
         playerTransform = GetComponent<Transform>();
 
     }
@@ -72,7 +72,7 @@ public class playerMovementScript : MonoBehaviour
                 case 2:
                     break;
                 case 3:
-                    abilityScript.armMovementAbilityInput();
+                    //armMovementAbilityInput();
                     break;
                 default:
                     break;
@@ -84,7 +84,8 @@ public class playerMovementScript : MonoBehaviour
     {
         // Draws a wirespehre where the hinge joints anchor point is
         // The arm is 1.9 units long so using trig we know the hypotenous is 1.9 and we can use trig to solve for the respective x and y values
-        Gizmos.DrawWireSphere(new Vector3(1.9f * Mathf.Cos(Mathf.Deg2Rad * playerTransform.eulerAngles.z), 1.9f * Mathf.Sin(Mathf.Deg2Rad * playerTransform.eulerAngles.z), 0) + GetComponent<Transform>().position, .5f);
+        Gizmos.DrawWireSphere(new Vector3(1.9f * Mathf.Cos(Mathf.Deg2Rad * playerTransform.eulerAngles.z), 1.9f * 
+            Mathf.Sin(Mathf.Deg2Rad * playerTransform.eulerAngles.z), 0) + GetComponent<Transform>().position, .5f);
     }
 
     #region Arm Fuctions
