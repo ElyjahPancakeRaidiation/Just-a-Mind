@@ -277,8 +277,8 @@ public class PlayerController : MonoBehaviour
         int OppositedirectionMultipleX = -1 * directionMultipleX;
         int OppositedirectionMultipleY = -1 * directionMultipleY;
         // Multiplies the direction then coefficient of air resistence and the velocity squared
-        rb.AddForce(new Vector2(OppositedirectionMultipleX * coefficientOfAirResistence * (rb.velocity.x * rb.velocity.x), 
-        OppositedirectionMultipleY * coefficientOfAirResistence * (rb.velocity.y * rb.velocity.y)))
+        rb.AddForce(new Vector2(OppositedirectionMultipleX * coefficientOfAirResistence * (rb.velocity.x * rb.velocity.x),
+        OppositedirectionMultipleY * coefficientOfAirResistence * (rb.velocity.y * rb.velocity.y)));
     }
     void Friction()
     {
@@ -286,7 +286,7 @@ public class PlayerController : MonoBehaviour
         int OppositedirectionMultipleX = -1 * directionMultipleX;
         int OppositedirectionMultipleY = -1 * directionMultipleY;
         // Multiplies the direction then coefficient of air resistence and the velocity squared
-        rb.AddForce(new Vector2(OppositedirectionMultipleX * coefficientOfFriction * (rb.velocity.x * rb.velocity.x), 
-        OppositedirectionMultipleY * coefficientOfFriction * (rb.velocity.y * rb.velocity.y)))
+        rb.AddForce(new Vector2(OppositedirectionMultipleX * coefficientOfFriction * (rb.velocity.x * rb.velocity.x),
+        OppositedirectionMultipleY * coefficientOfFriction * (rb.velocity.y * rb.velocity.y)));
     }
 }
