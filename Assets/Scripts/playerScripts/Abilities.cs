@@ -11,7 +11,7 @@ public class Abilities : MonoBehaviour
     public KeyCode abilityKey;
    
     private int bonusCharges;//bonus charges for the abilities 
-
+    isGroundedScript groundedScript;
     #region Dashing variables
 
     [SerializeField]private float dashingDuration;//How long the dash will go for
@@ -61,13 +61,17 @@ public class Abilities : MonoBehaviour
         player.rb.centerOfMass = COM;
         hJ = this.GetComponent<HingeJoint2D>();
         playerTransform = GetComponent<Transform>();
+        groundedScript = GameObject.Find("Ground Ray Object").GetComponent<isGroundedScript>();
     }
 
 
     void Update()
     {
 
+    }
 
+    void FixedUpdate() 
+    {
         switch (PlayerController.playerForm)
         {
             case PlayerController.playerForms.Ball:
@@ -81,8 +85,6 @@ public class Abilities : MonoBehaviour
                 armMovementAbilityInput();
                 break;
         }
-
-        
     }
 
     #region Ball abilites
@@ -121,18 +123,6 @@ public class Abilities : MonoBehaviour
     void Jumping()
     {
 
-        bool isOnGround()
-        {
-            if (Physics2D.Raycast(groundPoint.position, Vector2.down, 1.5f, player.groundMask))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
         if (Input.GetKey(abilityKey))
         {
             keyHoldDown += Time.deltaTime * 3f;
@@ -144,7 +134,7 @@ public class Abilities : MonoBehaviour
             
         }
 
-        if (isOnGround())
+        if (groundedScript.isOnGround())
         {
             if (Input.GetKeyUp(abilityKey))
             {
@@ -164,7 +154,7 @@ public class Abilities : MonoBehaviour
             }
         }
 
-        if (!isOnGround() && bonusCharges > 0)//if player has bonus charges and presses space do a super jump but only while the player is not on the ground
+        if (!groundedScript.isOnGround() && bonusCharges > 0)//if player has bonus charges and presses space do a super jump but only while the player is not on the ground
         {
             if (Input.GetKeyDown(abilityKey))
             {
@@ -180,10 +170,19 @@ public class Abilities : MonoBehaviour
 
     #endregion
 
+    // Not done
     #region Arm abilities 
 
+    void armMovement()
+    {
+        if (Input.GetKeyDown(abilityKey) && !isConnected)
+        {
+            armMovementAbilityInput();
+        }
+    }
     private void armMovementAbilityInput()
     {
+        isConnected = true;
         // Stage Onea: searching for the valid vine
         GameObject vinePosObj = checkForClosestValidVine();
         // If no valid vine nothing should happen 
@@ -202,6 +201,10 @@ public class Abilities : MonoBehaviour
         float rotation = Mathf.Rad2Deg * Mathf.Atan((playerTransform.position.y - vinePosObj.transform.position.y) 
         / (playerTransform.position.x - vinePosObj.transform.position.x)); 
         curArm.transform.eulerAngles = new Vector3(curArm.transform.rotation.x, curArm.transform.rotation.y, rotation);
+        // Shoot the arm out over a time interval
+        // Todo if space is pressed here just cancel
+
+        // Call Connecton
         armMovementConnected(vinePosObj);
         yield return null;
     }
