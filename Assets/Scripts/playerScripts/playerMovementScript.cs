@@ -10,19 +10,23 @@ using UnityEngine.UI;
 
 public class playerMovementScript : MonoBehaviour
 {
+    #region General Movement
     [Header("General Movement Data")] 
     Rigidbody2D rb;
+    // here
     public float speed;
     public float dashMag;
 
     public float shiftTime = 0;
     public float shiftTimeMax;
+    // to here can replace with the actual system
     public KeyCode abilityKey;
     public int playerForm = 1;
     public Transform playerTransform;
     [SerializeField] private Vector3 COM;
-
-    [Header("Arm Variables")] 
+    #endregion
+    #region Arm Movement
+    [Header("Arm Variables")]
     // this variable may not be relevent and may be able to be removed
     public static Vector2 hingeJointAnchorDistance = new Vector2(1.9f, 0);
     public bool isConnected = false;
@@ -36,13 +40,14 @@ public class playerMovementScript : MonoBehaviour
     // How much we want to favor higher vines in the algorithm
     const float yFavor = .5f;
     const float armExtendSpeed = 5;
-    
+    #endregion
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         rb.centerOfMass = COM;
         hJ = this.GetComponent<HingeJoint2D>();
+        hJ.active = false;
         playerTransform = GetComponent<Transform>();
 
     }
@@ -67,7 +72,7 @@ public class playerMovementScript : MonoBehaviour
                 case 2:
                     break;
                 case 3:
-                    armMovementAbilityInput();
+                    abilityScript.armMovementAbilityInput();
                     break;
                 default:
                     break;
@@ -82,6 +87,7 @@ public class playerMovementScript : MonoBehaviour
         Gizmos.DrawWireSphere(new Vector3(1.9f * Mathf.Cos(Mathf.Deg2Rad * playerTransform.eulerAngles.z), 1.9f * Mathf.Sin(Mathf.Deg2Rad * playerTransform.eulerAngles.z), 0) + GetComponent<Transform>().position, .5f);
     }
 
+    #region Arm Fuctions
     // Call this to first find the connected position and start sending out the arm
     private void armMovementAbilityInput()
     {
@@ -161,6 +167,7 @@ public class playerMovementScript : MonoBehaviour
         }
         return vines[place].gameObject;
     }
+    #endregion 
     private void WASDMovementWithDash()
     {
         if (Input.GetKey(KeyCode.D))
