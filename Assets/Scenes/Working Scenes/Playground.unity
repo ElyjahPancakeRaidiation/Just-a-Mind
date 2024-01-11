@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 60422707}
   m_Layer: 6
   m_Name: PlatForm (6)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -266,7 +266,7 @@ GameObject:
   - component: {fileID: 68077418}
   m_Layer: 6
   m_Name: Ramp (2)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -448,7 +448,7 @@ GameObject:
   - component: {fileID: 191085156}
   m_Layer: 6
   m_Name: Ramp (1)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -578,7 +578,7 @@ GameObject:
   - component: {fileID: 333264208}
   m_Layer: 6
   m_Name: PlatForm (16)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -708,7 +708,7 @@ GameObject:
   - component: {fileID: 341169384}
   m_Layer: 6
   m_Name: Ramp
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -838,7 +838,7 @@ GameObject:
   - component: {fileID: 448843116}
   m_Layer: 6
   m_Name: PlatForm (10)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -968,7 +968,7 @@ GameObject:
   - component: {fileID: 536430253}
   m_Layer: 6
   m_Name: PlatForm (14)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1098,7 +1098,7 @@ GameObject:
   - component: {fileID: 575967823}
   m_Layer: 6
   m_Name: PlatForm (5)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1228,7 +1228,7 @@ GameObject:
   - component: {fileID: 607203465}
   m_Layer: 6
   m_Name: PlatForm (15)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1358,7 +1358,7 @@ GameObject:
   - component: {fileID: 627219283}
   m_Layer: 6
   m_Name: PlatForm (8)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1486,7 +1486,6 @@ GameObject:
   - component: {fileID: 648215690}
   - component: {fileID: 648215689}
   - component: {fileID: 648215688}
-  - component: {fileID: 648215691}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1566,25 +1565,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 2123434857}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &648215691
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 648215687}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b495ec7e25473b146a432603899185a9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cameraSpeed: 0.1
-  isFollowingPlayer: 1
-  cameraOffset: {x: 0, y: 0}
-  maxCameraShakePosX: 0
-  maxCameraShakePosY: 0
 --- !u!1 &931351255
 GameObject:
   m_ObjectHideFlags: 0
@@ -1598,7 +1580,7 @@ GameObject:
   - component: {fileID: 931351258}
   m_Layer: 6
   m_Name: PlatForm (2)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1728,7 +1710,7 @@ GameObject:
   - component: {fileID: 1055112063}
   m_Layer: 6
   m_Name: PlatForm (9)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1858,7 +1840,7 @@ GameObject:
   - component: {fileID: 1128218033}
   m_Layer: 6
   m_Name: PlatForm (3)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1990,6 +1972,7 @@ GameObject:
   - component: {fileID: 1312538962}
   - component: {fileID: 1312538961}
   - component: {fileID: 1312538963}
+  - component: {fileID: 1312538964}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -2009,8 +1992,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7774fc0a9a96754081bbe5a6de80a27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  formChangeKey: 0
-  devControl: 0
+  formChangeKey: 304
+  devControl: 1
   canMove: 1
   rb: {fileID: 0}
   horiLatestInput: 1
@@ -2030,7 +2013,7 @@ MonoBehaviour:
   coefficientOfAirResistence: 0
   coefficientOfFriction: 0
   pogoCol: {fileID: 1312538961}
-  ballCol: {fileID: 1312538961}
+  ballCol: {fileID: 1312538962}
   maxSpeedCopy: 0
   dashMag: 0
 --- !u!114 &1312538958
@@ -2050,7 +2033,7 @@ MonoBehaviour:
   maxDashAmount: 1
   jumpForce: {x: 0, y: 5, z: 0}
   superJumpForce: {x: 0, y: 12.5, z: 0}
-  groundPoint: {fileID: 0}
+  groundPoint: {fileID: 1712047149}
   canSuperJump: 0
   keyHoldDown: 0
   speed: 5
@@ -2143,10 +2126,10 @@ BoxCollider2D:
   m_Offset: {x: 0, y: -0.0498178}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
@@ -2229,7 +2212,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: b6cc70374dec0b44ca5b54b0bf58761d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -2237,9 +2220,30 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &1312538964
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1312538956}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 49e4cb1a9e1e37e48b1da0ee8de0267a, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1316015131
 GameObject:
   m_ObjectHideFlags: 0
@@ -2253,7 +2257,7 @@ GameObject:
   - component: {fileID: 1316015134}
   m_Layer: 6
   m_Name: PlatForm (4)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2383,7 +2387,7 @@ GameObject:
   - component: {fileID: 1418662862}
   m_Layer: 6
   m_Name: PlatForm
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2513,7 +2517,7 @@ GameObject:
   - component: {fileID: 1451240031}
   m_Layer: 6
   m_Name: Ramp 2
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2643,7 +2647,7 @@ GameObject:
   - component: {fileID: 1565473934}
   m_Layer: 6
   m_Name: PlatForm (11)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2820,7 +2824,7 @@ GameObject:
   - component: {fileID: 1841205200}
   m_Layer: 6
   m_Name: PlatForm (13)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2950,7 +2954,7 @@ GameObject:
   - component: {fileID: 1927776109}
   m_Layer: 6
   m_Name: PlatForm (7)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3080,7 +3084,7 @@ GameObject:
   - component: {fileID: 2046245843}
   m_Layer: 6
   m_Name: PlatForm (1)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3210,7 +3214,7 @@ GameObject:
   - component: {fileID: 2073591980}
   m_Layer: 6
   m_Name: PlatForm (12)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3327,10 +3331,60 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!1 &2123434855
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2123434857}
+  - component: {fileID: 2123434856}
+  m_Layer: 0
+  m_Name: MainCameraHolder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2123434856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2123434855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b495ec7e25473b146a432603899185a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraSpeed: 0.2
+  isFollowingPlayer: 1
+  cameraOffset: {x: 0, y: 2}
+  maxCameraShakePosX: 0.3
+  maxCameraShakePosY: 0.3
+--- !u!4 &2123434857
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2123434855}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -7.9976254, y: -1.3961898, z: 0.28413835}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 648215690}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 648215690}
+  - {fileID: 2123434857}
   - {fileID: 147890770}
   - {fileID: 1312538959}
