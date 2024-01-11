@@ -59,7 +59,7 @@ public class Abilities : MonoBehaviour
     private void Start() {
         player = GetComponent<PlayerController>();
         dashAmount = maxDashAmount;
-        player.rb.centerOfMass = COM;
+        //player.rb.centerOfMass = COM;
         hJ = this.GetComponent<HingeJoint2D>();
         playerTransform = GetComponent<Transform>();
         groundedScript = GameObject.Find("Ground Ray Object").GetComponent<isGroundedScript>();

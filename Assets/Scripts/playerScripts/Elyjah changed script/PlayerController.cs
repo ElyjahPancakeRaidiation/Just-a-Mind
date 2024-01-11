@@ -62,6 +62,8 @@ public class PlayerController : MonoBehaviour
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         groundedScript = GameObject.Find("Ground Ray Object").GetComponent<isGroundedScript>();
+        playerSpriteRender = GetComponent<SpriteRenderer>();
+        FormSettings();
     }
         
     // Update is called once per frame
@@ -184,36 +186,6 @@ public class PlayerController : MonoBehaviour
 
     private void ChangeForm()
     {
-        void FormSettings(){//defualt settings for each form(mainly for the sprites of each form)
-            switch (playerForm)
-            {
-                case playerForms.Ball:
-                    //Sets the balls sprite, unfreezes rotation, and changes the animation
-                    ballCol.enabled = true;
-                    pogoCol.enabled = false;
-                    playerSpriteRender.sprite = playerFormSprite[0];
-                    anim.enabled = false;
-                    rb.freezeRotation = false;
-                    break;
-
-                case playerForms.Pogo:
-                    transform.rotation = quaternion.RotateZ(0);//Puts the character up straight
-                    ballCol.enabled = false;//changes the collider from ball to pogo
-                    pogoCol.enabled = true;
-                    anim.enabled = true;
-                    playerSpriteRender.sprite = playerFormSprite[1];//changes the sprites from ball to pogo man
-                    rb.freezeRotation = true;
-                    anim.SetInteger("Horizontal", (int)horizontal);//this is for walking animation 
-                    break;
-
-                case playerForms.Arm:
-                    //Where all of the settings for arm goes
-                    ballCol.enabled = false;
-                    pogoCol.enabled = true;
-                    rb.freezeRotation = false;
-                    break;
-            }
-        }
         
         if (!devControl)
         {
@@ -260,6 +232,37 @@ public class PlayerController : MonoBehaviour
         }
 
     }
+    void FormSettings(){//defualt settings for each form(mainly for the sprites of each form)
+            switch (playerForm)
+            {
+                case playerForms.Ball:
+                    //Sets the balls sprite, unfreezes rotation, and changes the animation
+                    ballCol.enabled = true;
+                    pogoCol.enabled = false;
+                    playerSpriteRender.sprite = playerFormSprite[0];
+                    anim.enabled = false;
+                    rb.freezeRotation = false;
+                    break;
+
+                case playerForms.Pogo:
+                    transform.rotation = quaternion.RotateZ(0);//Puts the character up straight
+                    ballCol.enabled = false;//changes the collider from ball to pogo
+                    pogoCol.enabled = true;
+                    anim.enabled = true;
+                    playerSpriteRender.sprite = playerFormSprite[1];//changes the sprites from ball to pogo man
+                    rb.freezeRotation = true;
+                    anim.SetInteger("Horizontal", (int)horizontal);//this is for walking animation 
+                    break;
+
+                case playerForms.Arm:
+                    //Where all of the settings for arm goes
+                    ballCol.enabled = false;
+                    pogoCol.enabled = true;
+                    rb.freezeRotation = false;
+                    break;
+            }
+        }
+        
 
     private void Movements()
     {//different movements for each form
