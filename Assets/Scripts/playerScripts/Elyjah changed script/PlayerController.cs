@@ -29,6 +29,10 @@ public class PlayerController : MonoBehaviour
     public static playerForms playerForm;
     public static bool[] playerPieces = {true, true, true};//bools for the player pieces {0: ball, 1: pogo, 2: arm}
     private int maxForm;
+    [SerializeField] float coefficientOfAirResistence, coefficientOfFriction;
+    int directionMultipleX, directionMultipleY;
+
+    isGroundedScript groundedScript;
 
     #region Pogo movement variables
     [SerializeField]private Collider2D pogoCol;
@@ -57,6 +61,9 @@ public class PlayerController : MonoBehaviour
     private void Start(){
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+        groundedScript = GameObject.Find("Ground Ray Object").GetComponent<isGroundedScript>();
+        playerSpriteRender = GetComponent<SpriteRenderer>();
+        FormSettings();
     }
         
     // Update is called once per frame
@@ -64,7 +71,7 @@ public class PlayerController : MonoBehaviour
     {
         ChangeForm();//Controlls the changing of the players form
         InteractFunc();//The player interacts through this function
-        ChangeVel();//The velocity for the ball my brain rots from this
+        //ChangeVel();//The velocity for the ball my brain rots from this
 
         if (canMove) {
             horizontal = Input.GetAxisRaw("Horizontal");
@@ -91,14 +98,39 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate() {
 
         if (canMove){
-            
+            checkDirection();
             Movements();
-
+            if (groundedScript.isGrounded())
+            {
+                Friction();
+            }
+            else
+            {
+                AirResistance();
+            }
             interactCol = Physics2D.OverlapCircle(transform.position, interactRadius, interactMask);
 
         }
     }
-
+    void checkDirection()
+    {
+        if (rb.velocity.x < 0)
+        {
+            directionMultipleX = -1;
+        }
+        else 
+        {
+            directionMultipleX = 1;
+        }
+        if (rb.velocity.y > 0)
+        {
+            directionMultipleX = 1;
+        }
+        else 
+        {
+            directionMultipleX = -1;
+        }
+    }
     private void LatestInput(int horizontalInput, int verticalInput){//Finds the latest input for vertical and horizontal
         if (horizontalInput != 0)
         {
@@ -117,7 +149,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void ChangeVel(){//This is for the ball movement
+    /*private void ChangeVel(){//This is for the ball movement
         if (horizontal == -1)
         {
             if (rb.velocity.x > 0)//if the player is going right decelerate towards the left
@@ -140,9 +172,10 @@ public class PlayerController : MonoBehaviour
                 rb.velocity = new Vector2(rb.velocity.x + ACCELERATION * Time.deltaTime, rb.velocity.y);
             }
         }
-    }
+    }*/
     
-    private void InteractFunc(){//To interact with objects in the world
+    private void InteractFunc()
+    {//To interact with objects in the world
         if (interactCol != null){
             if (Input.GetKeyDown(KeyCode.E))
             {                    
@@ -151,38 +184,8 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void ChangeForm(){
-
-        void FormSettings(){//defualt settings for each form(mainly for the sprites of each form)
-            switch (playerForm)
-            {
-                case playerForms.Ball:
-                    //Sets the balls sprite, unfreezes rotation, and changes the animation
-                    ballCol.enabled = true;
-                    pogoCol.enabled = false;
-                    playerSpriteRender.sprite = playerFormSprite[0];
-                    anim.enabled = false;
-                    rb.freezeRotation = false;
-                    break;
-
-                case playerForms.Pogo:
-                    transform.rotation = quaternion.RotateZ(0);//Puts the character up straight
-                    ballCol.enabled = false;//changes the collider from ball to pogo
-                    pogoCol.enabled = true;
-                    anim.enabled = true;
-                    playerSpriteRender.sprite = playerFormSprite[1];//changes the sprites from ball to pogo man
-                    rb.freezeRotation = true;
-                    anim.SetInteger("Horizontal", (int)horizontal);//this is for walking animation 
-                    break;
-
-                case playerForms.Arm:
-                    //Where all of the settings for arm goes
-                    ballCol.enabled = false;
-                    pogoCol.enabled = true;
-                    rb.freezeRotation = false;
-                    break;
-            }
-        }
+    private void ChangeForm()
+    {
         
         if (!devControl)
         {
@@ -229,71 +232,64 @@ public class PlayerController : MonoBehaviour
         }
 
     }
-
-    private void Movements(){//different movements for each form
-
-        void WASDMovementWithDash()
-        {
-            if (Input.GetKey(KeyCode.D))
-            {
-                rb.AddForce(new Vector2(speed, 0));
-            }
-            else if (Input.GetKey(KeyCode.A))
-            {
-                rb.AddForce(new Vector2(-speed, 0));
-            }
-            else if (Input.GetKey(KeyCode.W))
-            {
-                rb.AddForce(new Vector2(0, speed));
-            }
-            else if (Input.GetKey(KeyCode.S))
-            {
-                rb.AddForce(new Vector2(0, -speed));
-            }
-
-            if (Input.GetKeyDown(KeyCode.LeftShift))
-            {
-                if (Input.GetKey(KeyCode.D))
-                {
-                    rb.AddForce(new Vector2(dashMag, 0));
-                }
-                else if (Input.GetKey(KeyCode.A))
-                {
-                    rb.AddForce(new Vector2(-dashMag, 0));
-                }
-                else if (Input.GetKey(KeyCode.W))
-                {
-                    rb.AddForce(new Vector2(0, dashMag));
-                }
-                else if (Input.GetKey(KeyCode.S))
-                {
-                    rb.AddForce(new Vector2(0, -dashMag));
-                }
-            }
-        }
-
-        switch (playerForm)
+    void FormSettings(){//defualt settings for each form(mainly for the sprites of each form)
+            switch (playerForm)
             {
                 case playerForms.Ball:
-                    rb.AddForce(new Vector2(horizontal * speed * Time.deltaTime, 0), ForceMode2D.Impulse);//moves the player in the direction the player is pressing
+                    //Sets the balls sprite, unfreezes rotation, and changes the animation
+                    ballCol.enabled = true;
+                    pogoCol.enabled = false;
+                    playerSpriteRender.sprite = playerFormSprite[0];
+                    anim.enabled = false;
+                    rb.freezeRotation = false;
                     break;
+
                 case playerForms.Pogo:
-                    rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
-                    break;
-                case playerForms.Arm://For now the controls for arm will be floaty and can go in any direction instead of using pogos controls for testing purposes.
-                    WASDMovementWithDash();
+                    transform.rotation = quaternion.RotateZ(0);//Puts the character up straight
+                    ballCol.enabled = false;//changes the collider from ball to pogo
+                    pogoCol.enabled = true;
+                    anim.enabled = true;
+                    playerSpriteRender.sprite = playerFormSprite[1];//changes the sprites from ball to pogo man
+                    rb.freezeRotation = true;
+                    anim.SetInteger("Horizontal", (int)horizontal);//this is for walking animation 
                     break;
 
+                case playerForms.Arm:
+                    //Where all of the settings for arm goes
+                    ballCol.enabled = false;
+                    pogoCol.enabled = true;
+                    rb.freezeRotation = false;
+                    break;
             }
-    }
-
-    private void OnDrawGizmos()  {
-
-        Gizmos.DrawWireSphere(transform.position, interactRadius);
+        }
         
+
+    private void Movements()
+    {//different movements for each form
+        rb.AddForce(new Vector2(horizontal * speed * Time.deltaTime, 0), ForceMode2D.Impulse);//moves the player in the direction the player is pressing
+
+    }
+    private void OnDrawGizmos()  
+    {
+        Gizmos.DrawWireSphere(transform.position, interactRadius);
     }
 
-    
-    
-
+    void AirResistance()
+    {
+        // Air resistance opposes motion
+        int OppositedirectionMultipleX = -1 * directionMultipleX;
+        int OppositedirectionMultipleY = -1 * directionMultipleY;
+        // Multiplies the direction then coefficient of air resistence and the velocity squared
+        rb.AddForce(new Vector2(OppositedirectionMultipleX * coefficientOfAirResistence * (rb.velocity.x * rb.velocity.x),
+        OppositedirectionMultipleY * coefficientOfAirResistence * (rb.velocity.y * rb.velocity.y)));
+    }
+    void Friction()
+    {
+        // Air resistance opposes motion
+        int OppositedirectionMultipleX = -1 * directionMultipleX;
+        int OppositedirectionMultipleY = -1 * directionMultipleY;
+        // Multiplies the direction then coefficient of air resistence and the velocity squared
+        rb.AddForce(new Vector2(OppositedirectionMultipleX * coefficientOfFriction * (rb.velocity.x * rb.velocity.x),
+        OppositedirectionMultipleY * coefficientOfFriction * (rb.velocity.y * rb.velocity.y)));
+    }
 }
