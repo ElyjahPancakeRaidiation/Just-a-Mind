@@ -30,7 +30,6 @@ public class PlayerController : MonoBehaviour
     public static bool[] playerPieces = {true, true, true};//bools for the player pieces {0: ball, 1: pogo, 2: arm}
     private int maxForm;
     [SerializeField] float coefficientOfAirResistence, coefficientOfFriction;
-    int directionMultipleX, directionMultipleY;
 
     isGroundedScript groundedScript;
 
@@ -85,7 +84,6 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate() {
 
         if (canMove){
-            checkDirection();
             Movements();
             Debug.Log("Can Move is true");
             if (groundedScript.isGrounded())
@@ -102,25 +100,7 @@ public class PlayerController : MonoBehaviour
 
         }
     }
-    void checkDirection()
-    {
-        if (rb.velocity.x < 0)
-        {
-            directionMultipleX = -1;
-        }
-        else 
-        {
-            directionMultipleX = 1;
-        }
-        if (rb.velocity.y > 0)
-        {
-            directionMultipleX = 1;
-        }
-        else 
-        {
-            directionMultipleX = -1;
-        }
-    }
+
     private void LatestInput(int horizontalInput, int verticalInput){//Finds the latest input for vertical and horizontal
         if (horizontalInput != 0)
         {
@@ -232,6 +212,7 @@ public class PlayerController : MonoBehaviour
                     playerSpriteRender.sprite = playerFormSprite[0];
                     anim.enabled = false;
                     rb.freezeRotation = false;
+                    Debug.Log("ball");
                     break;
 
                 case playerForms.Pogo:
@@ -242,6 +223,7 @@ public class PlayerController : MonoBehaviour
                     playerSpriteRender.sprite = playerFormSprite[1];//changes the sprites from ball to pogo man
                     rb.freezeRotation = true;
                     anim.SetInteger("Horizontal", (int)horizontal);//this is for walking animation 
+                    Debug.Log("Head");
                     break;
 
                 case playerForms.Arm:
@@ -267,26 +249,18 @@ public class PlayerController : MonoBehaviour
     void AirResistance()
     {
         // Air resistance opposes motion
-        int OppositedirectionMultipleX = -1 * directionMultipleX;
-        int OppositedirectionMultipleY = -1 * directionMultipleY;
+        int OppositedirectionMultipleX = -1 * Mathf.RoundToInt(rb.velocity.x / Mathf.Abs(rb.velocity.x));
+        int OppositedirectionMultipleY = -1 * Mathf.RoundToInt(rb.velocity.y / Mathf.Abs(rb.velocity.y));
         // Multiplies the direction then coefficient of air resistence and the velocity squared
         rb.AddForce(new Vector2(OppositedirectionMultipleX * coefficientOfAirResistence * (rb.velocity.x * rb.velocity.x),
         OppositedirectionMultipleY * coefficientOfAirResistence * (rb.velocity.y * rb.velocity.y)));
     }
     void Friction()
     {
-        // Air resistance opposes motion
-        int OppositedirectionMultipleX = -1 * directionMultipleX;
-        int OppositedirectionMultipleY = -1 * directionMultipleY;
-        Debug.Log(directionMultipleX);
-        // Thinks object is always moving right yet is applying a force to the right
-        if (directionMultipleX == -1)
-        {
-            Debug.Log("Left");
-        }
-        else{
-            Debug.Log("Right");
-        }
+        // Air resistance opposes motion but in ball motion is reversed because rotation
+        // Grabs the sign of velocity and multiplies it by -1 to get opposite
+        int OppositedirectionMultipleX = -1 * Mathf.RoundToInt(rb.velocity.x / Mathf.Abs(rb.velocity.x));
+        int OppositedirectionMultipleY = -1 * Mathf.RoundToInt(rb.velocity.y / Mathf.Abs(rb.velocity.y));
         // Multiplies the direction then coefficient of air resistence and the velocity squared
         rb.AddForce(new Vector2(OppositedirectionMultipleX * coefficientOfFriction * Mathf.Abs(rb.velocity.x * rb.velocity.x),
         OppositedirectionMultipleY * coefficientOfFriction * Mathf.Abs(rb.velocity.y * rb.velocity.y)));
