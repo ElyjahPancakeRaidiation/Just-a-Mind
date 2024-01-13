@@ -10,7 +10,7 @@ public class CameraScript : MonoBehaviour
     public static GameObject playerObj;
     public float cameraSpeed;
 
-    [SerializeField]public bool isFollowingPlayer;
+    [SerializeField]public bool isFollowingPlayer = true;
     [SerializeField]private Vector2 cameraOffset;//There is no current offset.
     private Vector2 camVel = Vector2.zero;//Keeps track of the cameras velocity
 
