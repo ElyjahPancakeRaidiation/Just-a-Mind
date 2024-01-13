@@ -2010,7 +2010,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   coefficientOfAirResistence: 0.1
-  coefficientOfFriction: 0.8
+  coefficientOfFriction: 0.75
   pogoCol: {fileID: 1312538961}
   ballCol: {fileID: 1312538961}
   maxSpeedCopy: 0
@@ -3423,3 +3423,4 @@ SceneRoots:
   - {fileID: 2123434857}
   - {fileID: 147890770}
   - {fileID: 1065546735783437298}
+  - {fileID: 1312538959}
