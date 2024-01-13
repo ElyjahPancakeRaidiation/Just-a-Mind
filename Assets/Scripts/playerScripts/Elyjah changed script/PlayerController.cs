@@ -79,19 +79,6 @@ public class PlayerController : MonoBehaviour
         }
 
         LatestInput((int)horizontal, (int)vertical);
-
-    
-        #region ball ability code
-        if (!Abilities.isDashing)
-        {
-            if (rb.velocity.x < -MAXSPEED){//if its under max speed(because negative) it will be set to its max speed
-                rb.velocity = new Vector2(-MAXSPEED, rb.velocity.y);
-            }
-            else if(rb.velocity.x > MAXSPEED){//if its over max speed it will be set to its max speed
-                rb.velocity = new Vector2(MAXSPEED, rb.velocity.y);
-            }
-        }
-        #endregion
         
     }
 
@@ -100,12 +87,15 @@ public class PlayerController : MonoBehaviour
         if (canMove){
             checkDirection();
             Movements();
+            Debug.Log("Can Move is true");
             if (groundedScript.isGrounded())
             {
                 Friction();
+                Debug.Log("Friction");
             }
             else
             {
+                Debug.Log("Air Res");
                 AirResistance();
             }
             interactCol = Physics2D.OverlapCircle(transform.position, interactRadius, interactMask);
@@ -266,7 +256,7 @@ public class PlayerController : MonoBehaviour
 
     private void Movements()
     {//different movements for each form
-        rb.AddForce(new Vector2(horizontal * speed * Time.deltaTime, 0), ForceMode2D.Impulse);//moves the player in the direction the player is pressing
+        rb.AddForce(new Vector2(horizontal * speed * Time.fixedDeltaTime, 0), ForceMode2D.Impulse);//moves the player in the direction the player is pressing
 
     }
     private void OnDrawGizmos()  
@@ -288,8 +278,17 @@ public class PlayerController : MonoBehaviour
         // Air resistance opposes motion
         int OppositedirectionMultipleX = -1 * directionMultipleX;
         int OppositedirectionMultipleY = -1 * directionMultipleY;
+        Debug.Log(directionMultipleX);
+        // Thinks object is always moving right yet is applying a force to the right
+        if (directionMultipleX == -1)
+        {
+            Debug.Log("Left");
+        }
+        else{
+            Debug.Log("Right");
+        }
         // Multiplies the direction then coefficient of air resistence and the velocity squared
-        rb.AddForce(new Vector2(OppositedirectionMultipleX * coefficientOfFriction * (rb.velocity.x * rb.velocity.x),
-        OppositedirectionMultipleY * coefficientOfFriction * (rb.velocity.y * rb.velocity.y)));
+        rb.AddForce(new Vector2(OppositedirectionMultipleX * coefficientOfFriction * Mathf.Abs(rb.velocity.x * rb.velocity.x),
+        OppositedirectionMultipleY * coefficientOfFriction * Mathf.Abs(rb.velocity.y * rb.velocity.y)));
     }
 }

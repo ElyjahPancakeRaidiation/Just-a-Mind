@@ -2027,8 +2027,8 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 64
-  coefficientOfAirResistence: 0
-  coefficientOfFriction: 0
+  coefficientOfAirResistence: 0.1
+  coefficientOfFriction: 0.8
   pogoCol: {fileID: 1312538961}
   ballCol: {fileID: 1312538961}
   maxSpeedCopy: 0
@@ -2095,7 +2095,7 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_GravityScale: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -2806,7 +2806,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
 --- !u!1 &1841205197
 GameObject:
   m_ObjectHideFlags: 0
