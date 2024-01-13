@@ -46,7 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
 --- !u!1 &5150928139307579840
 GameObject:
   m_ObjectHideFlags: 0
@@ -141,16 +141,16 @@ MonoBehaviour:
   playerFormSprite:
   - {fileID: 21300000, guid: b6cc70374dec0b44ca5b54b0bf58761d, type: 3}
   - {fileID: 21300000, guid: bf73dd4c4fa264b4497394685a9ac176, type: 3}
-  interactRadius: 0
+  interactRadius: 0.4
   interactMask:
     serializedVersion: 2
     m_Bits: 8
   groundMask:
     serializedVersion: 2
     m_Bits: 64
-  coefficientOfAirResistence: 0
-  coefficientOfFriction: 0
-  pogoCol: {fileID: 6764691651494828799}
+  coefficientOfAirResistence: 0.1
+  coefficientOfFriction: 0.75
+  pogoCol: {fileID: 0}
   ballCol: {fileID: 4243366355294756771}
   maxSpeedCopy: 0
   dashMag: 0
