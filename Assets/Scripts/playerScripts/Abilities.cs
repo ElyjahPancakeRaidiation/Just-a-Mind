@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Abilities : MonoBehaviour
 {
-
+    [Header("General Variables")]
     private PlayerController player;
 
     public KeyCode abilityKey;
@@ -13,15 +13,20 @@ public class Abilities : MonoBehaviour
     private int bonusCharges;//bonus charges for the abilities 
     isGroundedScript groundedScript;
     #region Dashing variables
-
+    [Header("Dash Variables")]
+    
     [SerializeField]private float dashingDuration;//How long the dash will go for
-    private const float DASHPOWER = 12f;
+    private const float DASHPOWER = 15f;
     public static bool isDashing;
     [SerializeField]private int maxDashAmount;
     private int dashAmount;
     
-    #endregion
+    [SerializeField]float dashDelay;
+
+    [SerializeField]float yDashModifier;
     
+    #endregion
+    [Header("Pogo Variables")]
 
     #region Pogo Jumpy up up variables
     public Vector3 jumpForce;
@@ -39,6 +44,7 @@ public class Abilities : MonoBehaviour
     public float shiftTimeMax;
     public Transform playerTransform;
     [SerializeField] private Vector3 COM;
+    [Space(10)]
 
     // this variable may not be relevent and may be able to be removed
     public static Vector2 hingeJointAnchorDistance = new Vector2(1.9f, 0);
@@ -90,7 +96,7 @@ public class Abilities : MonoBehaviour
 
     #region Ball abilites
     private void Dash(){
-        if (Input.GetKeyDown(abilityKey) && !isDashing)
+        if (Input.GetKeyDown(abilityKey) && !isDashing && groundedScript.isGrounded())
         {
             if (dashAmount > 0 || bonusCharges > 0)
             {
@@ -100,22 +106,19 @@ public class Abilities : MonoBehaviour
     }
     
     private IEnumerator Dashing(float duration){//Will push the player forward for a certain amount of time at a certain amount of speed
+        // Starts camera shacking
         CameraScript.isCameraShaking = true;
-        yield return new WaitForSeconds(0.3f);
-        player.rb.velocity = Vector2.zero;
-        CameraScript.isCameraShaking = false;
+        // We then add the dash force
         player.rb.AddForce(new Vector2(player.horiLatestInput * DASHPOWER, player.vertLatestInput * DASHPOWER), ForceMode2D.Impulse);//dash in any direction boom kachow
-        isDashing = true;
+        isDashing = true;        
+        // wait then turn off cammera shake
         yield return new WaitForSeconds(duration);
-        if (bonusCharges <= 0){
-            dashAmount--;
-        }else{
-            bonusCharges--;
-        }
+        CameraScript.isCameraShaking = false;
+        yield return new WaitUntil(() => groundedScript.isGrounded());
+        yield return new WaitForSeconds(dashDelay);
         ResetDash();
     }
     private void ResetDash(){//Resets all of the variables in dash mechanic
-        player.canMove = true;
         isDashing = false;
     }
     #endregion
@@ -266,26 +269,5 @@ public class Abilities : MonoBehaviour
     }
 
     #endregion
-    private void OnCollisionEnter2D(Collision2D other) {
-        if (other.gameObject.tag == "Ground")
-        {
-            dashAmount = maxDashAmount;
-        }
-    }
-
-    private void OnCollisionStay2D(Collision2D other) {
-        if (other.gameObject.tag == "Ground")
-        {
-            dashAmount = maxDashAmount;
-        }
-    } 
-
-    private void OnTriggerEnter2D(Collider2D other) {
-        if (other.gameObject.tag == "BonusCrystal")
-        {
-            bonusCharges++;
-            Destroy(other.gameObject);
-        }
-    }   
     
 }
