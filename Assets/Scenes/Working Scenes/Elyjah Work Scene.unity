@@ -1322,7 +1322,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b495ec7e25473b146a432603899185a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraSpeed: 0.2
+  cameraSpeed: 0.1
   isFollowingPlayer: 1
   cameraOffset: {x: 0, y: 2}
   maxCameraShakePosX: 0.3
@@ -1942,8 +1942,8 @@ Transform:
   m_GameObject: {fileID: 1067162445}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.2628827, y: -0.30325055, z: 0}
-  m_LocalScale: {x: 5, y: 5, z: 1}
+  m_LocalPosition: {x: 1182.8605, y: 2.8, z: 0}
+  m_LocalScale: {x: 236.38081, y: 5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -2366,11 +2366,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6115588636633299820, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.8
+      value: 524.2018
       objectReference: {fileID: 0}
     - target: {fileID: 6115588636633299820, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.1
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6115588636633299820, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2844,8 +2844,8 @@ Transform:
   m_GameObject: {fileID: 1631120808}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -9.8219, y: -1.19, z: -0.04165933}
-  m_LocalScale: {x: 104.88392, y: 1, z: 1}
+  m_LocalPosition: {x: 1191.9688, y: -1.19, z: -0.04165933}
+  m_LocalScale: {x: -1340.6732, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1309676644}

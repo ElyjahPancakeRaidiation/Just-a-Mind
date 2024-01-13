@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
     #region movements
     public bool canMove = true;
     public Rigidbody2D rb;
-    private float horizontal, vertical;
+    public float horizontal, vertical;
     public int horiLatestInput = 1, vertLatestInput = 0;
     public float speed;
 

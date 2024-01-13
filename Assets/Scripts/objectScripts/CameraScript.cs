@@ -6,12 +6,13 @@ using UnityEngine;
 
 public class CameraScript : MonoBehaviour
 {
+
     private GameObject cameraObj;
     public static GameObject playerObj;
     public float cameraSpeed;
 
     [SerializeField]public bool isFollowingPlayer;
-    [SerializeField]private Vector2 cameraOffset;//There is no current offset.
+    [SerializeField]private Vector2 cameraOffset;
     private Vector2 camVel = Vector2.zero;//Keeps track of the cameras velocity
 
 
@@ -24,31 +25,44 @@ public class CameraScript : MonoBehaviour
     }
     public cameraDefualt camDefaultValues;//I wanted to play around with structs.
     
+
     private void Start() {
         camDefaultValues.camPosX = 0;
         camDefaultValues.camPosY = 0;
         camDefaultValues.camFOV = 5;
         cameraObj = GameObject.FindGameObjectWithTag("MainCamera");
         playerObj = GameObject.FindGameObjectWithTag("Player");
+
+
     }
 
     private void Update(){
         CameraShake();      
-
+        if (isFollowingPlayer)
+        {
+            if(playerObj.GetComponent<PlayerController>().horiLatestInput != 0){
+                cameraOffset.x = playerObj.GetComponent<PlayerController>().horiLatestInput;
+            }
+            //FollowObjSmooth(playerObj.transform);
+        }
     }
 
     private void FixedUpdate() {
         if (isFollowingPlayer)
         {
-            FollowObj(playerObj.transform, cameraSpeed);
+            FollowObjDelay(playerObj.transform, cameraSpeed);
         }
+        
     }
 
-    public void FollowObj(Transform objTransform, float speed)//Follows any obj(Should always be put in fixed update so it can add the rigidbody. If it is not in F.U it will make anything with a rigidbody jitter when moved.)
+    public void FollowObjDelay(Transform objTransform, float speed)//Follows any obj(Should always be put in fixed update so it can add the rigidbody. If it is not in F.U it will make anything with a rigidbody jitter when moved.)
     {
         Vector2 targetPosition = new Vector2(objTransform.position.x, objTransform.position.y);
         transform.position = Vector2.SmoothDamp(transform.position, targetPosition + cameraOffset, ref camVel, speed);//With smoothDamp the lower the speed the faster it goes also itt's smoother than Lerp.
         //We can also cap the speed it can go at with smoothDamp
+    }
+    public void FollowObjSmooth(Transform objTransform){
+        transform.position = (Vector2)objTransform.position + cameraOffset;
     }
 
     public void ZoomCameraChange(float FOV, float zoomSpeed){//Zooms back and fourth wether it is the player or not. Never make the desired FOV smaller than the defualt FOV which is 5
