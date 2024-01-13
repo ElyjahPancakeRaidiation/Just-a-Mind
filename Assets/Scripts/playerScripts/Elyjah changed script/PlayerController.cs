@@ -8,7 +8,14 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public KeyCode formChangeKey;
-    [SerializeField]private bool devControl;//Just used to override the locked forms(I got really lazy and I dont want to keep going back and fourth changing the bools)
+    [SerializeField]public bool devControl;//Just used to override the locked forms(I got really lazy and I dont want to keep going back and fourth changing the bools)
+    public int neareastSpawner;
+    public Transform spherePoint;
+    public GameManager gm;
+
+    public Collider2D circleCol; // checks for all colliders
+
+    public GameObject spawner;
 
     #region movements
     public bool canMove = true;
@@ -62,6 +69,7 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         groundedScript = GameObject.Find("Ground Ray Object").GetComponent<isGroundedScript>();
         playerSpriteRender = GetComponent<SpriteRenderer>();
+        gm = GameObject.Find("Game Manager").GetComponent<GameManager>();
         FormSettings();
     }
         
@@ -71,6 +79,7 @@ public class PlayerController : MonoBehaviour
         ChangeForm();//Controlls the changing of the players form
         InteractFunc();//The player interacts through this function
         //ChangeVel();//The velocity for the ball my brain rots from this
+        RespawnParse();
 
         if (canMove) {
             horizontal = Input.GetAxisRaw("Horizontal");
@@ -99,6 +108,8 @@ public class PlayerController : MonoBehaviour
             interactCol = Physics2D.OverlapCircle(transform.position, interactRadius, interactMask);
 
         }
+
+        
     }
 
     private void LatestInput(int horizontalInput, int verticalInput){//Finds the latest input for vertical and horizontal
@@ -265,4 +276,36 @@ public class PlayerController : MonoBehaviour
         rb.AddForce(new Vector2(OppositedirectionMultipleX * coefficientOfFriction * Mathf.Abs(rb.velocity.x * rb.velocity.x),
         OppositedirectionMultipleY * coefficientOfFriction * Mathf.Abs(rb.velocity.y * rb.velocity.y)));
     }
+
+    void RespawnParse()
+    {
+        circleCol = Physics2D.OverlapCircle(spherePoint.transform.position, interactRadius, interactMask); //set circleCol to Overlap Cirlce
+		if (circleCol != null)
+		{
+            Debug.Log("Respawner at index " + circleCol + " is within the circle cast.");
+        }
+
+
+        if (circleCol == spawner || circleCol == null) //if cirlce collider is equal or if circle collider is equal to null return
+        {
+            return; //ensure that that there's never a null in the spawner
+        } else if (circleCol != spawner && circleCol != null)
+		{
+            spawner = circleCol.gameObject; 
+        }
+
+
+    }
+
+	private void OnCollisionEnter2D(Collision2D collision)
+	{
+		switch (collision.gameObject.name)
+		{
+			case "Spikes":
+                this.transform.position = spawner.transform.position;
+				break;
+		}
+	}
+
+
 }
