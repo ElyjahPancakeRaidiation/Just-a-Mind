@@ -39,7 +39,6 @@ public class PlayerController : MonoBehaviour
 
     #region Ball movement variables
     [SerializeField]private Collider2D ballCol;
-    private const float MAXSPEED = 6;
     public float maxSpeedCopy;
     private const float DECELERATION = 8, ACCELERATION = 4, POINTTOACCELERATE = 2;
     /// <Deceleration acceleration and accelerate explantion> 
@@ -50,7 +49,6 @@ public class PlayerController : MonoBehaviour
     #endregion
     
     #region Arm movement variables
-    public float dashMag;
 
     #endregion
 
@@ -106,6 +104,10 @@ public class PlayerController : MonoBehaviour
         {
             int i = horizontalInput;
             horiLatestInput = i;
+        }
+        else
+        {
+            horiLatestInput = 0;
         }
 
         if (verticalInput != 0)
