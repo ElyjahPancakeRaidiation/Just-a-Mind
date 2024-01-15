@@ -37,6 +37,7 @@ public class Abilities : MonoBehaviour
     #endregion
 
     #region Arm variables
+    
     public float speed;
     public float dashMag;
     public float shiftTime = 0;
@@ -108,7 +109,7 @@ public class Abilities : MonoBehaviour
         // Starts camera shacking
         CameraScript.isCameraShaking = true;
         // We then add the dash force
-        player.rb.AddForce(new Vector2(player.horiLatestInput * DASHPOWER, player.vertLatestInput * DASHPOWER), ForceMode2D.Impulse);//dash in any direction boom kachow
+        player.rb.AddForce(new Vector2(player.horiLatestInput * DASHPOWER, yDashModifier * player.vertLatestInput * DASHPOWER), ForceMode2D.Impulse);//dash in any direction boom kachow
         isDashing = true;        
         // wait then turn off cammera shake
         yield return new WaitForSeconds(duration);

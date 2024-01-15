@@ -47,6 +47,10 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
+  rayScales:
+  - 0.35
+  - 1.6
+  - 1
 --- !u!1 &5150928139307579840
 GameObject:
   m_ObjectHideFlags: 0
@@ -80,7 +84,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -4.84, y: -1.665, z: 0.5}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2556725374051482418}
@@ -101,6 +105,8 @@ MonoBehaviour:
   abilityKey: 32
   dashingDuration: 0.3
   maxDashAmount: 1
+  dashDelay: 0.3
+  yDashModifier: 1.5
   jumpForce: {x: 0, y: 5, z: 0}
   superJumpForce: {x: 0, y: 12.5, z: 0}
   groundPoint: {fileID: 2556725374051482418}
@@ -131,16 +137,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   formChangeKey: 304
+  playerSpriteRender: {fileID: 0}
+  playerFormSprite:
+  - {fileID: 21300000, guid: c48159bb276b640a9b80ce9eebed5a59, type: 3}
+  - {fileID: 21300000, guid: bf73dd4c4fa264b4497394685a9ac176, type: 3}
   devControl: 1
   canMove: 1
   rb: {fileID: 0}
+  horizontal: 0
+  vertical: 0
   horiLatestInput: 1
   vertLatestInput: 0
-  speed: 5
-  playerSpriteRender: {fileID: 0}
-  playerFormSprite:
-  - {fileID: 21300000, guid: b6cc70374dec0b44ca5b54b0bf58761d, type: 3}
-  - {fileID: 21300000, guid: bf73dd4c4fa264b4497394685a9ac176, type: 3}
+  speed: 10
   interactRadius: 0.4
   interactMask:
     serializedVersion: 2
@@ -149,11 +157,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   coefficientOfAirResistence: 0.1
-  coefficientOfFriction: 0.75
-  pogoCol: {fileID: 0}
+  coefficientOfFriction: 0.5
   ballCol: {fileID: 4243366355294756771}
   maxSpeedCopy: 0
-  dashMag: 0
+  pogoCol: {fileID: 6764691651494828799}
 --- !u!50 &3374888515853459002
 Rigidbody2D:
   serializedVersion: 4
@@ -169,7 +176,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 2.5
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -215,7 +222,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.3
+  m_Radius: 0.5
 --- !u!61 &6764691651494828799
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -252,7 +259,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
+    oldSize: {x: 2.2222223, y: 2.2222223}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -302,7 +309,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: b6cc70374dec0b44ca5b54b0bf58761d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c48159bb276b640a9b80ce9eebed5a59, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

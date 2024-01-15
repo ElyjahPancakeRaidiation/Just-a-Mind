@@ -7,20 +7,21 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("General")]
     public KeyCode formChangeKey;
+    [SerializeField]private SpriteRenderer playerSpriteRender;
+    [SerializeField]private Sprite[] playerFormSprite;
+    private Animator anim;
     [SerializeField]private bool devControl;//Just used to override the locked forms(I got really lazy and I dont want to keep going back and fourth changing the bools)
 
     #region movements
+    [Header("Movement")]
     public bool canMove = true;
     public Rigidbody2D rb;
     public float horizontal, vertical;
     public int horiLatestInput = 1, vertLatestInput = 0;
     public float speed;
-
-    [SerializeField]private SpriteRenderer playerSpriteRender;
-    [SerializeField]private Sprite[] playerFormSprite;
-    private Animator anim;
-
+    [Header("Interaction")]
     private Collider2D interactCol;
     [SerializeField]private float interactRadius;
     [SerializeField]public LayerMask interactMask, groundMask;//interact mask is for objects you can interact with by pressing E. Ground is for ground.
@@ -33,11 +34,8 @@ public class PlayerController : MonoBehaviour
 
     isGroundedScript groundedScript;
 
-    #region Pogo movement variables
-    [SerializeField]private Collider2D pogoCol;
-    #endregion
-
     #region Ball movement variables
+    [Header("Head")]
     [SerializeField]private Collider2D ballCol;
     public float maxSpeedCopy;
     private const float DECELERATION = 8, ACCELERATION = 4, POINTTOACCELERATE = 2;
@@ -47,8 +45,12 @@ public class PlayerController : MonoBehaviour
     /// pointToAccelerate when it should stop accelerating ex: it will keep acclerating from 0 to 2 and stop
     /// </summary>
     #endregion
-    
+    #region Pogo movement variables
+    [Header("Body")]
+    [SerializeField]private Collider2D pogoCol;
+    #endregion
     #region Arm movement variables
+    
 
     #endregion
 
