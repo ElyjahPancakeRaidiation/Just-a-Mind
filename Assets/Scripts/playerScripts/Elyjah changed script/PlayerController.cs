@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour
 
     private Collider2D interactCol;
     [SerializeField]private float interactRadius;
-    [SerializeField]public LayerMask interactMask, groundMask;//interact mask is for objects you can interact with by pressing E. Ground is for ground.
+    [SerializeField]public LayerMask interactMask, groundMask,swingMask;//interact mask is for objects you can interact with by pressing E. Ground is for ground.
 
     public enum playerForms{Ball, Pogo, Arm}
     public static playerForms playerForm;
@@ -289,7 +289,9 @@ public class PlayerController : MonoBehaviour
         if (circleCol == spawner || circleCol == null) //if cirlce collider is equal or if circle collider is equal to null return
         {
             return; //ensure that that there's never a null in the spawner
-        } else if (circleCol != spawner && circleCol != null)
+        } 
+        
+        else if (circleCol != spawner && circleCol != null)
 		{
             spawner = circleCol.gameObject; 
         }
@@ -301,9 +303,9 @@ public class PlayerController : MonoBehaviour
 	{
 		switch (collision.gameObject.name)
 		{
-			case "Spikes":
+            case "Spikes":
                 this.transform.position = spawner.transform.position;
-				break;
+                break;
 		}
 	}
 
