@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -41,13 +40,16 @@ public class CameraScript : MonoBehaviour
 
     private void Update(){
         CameraShake();      
-        
+        //Vector2 cur = Camera.main.(Input.mousePosition);
+        //print(cur);
 
         if (isFollowingPlayer)
         {
+            /*
             if(playerObj.GetComponent<Rigidbody2D>().velocity.x != 0){
                 cameraOffset.x = playerObj.GetComponent<PlayerController>().horizontal;
             }
+            */
         }
     }
     private void FixedUpdate() {
@@ -80,6 +82,8 @@ public class CameraScript : MonoBehaviour
             LowerNum(ref cameraOffset.x, 0, 2);
         }
     }
+
+
 
     private void LowerNum(ref float startingNum, float endNum, float decreasePower){
         if (startingNum > endNum)

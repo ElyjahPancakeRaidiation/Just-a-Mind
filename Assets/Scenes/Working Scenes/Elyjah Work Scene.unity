@@ -1324,7 +1324,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firstCam: 0
   secondCam: 1
-  cameraSpeed: 0.1
+  cameraSpeed: 0.001
   isFollowingPlayer: 1
   cameraOffset: {x: 0, y: 2}
   maxCameraShakePosX: 0.3
@@ -2362,6 +2362,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 676506374416470245, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
+      propertyPath: coefficientOfFriction
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 676506374416470245, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
+      propertyPath: coefficientOfAirResistence
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1498840318286664652, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
       propertyPath: m_LocalPosition.x
       value: 535
