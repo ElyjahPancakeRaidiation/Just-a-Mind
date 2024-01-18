@@ -16,7 +16,7 @@ public class Abilities : MonoBehaviour
     [Header("Dash Variables")]
     
     [SerializeField]private float dashingDuration;//How long the dash will go for
-    private const float DASHPOWER = 15f;
+    [SerializeField] float DASHPOWER;
     public static bool isDashing;
     [SerializeField]private int maxDashAmount;
     private int dashAmount;
