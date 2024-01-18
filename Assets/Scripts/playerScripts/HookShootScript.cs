@@ -8,6 +8,9 @@ public class HookShootScript : MonoBehaviour
 	#region Hookshot
 	public Rigidbody2D playersRB2D;
 
+	public PlayerController pc;
+	public GameObject Player;
+
     public float hookshotRange; // Sets the range the hookshot can go
 	public float hookshotSpeed; // Sets how fast you're going towards your hookshot
 	public float distance = 3.5f;
@@ -33,6 +36,8 @@ public class HookShootScript : MonoBehaviour
 	void Start()
 	{
 		playersRB2D = GetComponent<Rigidbody2D>();
+		Player = GameObject.Find("Player");
+		pc = GetComponent<PlayerController>();
 		LR.enabled = false;
 	}
 
@@ -41,7 +46,7 @@ public class HookShootScript : MonoBehaviour
 	{
 		if (Input.GetKeyDown(hookShotKey)&& !areYouHookShooting) // If the player hits the Fire1 button and is not hookshooting
 		{
-			StartHookShot(); // Start the hookshoot function
+			/*StartHookShot();*/ // Start the hookshoot function
 		}
 		else if (Input.GetKeyDown(hookShotKey) && areYouHookShooting) // If the player hits the Fire1 button and is hookshooting
 		{
@@ -54,10 +59,9 @@ public class HookShootScript : MonoBehaviour
 		}
 	}
 
-	public void StartHookShot()
+	/*public void StartHookShot()
 	{
-		RaycastHit2D hit = Physics2D.CircleCast(spherePoint.position, hookshotRange, Vector2.right, distance, grappleLayer);
-		isConnected = grapplePoint != null;
+		pc.vineCol = Physics2D.OverlapCircle(spherePoint.transform.position, pc.interactRadius, interactMask); //set circleCol to Overlap Cirlce
 
 		if (isConnected) // If the cirlce hits something that is in the hook shot range and is in the ground layer
 		{
@@ -69,7 +73,7 @@ public class HookShootScript : MonoBehaviour
 			LR.SetPosition(1, grapplePoint.position); // Ends at the target
 		}
 
-	}
+	}*/
 
 	public void HookshotMovement()
 	{

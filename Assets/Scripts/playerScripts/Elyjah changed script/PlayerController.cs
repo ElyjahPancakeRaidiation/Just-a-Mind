@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using JetBrains.Annotations;
+using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -11,16 +12,20 @@ public class PlayerController : MonoBehaviour
     public KeyCode formChangeKey;
     [SerializeField]public bool devControl;//Just used to override the locked forms(I got really lazy and I dont want to keep going back and fourth changing the bools)
     public int neareastSpawner;
+    public float timer;
     public Transform spherePoint;
     public GameManager gm;
     [SerializeField]private SpriteRenderer playerSpriteRender;
     [SerializeField]private Sprite[] playerFormSprite;
-    private Animator anim;
-    [SerializeField]private bool devControl;//Just used to override the locked forms(I got really lazy and I dont want to keep going back and fourth changing the bools)
+    private Animator anim; 
 
     public Collider2D circleCol; // checks for all colliders
+    public Collider2D vineCol;
 
     public GameObject spawner;
+    public GameObject grabOn;
+
+    public TMP_Text guideText;
 
     #region movements
     [Header("Movement")]
@@ -71,6 +76,8 @@ public class PlayerController : MonoBehaviour
         groundedScript = GameObject.Find("Ground Ray Object").GetComponent<isGroundedScript>();
         playerSpriteRender = GetComponent<SpriteRenderer>();
         gm = GameObject.Find("Game Manager").GetComponent<GameManager>();
+
+        guideText.text = "";
         FormSettings();
     }
         
@@ -304,13 +311,24 @@ public class PlayerController : MonoBehaviour
 
     }
 
-	private void OnCollisionEnter2D(Collision2D collision)
+   
+
+    private void OnCollisionEnter2D(Collision2D collision)
 	{
 		switch (collision.gameObject.name)
 		{
             case "Spikes":
                 this.transform.position = spawner.transform.position;
                 break;
+		}
+	}
+
+	private void OnTriggerStay2D(Collider2D collision)
+	{
+        timer += Time.deltaTime;
+		if (timer >= 15)
+		{
+            guideText.text = "Hey hello";
 		}
 	}
 

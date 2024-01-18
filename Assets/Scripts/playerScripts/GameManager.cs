@@ -16,13 +16,13 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		if (pc.devControl == true)
+		/*if (pc.devControl == true)
 		{
             if (Input.GetKeyDown(KeyCode.R))
             {
                 player.transform.position = pc.spawner.transform.position;
             }
-        }
+        }*/
 		
     }
 
