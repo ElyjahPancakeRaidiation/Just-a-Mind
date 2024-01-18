@@ -15,7 +15,7 @@ public class CameraScript : MonoBehaviour
 
     [SerializeField]public bool isFollowingPlayer;
     [SerializeField]private Vector2 cameraOffset;
-    private Vector2 camVel = Vector2.zero;//Keeps track of the cameras velocity
+    private Vector2 playerLimit;//When the player passes this vec2 it will start to increase in the speed
 
 
     public static bool isCameraShaking, isCameraZooming;
@@ -40,8 +40,6 @@ public class CameraScript : MonoBehaviour
 
     private void Update(){
         CameraShake();      
-        //Vector2 cur = Camera.main.(Input.mousePosition);
-        //print(cur);
 
         if (isFollowingPlayer)
         {
@@ -57,29 +55,38 @@ public class CameraScript : MonoBehaviour
         {
             if (firstCam)
             {
-                FollowObjDelay(playerObj.transform, cameraSpeed);
+                FollowObjDelay(cameraSpeed);
             }
             
             if (secondCam)
             {
-                FollowPlayer(cameraSpeed);
+                //FollowPlayer(cameraSpeed);
             }
         }
     }
 
-    public void FollowObjDelay(Transform objTransform, float speed)//Follows any obj(Should always be put in fixed update so it can add the rigidbody. If it is not in F.U it will make anything with a rigidbody jitter when moved.)
+    public void FollowObjDelay(float speed)//Follows any obj(Should always be put in fixed update so it can add the rigidbody. If it is not in F.U it will make anything with a rigidbody jitter when moved.)
     {
+        /*
         Vector2 targetPosition = new Vector2(objTransform.position.x, objTransform.position.y);
         transform.position = Vector2.SmoothDamp(transform.position, targetPosition + cameraOffset, ref camVel, speed);//With smoothDamp the lower the speed the faster it goes also itt's smoother than Lerp.
         //We can also cap the speed it can go at with smoothDamp
+        */
+
+        transform.position = Vector2.Lerp(transform.position, playerObj.transform.position, speed);
 
     }
-    public void FollowPlayer(float speed){
-        Vector2 targetPosition = new Vector2(playerObj.transform.position.x, playerObj.transform.position.y);
-        transform.position = Vector2.SmoothDamp(transform.position, targetPosition + cameraOffset, ref camVel, speed);
-        if (playerObj.GetComponent<PlayerController>().horizontal == 0)
-        {
-            LowerNum(ref cameraOffset.x, 0, 2);
+
+    private void IncreaseSpeed(){
+        Vector2 playerCamPos = Camera.main.ScreenToWorldPoint(playerObj.transform.position);
+        if(playerCamPos.x < -playerLimit.x){
+
+        }else if(playerCamPos.x > playerLimit.x){
+
+        }else if(playerCamPos.y < -playerLimit.y){
+
+        }else if(playerCamPos.y > playerLimit.y){
+            
         }
     }
 
