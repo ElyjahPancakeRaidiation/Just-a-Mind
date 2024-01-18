@@ -1567,16 +1567,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2123434857}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &714070009 stripped
-BoxCollider2D:
-  m_CorrespondingSourceObject: {fileID: 6764691651494828799, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
-  m_PrefabInstance: {fileID: 1065546735783437298}
-  m_PrefabAsset: {fileID: 0}
---- !u!58 &714070010 stripped
-CircleCollider2D:
-  m_CorrespondingSourceObject: {fileID: 4243366355294756771, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
-  m_PrefabInstance: {fileID: 1065546735783437298}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &931351255
 GameObject:
   m_ObjectHideFlags: 0
@@ -3193,14 +3183,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6156709126799240589, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
-      propertyPath: ballCol
-      value: 
-      objectReference: {fileID: 714070010}
-    - target: {fileID: 6156709126799240589, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
-      propertyPath: pogoCol
-      value: 
-      objectReference: {fileID: 714070009}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
