@@ -1322,9 +1322,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b495ec7e25473b146a432603899185a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firstCam: 0
-  secondCam: 1
-  cameraSpeed: 0.001
+  firstCam: 1
+  secondCam: 0
+  cameraSpeed: 2
   isFollowingPlayer: 1
   cameraOffset: {x: 0, y: 2}
   maxCameraShakePosX: 0.3
