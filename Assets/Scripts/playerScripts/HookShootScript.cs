@@ -65,6 +65,9 @@ public class HookShootScript : MonoBehaviour
 
 	public void StartHookShot()
 	{
+		//Change this to OverlapCircleAll so that it can cycle through a list and choose the closet one
+		//Add Raycast in order to not make it break while going through walls 
+
 		pc.vineCol = Physics2D.OverlapCircle(spherePoint.transform.position, hookshotRange, grappleLayer); //set circleCol to Overlap Cirlce
 
 		if (pc.vineCol != null)

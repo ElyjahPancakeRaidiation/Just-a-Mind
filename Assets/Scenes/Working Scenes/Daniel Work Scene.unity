@@ -468,9 +468,21 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6156709126799240589, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
+      propertyPath: test.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6156709126799240589, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
       propertyPath: swingMask.m_Bits
       value: 128
       objectReference: {fileID: 0}
+    - target: {fileID: 6156709126799240589, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
+      propertyPath: test.Array.data[0]
+      value: 
+      objectReference: {fileID: 655378086}
+    - target: {fileID: 6156709126799240589, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
+      propertyPath: test.Array.data[1]
+      value: 
+      objectReference: {fileID: 1619972500}
     - target: {fileID: 6156709126799240589, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
       propertyPath: interactMask.m_Bits
       value: 256
@@ -2454,7 +2466,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 131535768}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ebdac022ea973a041a45457d2a85e9c2, type: 3}
   m_Name: 
