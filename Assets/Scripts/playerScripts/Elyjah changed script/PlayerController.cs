@@ -23,10 +23,11 @@ public class PlayerController : MonoBehaviour
 
     public Collider2D circleCol; // checks for all colliders
     public Collider2D vineCol;
+    
 
     public GameObject spawner;
-    public GameObject grabOn;
     public GameObject player;
+    public GameObject grabOn;
 
     public TMP_Text guideText;
 
@@ -40,7 +41,7 @@ public class PlayerController : MonoBehaviour
     [Header("Interaction")]
     private Collider2D interactCol;
     [SerializeField]public float interactRadius;
-    [SerializeField]public LayerMask interactMask, groundMask,swingMask;//interact mask is for objects you can interact with by pressing E. Ground is for ground.
+    [SerializeField]public LayerMask interactMask, groundMask;//interact mask is for objects you can interact with by pressing E. Ground is for ground.
 
     public enum playerForms{Ball, Pogo, Arm}
     public static playerForms playerForm;

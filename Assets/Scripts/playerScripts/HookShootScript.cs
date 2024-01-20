@@ -9,9 +9,13 @@ public class HookShootScript : MonoBehaviour
 	public Rigidbody2D playersRB2D;
 
 	public PlayerController pc;
-	public GameObject Player;
 
-    public float hookshotRange; // Sets the range the hookshot can go
+	public GameObject Player;
+	public GameObject grabOn;
+
+	public Collider2D vineCol;
+
+	public float hookshotRange; // Sets the range the hookshot can go
 	public float hookshotSpeed; // Sets how fast you're going towards your hookshot
 	public float distance = 3.5f;
 
@@ -22,7 +26,6 @@ public class HookShootScript : MonoBehaviour
 	public Vector2 hookShotTarget; // Where you are hook shooting to
 
 	public Transform spherePoint;
-	public Transform grapplePoint;
 
 	public bool areYouHookShooting = false; // Are you hook shooting?
 	public bool isConnected = false;
@@ -47,7 +50,7 @@ public class HookShootScript : MonoBehaviour
 	{
 		if (Input.GetKeyDown(hookShotKey)&& !areYouHookShooting) // If the player hits the Fire1 button and is not hookshooting
 		{
-			/*StartHookShot();*/ // Start the hookshoot function
+			StartHookShot(); // Start the hookshoot function
 		}
 		else if (Input.GetKeyDown(hookShotKey) && areYouHookShooting) // If the player hits the Fire1 button and is hookshooting
 		{
@@ -62,7 +65,7 @@ public class HookShootScript : MonoBehaviour
 
 	public void StartHookShot()
 	{
-		pc.vineCol = Physics2D.OverlapCircle(spherePoint.transform.position, hookshotRange, pc.interactMask); //set circleCol to Overlap Cirlce
+		pc.vineCol = Physics2D.OverlapCircle(spherePoint.transform.position, hookshotRange, grappleLayer); //set circleCol to Overlap Cirlce
 
 		if (pc.vineCol != null)
 		{
@@ -72,14 +75,14 @@ public class HookShootScript : MonoBehaviour
 
 		if ((pc.vineCol == pc.grabOn || pc.vineCol == null)) //if cirlce collider is equal or if circle collider is equal to null return
 		{
-			isConnected = true;
+			isConnected = false;
 			return; //ensure that that there's never a null in the spawner
 		}
 
 		else if ((pc.vineCol != pc.grabOn && pc.vineCol != null))
 		{
 			pc.grabOn = pc.vineCol.gameObject;
-			isConnected = false;
+			isConnected = true;
 		}
 
 		if (isConnected) // If the cirlce hits something that is in the hook shot range and is in the ground layer
@@ -89,7 +92,7 @@ public class HookShootScript : MonoBehaviour
 
 			LR.enabled = true; // Line Renderer is enabled
 			LR.SetPosition(0, transform.position); // Starts at grapple tip
-			LR.SetPosition(1, grapplePoint.position); // Ends at the target
+			LR.SetPosition(1, pc.grabOn.transform.position); // Ends at the target
 		}
 
 	}
@@ -100,9 +103,9 @@ public class HookShootScript : MonoBehaviour
 		playersRB2D.velocity = hookshotDirection * hookshotSpeed; // Shoot the player in the hookshotDirection at the hookshootSpeed
 
 		LR.SetPosition(0, transform.position);
-		LR.SetPosition(1, grapplePoint.position);
+		LR.SetPosition(1, pc.grabOn.transform.position);
 
-		if (Vector2.Distance(transform.position, grapplePoint.position) < 1) // If the distance from the transform.position and hookShotTarget is less than 1
+		if (Vector2.Distance(transform.position, pc.grabOn.transform.position) < 1) // If the distance from the transform.position and hookShotTarget is less than 1
 		{
 			EndHookshot();
 		}
@@ -118,7 +121,7 @@ public class HookShootScript : MonoBehaviour
 	private void OnDrawGizmos()
 	{
 		Gizmos.color = Color.red;
-		Gizmos.DrawWireSphere(spherePoint.position, pc.interactRadius);
+		Gizmos.DrawWireSphere(spherePoint.position, hookshotRange);
 	}
 
 }
