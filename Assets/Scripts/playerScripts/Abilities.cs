@@ -75,11 +75,11 @@ public class Abilities : MonoBehaviour
 
     void Update()
     {
-
-    }
-
-    void FixedUpdate() 
-    {
+        if (isDashing)
+        {
+            Debug.Log("Is dashing");
+        }
+        // We must call in update because input breaks if we dont
         switch (PlayerController.playerForm)
         {
             case PlayerController.playerForms.Ball:
@@ -95,10 +95,17 @@ public class Abilities : MonoBehaviour
         }
     }
 
+    void FixedUpdate() 
+    {
+
+
+    }
+
     #region Ball abilites
     private void Dash(){
-        if (Input.GetKeyDown(abilityKey) && !isDashing && groundedScript.isGrounded())
+        if (Input.GetKeyDown(abilityKey) && !isDashing)
         {
+            Debug.Log("can dash");
             if (dashAmount > 0 || bonusCharges > 0)
             {
                 StartCoroutine(Dashing(dashingDuration));
@@ -115,8 +122,11 @@ public class Abilities : MonoBehaviour
         // wait then turn off cammera shake
         yield return new WaitForSeconds(duration);
         CameraScript.isCameraShaking = false;
+        if (groundedScript.isGrounded())
+        {
+            yield return new WaitForSeconds(dashDelay);
+        }
         yield return new WaitUntil(() => groundedScript.isGrounded());
-        yield return new WaitForSeconds(dashDelay);
         ResetDash();
     }
     private void ResetDash(){//Resets all of the variables in dash mechanic
@@ -170,7 +180,6 @@ public class Abilities : MonoBehaviour
             }
         }
 
-        Debug.DrawRay(groundPoint.position, Vector2.down * 1.5f, Color.red);
     }
 
     #endregion

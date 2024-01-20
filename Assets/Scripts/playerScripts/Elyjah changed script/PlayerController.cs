@@ -89,11 +89,9 @@ public class PlayerController : MonoBehaviour
             if (groundedScript.isGrounded())
             {
                 Friction();
-                Debug.Log("Friction");
             }
             else
             {
-                Debug.Log("Air Res");
                 AirResistance();
             }
             interactCol = Physics2D.OverlapCircle(transform.position, interactRadius, interactMask);
