@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.Callbacks;
 using UnityEngine;
 
 public class Abilities : MonoBehaviour
@@ -29,8 +30,8 @@ public class Abilities : MonoBehaviour
     [Header("Pogo Variables")]
 
     #region Pogo Jumpy up up variables
-    public Vector3 jumpForce;
-    public Vector3 superJumpForce;
+    public float jumpForce;
+    public float superJumpForce;
     public Transform groundPoint;
     public bool canSuperJump = false;
     public float keyHoldDown;//Amount the jump is held down
@@ -75,10 +76,6 @@ public class Abilities : MonoBehaviour
 
     void Update()
     {
-        if (isDashing)
-        {
-            Debug.Log("Is dashing");
-        }
         // We must call in update because input breaks if we dont
         switch (PlayerController.playerForm)
         {
@@ -101,14 +98,20 @@ public class Abilities : MonoBehaviour
 
     }
 
+    IEnumerator ignoreResistences()
+    {
+        player.ignoreResistences = true;
+        yield return new WaitForSeconds(.25f);
+        player.ignoreResistences = false;
+    }
     #region Ball abilites
     private void Dash(){
         if (Input.GetKeyDown(abilityKey) && !isDashing)
         {
-            Debug.Log("can dash");
             if (dashAmount > 0 || bonusCharges > 0)
             {
                 StartCoroutine(Dashing(dashingDuration));
+                StartCoroutine(ignoreResistences());
             }
         }
     }
@@ -155,30 +158,31 @@ public class Abilities : MonoBehaviour
             {
                 if (!canSuperJump)//if its a regular jump use regular jump force
                 {
-                    player.rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+                    StartCoroutine(ignoreResistences());
+                    player.rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
                     canSuperJump = false;
                     keyHoldDown = 0;
                 }
     
                 if (canSuperJump)//if its a super jump use super jump force
                 {
-                    player.rb.AddForce(Vector2.up * superJumpForce, ForceMode2D.Impulse);
+                    StartCoroutine(ignoreResistences());
+                    player.rb.AddForce(new Vector2(0, superJumpForce), ForceMode2D.Impulse);
+                    StartCoroutine(debugger());
                     canSuperJump = false;
                     keyHoldDown = 0;
                 }
             }
         }
-
-        if (!groundedScript.isGrounded() && bonusCharges > 0)//if player has bonus charges and presses space do a super jump but only while the player is not on the ground
+        IEnumerator debugger()
         {
-            if (Input.GetKeyDown(abilityKey))
+            for(int i = 0; i < 100; i++)
             {
-                player.rb.AddForce(Vector2.up * superJumpForce, ForceMode2D.Impulse);
-                canSuperJump = false;
-                keyHoldDown = 0;
-                bonusCharges--;
+                Debug.Log(this.GetComponent<Rigidbody2D>().velocity.y);
+                yield return null;
             }
         }
+
 
     }
 
