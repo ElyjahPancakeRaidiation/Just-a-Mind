@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Threading;
 using JetBrains.Annotations;
 using TMPro;
 using Unity.Mathematics;
@@ -45,10 +46,11 @@ public class PlayerController : MonoBehaviour
 
     public enum playerForms{Ball, Pogo, Arm}
     public static playerForms playerForm;
+    // Change to false false false for game and initialize in gm
     public static bool[] playerPieces = {true, true, true};//bools for the player pieces {0: ball, 1: pogo, 2: arm}
     private int maxForm;
     [SerializeField] float coefficientOfAirResistence, coefficientOfFriction;
-
+    public bool ignoreResistences = false;
     isGroundedScript groundedScript;
 
     #region Ball movement variables
@@ -106,21 +108,19 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate() {
 
         if (canMove){
-            Movements();
-            Debug.Log("Can Move is true");
-
-            if (groundedScript.isGrounded())
-            {
-                Friction();
-                Debug.Log("Friction");
-            }
-            else
-            {
-                Debug.Log("Air Res");
-                AirResistance();
-            }
             interactCol = Physics2D.OverlapCircle(transform.position, interactRadius, interactMask);
-
+            Movements();
+            if (!ignoreResistences)
+            {
+                if (groundedScript.isGrounded())
+                {
+                    Friction();
+                }
+                else
+                {
+                    AirResistance();
+                }
+            }
         }
 
         
@@ -188,15 +188,14 @@ public class PlayerController : MonoBehaviour
         
         if (!devControl)
         {
+            maxForm = 0;
             for (int i = 0; i < playerPieces.Length; i++)//runs through the bools and see what form is not active yet
             {
-                if (!playerPieces[i])
+                if (playerPieces[i])
                 {
-                    maxForm = i;
+                    maxForm++;
                     break;
                 }
-    
-                maxForm = i;
             }
     
             if (Input.GetKeyDown(formChangeKey))
@@ -236,6 +235,7 @@ public class PlayerController : MonoBehaviour
             {
                 case playerForms.Ball:
                     //Sets the balls sprite, unfreezes rotation, and changes the animation
+                    rb.mass = 1;
                     ballCol.enabled = true;
                     pogoCol.enabled = false;
                     playerSpriteRender.sprite = playerFormSprite[0];
@@ -245,6 +245,7 @@ public class PlayerController : MonoBehaviour
                     break;
 
                 case playerForms.Pogo:
+                rb.mass = 2.5f;
                     transform.rotation = quaternion.RotateZ(0);//Puts the character up straight
                     ballCol.enabled = false;//changes the collider from ball to pogo
                     pogoCol.enabled = true;
@@ -256,6 +257,7 @@ public class PlayerController : MonoBehaviour
                     break;
 
                 case playerForms.Arm:
+                rb.mass = 3.5f;
                     //Where all of the settings for arm goes
                     ballCol.enabled = false;
                     pogoCol.enabled = true;

@@ -88,6 +88,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2556725374051482418}
+  - {fileID: 4868531280780533235}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1134108300002456243
@@ -104,15 +105,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityKey: 32
   dashingDuration: 0.3
+  DASHPOWER: 10
   maxDashAmount: 1
-  dashDelay: 0.3
-  yDashModifier: 1.5
-  jumpForce: {x: 0, y: 5, z: 0}
-  superJumpForce: {x: 0, y: 12.5, z: 0}
+  dashDelay: 1.25
+  yDashModifier: 1.3
+  jumpForce: 15
+  superJumpForce: 50
   groundPoint: {fileID: 2556725374051482418}
   canSuperJump: 0
   keyHoldDown: 0
-  speed: 5
+  speed: 7
   dashMag: 0
   shiftTime: 0
   shiftTimeMax: 0
@@ -137,18 +139,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   formChangeKey: 304
+  devControl: 0
+  neareastSpawner: 0
+  timer: 0
+  textOffsetX: 0
+  textOffsetY: 0
+  spherePoint: {fileID: 4868531280780533235}
+  gm: {fileID: 0}
   playerSpriteRender: {fileID: 0}
   playerFormSprite:
   - {fileID: 21300000, guid: c48159bb276b640a9b80ce9eebed5a59, type: 3}
   - {fileID: 21300000, guid: bf73dd4c4fa264b4497394685a9ac176, type: 3}
-  devControl: 1
+  circleCol: {fileID: 0}
+  vineCol: {fileID: 0}
+  spawner: {fileID: 0}
+  grabOn: {fileID: 0}
+  player: {fileID: 0}
+  guideText: {fileID: 0}
   canMove: 1
   rb: {fileID: 0}
   horizontal: 0
   vertical: 0
-  horiLatestInput: 1
+  horiLatestInput: 0
   vertLatestInput: 0
-  speed: 10
+  speed: 15
   interactRadius: 0.4
   interactMask:
     serializedVersion: 2
@@ -156,8 +170,12 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 64
+  swingMask:
+    serializedVersion: 2
+    m_Bits: 0
   coefficientOfAirResistence: 0.1
   coefficientOfFriction: 0.5
+  ignoreResistences: 0
   ballCol: {fileID: 4243366355294756771}
   maxSpeedCopy: 0
   pogoCol: {fileID: 6764691651494828799}
@@ -341,3 +359,34 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!1 &8529262415154047343
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4868531280780533235}
+  m_Layer: 0
+  m_Name: SpherePoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4868531280780533235
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8529262415154047343}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6115588636633299820}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
