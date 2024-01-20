@@ -38,6 +38,7 @@ public class HookShootScript : MonoBehaviour
 		playersRB2D = GetComponent<Rigidbody2D>();
 		Player = GameObject.Find("Player");
 		pc = GetComponent<PlayerController>();
+		LR = GetComponent<LineRenderer>();
 		LR.enabled = false;
 	}
 
@@ -59,21 +60,39 @@ public class HookShootScript : MonoBehaviour
 		}
 	}
 
-	/*public void StartHookShot()
+	public void StartHookShot()
 	{
-		pc.vineCol = Physics2D.OverlapCircle(spherePoint.transform.position, pc.interactRadius, interactMask); //set circleCol to Overlap Cirlce
+		pc.vineCol = Physics2D.OverlapCircle(spherePoint.transform.position, hookshotRange, pc.interactMask); //set circleCol to Overlap Cirlce
+
+		if (pc.vineCol != null)
+		{
+			Debug.Log("Respawner at index " + pc.vineCol + " is within the circle cast.");
+		}
+
+
+		if ((pc.vineCol == pc.grabOn || pc.vineCol == null)) //if cirlce collider is equal or if circle collider is equal to null return
+		{
+			isConnected = true;
+			return; //ensure that that there's never a null in the spawner
+		}
+
+		else if ((pc.vineCol != pc.grabOn && pc.vineCol != null))
+		{
+			pc.grabOn = pc.vineCol.gameObject;
+			isConnected = false;
+		}
 
 		if (isConnected) // If the cirlce hits something that is in the hook shot range and is in the ground layer
 		{
 			areYouHookShooting = true; // You are hook shooting
-			hookShotTarget = grapplePoint.position; // Hook shot target is equal to the point the raycast hit
+			hookShotTarget = pc.grabOn.transform.position; // Hook shot target is equal to the point the raycast hit
 
 			LR.enabled = true; // Line Renderer is enabled
 			LR.SetPosition(0, transform.position); // Starts at grapple tip
 			LR.SetPosition(1, grapplePoint.position); // Ends at the target
 		}
 
-	}*/
+	}
 
 	public void HookshotMovement()
 	{
@@ -99,7 +118,7 @@ public class HookShootScript : MonoBehaviour
 	private void OnDrawGizmos()
 	{
 		Gizmos.color = Color.red;
-		Gizmos.DrawWireSphere(spherePoint.position, hookshotRange);
+		Gizmos.DrawWireSphere(spherePoint.position, pc.interactRadius);
 	}
 
 }

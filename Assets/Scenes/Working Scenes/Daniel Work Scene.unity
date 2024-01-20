@@ -481,10 +481,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6115588636633299820, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
       insertIndex: -1
       addedObject: {fileID: 857821270}
-    - targetCorrespondingSourceObject: {fileID: 6115588636633299820, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1261147331}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5150928139307579840, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
+      insertIndex: 3
+      addedObject: {fileID: 921988007}
   m_SourcePrefab: {fileID: 100100000, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
 --- !u!1 &131535768 stripped
 GameObject:
@@ -2336,6 +2336,34 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6115588636633299820, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
   m_PrefabInstance: {fileID: 131535767}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &921988007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 131535768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebdac022ea973a041a45457d2a85e9c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playersRB2D: {fileID: 0}
+  pc: {fileID: 0}
+  Player: {fileID: 0}
+  hookshotRange: 0
+  hookshotSpeed: 0
+  distance: 3.5
+  grappleLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  LR: {fileID: 0}
+  hookShotTarget: {x: 0, y: 0}
+  spherePoint: {fileID: 0}
+  grapplePoint: {fileID: 0}
+  areYouHookShooting: 0
+  isConnected: 0
+  hookShotKey: 0
 --- !u!1 &928771145
 GameObject:
   m_ObjectHideFlags: 0
@@ -2969,37 +2997,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &1261147330
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1261147331}
-  m_Layer: 0
-  m_Name: signinstation
-  m_TagString: Untagged
-  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1261147331
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1261147330}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.67, y: 1.63, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 921988001}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1284031939
 GameObject:
   m_ObjectHideFlags: 0
