@@ -13,6 +13,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]public bool devControl;//Just used to override the locked forms(I got really lazy and I dont want to keep going back and fourth changing the bools)
     public int neareastSpawner;
     public float timer;
+    public float textOffsetX;
+    public float textOffsetY;
     public Transform spherePoint;
     public GameManager gm;
     [SerializeField]private SpriteRenderer playerSpriteRender;
@@ -24,6 +26,7 @@ public class PlayerController : MonoBehaviour
 
     public GameObject spawner;
     public GameObject grabOn;
+    public GameObject player;
 
     public TMP_Text guideText;
 
@@ -76,6 +79,7 @@ public class PlayerController : MonoBehaviour
         groundedScript = GameObject.Find("Ground Ray Object").GetComponent<isGroundedScript>();
         playerSpriteRender = GetComponent<SpriteRenderer>();
         gm = GameObject.Find("Game Manager").GetComponent<GameManager>();
+        player = GameObject.Find("Player");
 
         guideText.text = "";
         FormSettings();
@@ -325,11 +329,18 @@ public class PlayerController : MonoBehaviour
 
 	private void OnTriggerStay2D(Collider2D collision)
 	{
+        guideText.transform.position = new Vector2(player.transform.position.x + textOffsetX, player.transform.position.y + textOffsetY);
         timer += Time.deltaTime;
 		if (timer >= 15)
 		{
             guideText.text = "Hey hello";
 		}
+	}
+
+	private void OnTriggerExit2D(Collider2D collision)
+	{
+        guideText.text = "";
+        timer = 0;
 	}
 
 
