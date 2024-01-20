@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Threading;
 using JetBrains.Annotations;
+using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -9,10 +11,25 @@ public class PlayerController : MonoBehaviour
 {
     [Header("General")]
     public KeyCode formChangeKey;
+    [SerializeField]public bool devControl;//Just used to override the locked forms(I got really lazy and I dont want to keep going back and fourth changing the bools)
+    public int neareastSpawner;
+    public float timer;
+    public float textOffsetX;
+    public float textOffsetY;
+    public Transform spherePoint;
+    public GameManager gm;
     [SerializeField]private SpriteRenderer playerSpriteRender;
     [SerializeField]private Sprite[] playerFormSprite;
-    private Animator anim;
-    [SerializeField]private bool devControl;//Just used to override the locked forms(I got really lazy and I dont want to keep going back and fourth changing the bools)
+    private Animator anim; 
+
+    public Collider2D circleCol; // checks for all colliders
+    public Collider2D vineCol;
+
+    public GameObject spawner;
+    public GameObject grabOn;
+    public GameObject player;
+
+    public TMP_Text guideText;
 
     #region movements
     [Header("Movement")]
@@ -23,15 +40,16 @@ public class PlayerController : MonoBehaviour
     public float speed;
     [Header("Interaction")]
     private Collider2D interactCol;
-    [SerializeField]private float interactRadius;
-    [SerializeField]public LayerMask interactMask, groundMask;//interact mask is for objects you can interact with by pressing E. Ground is for ground.
+    [SerializeField]public float interactRadius;
+    [SerializeField]public LayerMask interactMask, groundMask,swingMask;//interact mask is for objects you can interact with by pressing E. Ground is for ground.
 
     public enum playerForms{Ball, Pogo, Arm}
     public static playerForms playerForm;
+    // Change to false false false for game and initialize in gm
     public static bool[] playerPieces = {true, true, true};//bools for the player pieces {0: ball, 1: pogo, 2: arm}
     private int maxForm;
     [SerializeField] float coefficientOfAirResistence, coefficientOfFriction;
-
+    public bool ignoreResistences = false;
     isGroundedScript groundedScript;
 
     #region Ball movement variables
@@ -62,6 +80,10 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         groundedScript = GameObject.Find("Ground Ray Object").GetComponent<isGroundedScript>();
         playerSpriteRender = GetComponent<SpriteRenderer>();
+        gm = GameObject.Find("Game Manager").GetComponent<GameManager>();
+        player = GameObject.Find("Player");
+
+        guideText.text = "";
         FormSettings();
     }
         
@@ -71,6 +93,7 @@ public class PlayerController : MonoBehaviour
         ChangeForm();//Controlls the changing of the players form
         InteractFunc();//The player interacts through this function
         //ChangeVel();//The velocity for the ball my brain rots from this
+        RespawnParse();
 
         if (canMove) {
             horizontal = Input.GetAxisRaw("Horizontal");
@@ -84,21 +107,22 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate() {
 
         if (canMove){
-            Movements();
-            Debug.Log("Can Move is true");
-            if (groundedScript.isGrounded())
-            {
-                Friction();
-                Debug.Log("Friction");
-            }
-            else
-            {
-                Debug.Log("Air Res");
-                AirResistance();
-            }
             interactCol = Physics2D.OverlapCircle(transform.position, interactRadius, interactMask);
-
+            Movements();
+            if (!ignoreResistences)
+            {
+                if (groundedScript.isGrounded())
+                {
+                    Friction();
+                }
+                else
+                {
+                    AirResistance();
+                }
+            }
         }
+
+        
     }
 
     private void LatestInput(int horizontalInput, int verticalInput){//Finds the latest input for vertical and horizontal
@@ -163,15 +187,14 @@ public class PlayerController : MonoBehaviour
         
         if (!devControl)
         {
+            maxForm = 0;
             for (int i = 0; i < playerPieces.Length; i++)//runs through the bools and see what form is not active yet
             {
-                if (!playerPieces[i])
+                if (playerPieces[i])
                 {
-                    maxForm = i;
+                    maxForm++;
                     break;
                 }
-    
-                maxForm = i;
             }
     
             if (Input.GetKeyDown(formChangeKey))
@@ -211,6 +234,7 @@ public class PlayerController : MonoBehaviour
             {
                 case playerForms.Ball:
                     //Sets the balls sprite, unfreezes rotation, and changes the animation
+                    rb.mass = 1;
                     ballCol.enabled = true;
                     pogoCol.enabled = false;
                     playerSpriteRender.sprite = playerFormSprite[0];
@@ -220,6 +244,7 @@ public class PlayerController : MonoBehaviour
                     break;
 
                 case playerForms.Pogo:
+                rb.mass = 2.5f;
                     transform.rotation = quaternion.RotateZ(0);//Puts the character up straight
                     ballCol.enabled = false;//changes the collider from ball to pogo
                     pogoCol.enabled = true;
@@ -231,6 +256,7 @@ public class PlayerController : MonoBehaviour
                     break;
 
                 case playerForms.Arm:
+                rb.mass = 3.5f;
                     //Where all of the settings for arm goes
                     ballCol.enabled = false;
                     pogoCol.enabled = true;
@@ -269,4 +295,56 @@ public class PlayerController : MonoBehaviour
         rb.AddForce(new Vector2(OppositedirectionMultipleX * coefficientOfFriction * Mathf.Abs(rb.velocity.x * rb.velocity.x),
         OppositedirectionMultipleY * coefficientOfFriction * Mathf.Abs(rb.velocity.y * rb.velocity.y)));
     }
+
+    void RespawnParse()
+    {
+        circleCol = Physics2D.OverlapCircle(spherePoint.transform.position, interactRadius, interactMask); //set circleCol to Overlap Cirlce
+		if (circleCol != null)
+		{
+            Debug.Log("Respawner at index " + circleCol + " is within the circle cast.");
+        }
+
+
+        if (circleCol == spawner || circleCol == null) //if cirlce collider is equal or if circle collider is equal to null return
+        {
+            return; //ensure that that there's never a null in the spawner
+        } 
+        
+        else if (circleCol != spawner && circleCol != null)
+		{
+            spawner = circleCol.gameObject; 
+        }
+
+
+    }
+
+   
+
+    private void OnCollisionEnter2D(Collision2D collision)
+	{
+		switch (collision.gameObject.name)
+		{
+            case "Spikes":
+                this.transform.position = spawner.transform.position;
+                break;
+		}
+	}
+
+	private void OnTriggerStay2D(Collider2D collision)
+	{
+        guideText.transform.position = new Vector2(player.transform.position.x + textOffsetX, player.transform.position.y + textOffsetY);
+        timer += Time.deltaTime;
+		if (timer >= 15)
+		{
+            guideText.text = "Hey hello";
+		}
+	}
+
+	private void OnTriggerExit2D(Collider2D collision)
+	{
+        guideText.text = "";
+        timer = 0;
+	}
+
+
 }

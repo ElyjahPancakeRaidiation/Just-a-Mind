@@ -62,6 +62,8 @@ sysinfo.txt
 crashlytics-build.properties
 
 
-UserSettings/EditorUserSettings.asset
-
 UserSettings/Layouts/default-2022.dwlt
+
+.vscode/settings.json
+
+UserSettings/EditorUserSettings.asset

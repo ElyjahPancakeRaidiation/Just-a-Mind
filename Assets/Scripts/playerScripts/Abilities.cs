@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.Callbacks;
 using UnityEngine;
 
 public class Abilities : MonoBehaviour
@@ -15,7 +16,7 @@ public class Abilities : MonoBehaviour
     [Header("Dash Variables")]
     
     [SerializeField]private float dashingDuration;//How long the dash will go for
-    private const float DASHPOWER = 15f;
+    [SerializeField] float DASHPOWER;
     public static bool isDashing;
     [SerializeField]private int maxDashAmount;
     private int dashAmount;
@@ -28,8 +29,8 @@ public class Abilities : MonoBehaviour
     [Header("Pogo Variables")]
 
     #region Pogo Jumpy up up variables
-    public Vector3 jumpForce;
-    public Vector3 superJumpForce;
+    public float jumpForce;
+    public float superJumpForce;
     public Transform groundPoint;
     public bool canSuperJump = false;
     public float keyHoldDown;//Amount the jump is held down
@@ -74,11 +75,7 @@ public class Abilities : MonoBehaviour
 
     void Update()
     {
-
-    }
-
-    void FixedUpdate() 
-    {
+        // We must call in update because input breaks if we dont
         switch (PlayerController.playerForm)
         {
             case PlayerController.playerForms.Ball:
@@ -94,13 +91,26 @@ public class Abilities : MonoBehaviour
         }
     }
 
+    void FixedUpdate() 
+    {
+
+
+    }
+
+    IEnumerator ignoreResistences()
+    {
+        player.ignoreResistences = true;
+        yield return new WaitForSeconds(.25f);
+        player.ignoreResistences = false;
+    }
     #region Ball abilites
     private void Dash(){
-        if (Input.GetKeyDown(abilityKey) && !isDashing && groundedScript.isGrounded())
+        if (Input.GetKeyDown(abilityKey) && !isDashing)
         {
             if (dashAmount > 0 || bonusCharges > 0)
             {
                 StartCoroutine(Dashing(dashingDuration));
+                StartCoroutine(ignoreResistences());
             }
         }
     }
@@ -114,8 +124,11 @@ public class Abilities : MonoBehaviour
         // wait then turn off cammera shake
         yield return new WaitForSeconds(duration);
         CameraScript.isCameraShaking = false;
+        if (groundedScript.isGrounded())
+        {
+            yield return new WaitForSeconds(dashDelay);
+        }
         yield return new WaitUntil(() => groundedScript.isGrounded());
-        yield return new WaitForSeconds(dashDelay);
         ResetDash();
     }
     private void ResetDash(){//Resets all of the variables in dash mechanic
@@ -144,32 +157,32 @@ public class Abilities : MonoBehaviour
             {
                 if (!canSuperJump)//if its a regular jump use regular jump force
                 {
-                    player.rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+                    StartCoroutine(ignoreResistences());
+                    player.rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
                     canSuperJump = false;
                     keyHoldDown = 0;
                 }
     
                 if (canSuperJump)//if its a super jump use super jump force
                 {
-                    player.rb.AddForce(Vector2.up * superJumpForce, ForceMode2D.Impulse);
+                    StartCoroutine(ignoreResistences());
+                    player.rb.AddForce(new Vector2(0, superJumpForce), ForceMode2D.Impulse);
+                    StartCoroutine(debugger());
                     canSuperJump = false;
                     keyHoldDown = 0;
                 }
             }
         }
-
-        if (!groundedScript.isGrounded() && bonusCharges > 0)//if player has bonus charges and presses space do a super jump but only while the player is not on the ground
+        IEnumerator debugger()
         {
-            if (Input.GetKeyDown(abilityKey))
+            for(int i = 0; i < 100; i++)
             {
-                player.rb.AddForce(Vector2.up * superJumpForce, ForceMode2D.Impulse);
-                canSuperJump = false;
-                keyHoldDown = 0;
-                bonusCharges--;
+                Debug.Log(this.GetComponent<Rigidbody2D>().velocity.y);
+                yield return null;
             }
         }
 
-        Debug.DrawRay(groundPoint.position, Vector2.down * 1.5f, Color.red);
+
     }
 
     #endregion

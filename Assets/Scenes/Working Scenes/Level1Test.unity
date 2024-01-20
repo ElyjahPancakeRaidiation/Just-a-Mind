@@ -608,7 +608,7 @@ GameObject:
   - component: {fileID: 333785672}
   - component: {fileID: 333785674}
   - component: {fileID: 333785673}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ramp (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -927,7 +927,7 @@ GameObject:
   - component: {fileID: 444350339}
   - component: {fileID: 444350341}
   - component: {fileID: 444350340}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Wall (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1057,7 +1057,7 @@ GameObject:
   - component: {fileID: 503144750}
   - component: {fileID: 503144749}
   - component: {fileID: 503144751}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Spikes (4)
   m_TagString: Spikes
   m_Icon: {fileID: 0}
@@ -1282,7 +1282,7 @@ GameObject:
   - component: {fileID: 572378835}
   - component: {fileID: 572378837}
   - component: {fileID: 572378836}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ramp (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1412,7 +1412,7 @@ GameObject:
   - component: {fileID: 605919922}
   - component: {fileID: 605919921}
   - component: {fileID: 605919923}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Spikes (2)
   m_TagString: Spikes
   m_Icon: {fileID: 0}
@@ -1805,7 +1805,7 @@ GameObject:
   - component: {fileID: 699689483}
   - component: {fileID: 699689482}
   - component: {fileID: 699689484}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Spikes (1)
   m_TagString: Spikes
   m_Icon: {fileID: 0}
@@ -1937,7 +1937,7 @@ GameObject:
   m_Component:
   - component: {fileID: 813584282}
   - component: {fileID: 813584283}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PedalStool
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2022,7 +2022,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1031693565}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Level area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2065,7 +2065,7 @@ GameObject:
   - component: {fileID: 1319163590}
   - component: {fileID: 1319163589}
   - component: {fileID: 1319163588}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Crystal booster
   m_TagString: BonusCrystal
   m_Icon: {fileID: 0}
@@ -2279,7 +2279,7 @@ GameObject:
   - component: {fileID: 1597413908}
   - component: {fileID: 1597413907}
   - component: {fileID: 1597413909}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Spikes
   m_TagString: Spikes
   m_Icon: {fileID: 0}
@@ -2416,7 +2416,7 @@ GameObject:
   - component: {fileID: 1649501538}
   - component: {fileID: 1649501540}
   - component: {fileID: 1649501539}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ramp (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2930,7 +2930,7 @@ GameObject:
   - component: {fileID: 1828168097}
   - component: {fileID: 1828168096}
   - component: {fileID: 1828168098}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Spikes (3)
   m_TagString: Spikes
   m_Icon: {fileID: 0}
@@ -3193,7 +3193,7 @@ GameObject:
   - component: {fileID: 1915086335}
   - component: {fileID: 1915086337}
   - component: {fileID: 1915086336}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3324,7 +3324,7 @@ GameObject:
   - component: {fileID: 1919639599}
   - component: {fileID: 1919639601}
   - component: {fileID: 1919639600}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ramp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3593,7 +3593,7 @@ GameObject:
   - component: {fileID: 2099722361}
   - component: {fileID: 2099722362}
   - component: {fileID: 2099722363}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ExtraPeda
   m_TagString: Untagged
   m_Icon: {fileID: 0}
