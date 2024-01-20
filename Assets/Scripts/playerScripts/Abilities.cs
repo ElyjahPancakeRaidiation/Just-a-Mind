@@ -8,7 +8,6 @@ public class Abilities : MonoBehaviour
 {
     [Header("General Variables")]
     private PlayerController player;
-
     public KeyCode abilityKey;
    
     private int bonusCharges;//bonus charges for the abilities 
