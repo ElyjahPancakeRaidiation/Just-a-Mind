@@ -7,20 +7,21 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("General")]
     public KeyCode formChangeKey;
-    [SerializeField]private bool devControl;//Just used to override the locked forms(I got really lazy and I dont want to keep going back and fourth changing the bools)
-
-    #region movements
-    public bool canMove = true;
-    public Rigidbody2D rb;
-    private float horizontal, vertical;
-    public int horiLatestInput = 1, vertLatestInput = 0;
-    public float speed;
-
     [SerializeField]private SpriteRenderer playerSpriteRender;
     [SerializeField]private Sprite[] playerFormSprite;
     private Animator anim;
+    [SerializeField]private bool devControl;//Just used to override the locked forms(I got really lazy and I dont want to keep going back and fourth changing the bools)
 
+    #region movements
+    [Header("Movement")]
+    public bool canMove = true;
+    public Rigidbody2D rb;
+    public float horizontal, vertical;
+    public int horiLatestInput = 1, vertLatestInput = 0;
+    public float speed;
+    [Header("Interaction")]
     private Collider2D interactCol;
     [SerializeField]private float interactRadius;
     [SerializeField]public LayerMask interactMask, groundMask;//interact mask is for objects you can interact with by pressing E. Ground is for ground.
@@ -30,17 +31,12 @@ public class PlayerController : MonoBehaviour
     public static bool[] playerPieces = {true, true, true};//bools for the player pieces {0: ball, 1: pogo, 2: arm}
     private int maxForm;
     [SerializeField] float coefficientOfAirResistence, coefficientOfFriction;
-    int directionMultipleX, directionMultipleY;
 
     isGroundedScript groundedScript;
 
-    #region Pogo movement variables
-    [SerializeField]private Collider2D pogoCol;
-    #endregion
-
     #region Ball movement variables
+    [Header("Head")]
     [SerializeField]private Collider2D ballCol;
-    private const float MAXSPEED = 6;
     public float maxSpeedCopy;
     private const float DECELERATION = 8, ACCELERATION = 4, POINTTOACCELERATE = 2;
     /// <Deceleration acceleration and accelerate explantion> 
@@ -49,9 +45,12 @@ public class PlayerController : MonoBehaviour
     /// pointToAccelerate when it should stop accelerating ex: it will keep acclerating from 0 to 2 and stop
     /// </summary>
     #endregion
-    
+    #region Pogo movement variables
+    [Header("Body")]
+    [SerializeField]private Collider2D pogoCol;
+    #endregion
     #region Arm movement variables
-    public float dashMag;
+    
 
     #endregion
 
@@ -62,6 +61,8 @@ public class PlayerController : MonoBehaviour
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         groundedScript = GameObject.Find("Ground Ray Object").GetComponent<isGroundedScript>();
+        playerSpriteRender = GetComponent<SpriteRenderer>();
+        FormSettings();
     }
         
     // Update is called once per frame
@@ -77,63 +78,38 @@ public class PlayerController : MonoBehaviour
         }
 
         LatestInput((int)horizontal, (int)vertical);
-
-    
-        #region ball ability code
-        if (!Abilities.isDashing)
-        {
-            if (rb.velocity.x < -MAXSPEED){//if its under max speed(because negative) it will be set to its max speed
-                rb.velocity = new Vector2(-MAXSPEED, rb.velocity.y);
-            }
-            else if(rb.velocity.x > MAXSPEED){//if its over max speed it will be set to its max speed
-                rb.velocity = new Vector2(MAXSPEED, rb.velocity.y);
-            }
-        }
-        #endregion
         
     }
 
     private void FixedUpdate() {
 
         if (canMove){
-            checkDirection();
             Movements();
+            Debug.Log("Can Move is true");
             if (groundedScript.isGrounded())
             {
                 Friction();
+                Debug.Log("Friction");
             }
             else
             {
+                Debug.Log("Air Res");
                 AirResistance();
             }
             interactCol = Physics2D.OverlapCircle(transform.position, interactRadius, interactMask);
 
         }
     }
-    void checkDirection()
-    {
-        if (rb.velocity.x < 0)
-        {
-            directionMultipleX = -1;
-        }
-        else 
-        {
-            directionMultipleX = 1;
-        }
-        if (rb.velocity.y > 0)
-        {
-            directionMultipleX = 1;
-        }
-        else 
-        {
-            directionMultipleX = -1;
-        }
-    }
+
     private void LatestInput(int horizontalInput, int verticalInput){//Finds the latest input for vertical and horizontal
         if (horizontalInput != 0)
         {
             int i = horizontalInput;
             horiLatestInput = i;
+        }
+        else
+        {
+            horiLatestInput = 0;
         }
 
         if (verticalInput != 0)
@@ -184,36 +160,6 @@ public class PlayerController : MonoBehaviour
 
     private void ChangeForm()
     {
-        void FormSettings(){//defualt settings for each form(mainly for the sprites of each form)
-            switch (playerForm)
-            {
-                case playerForms.Ball:
-                    //Sets the balls sprite, unfreezes rotation, and changes the animation
-                    ballCol.enabled = true;
-                    pogoCol.enabled = false;
-                    playerSpriteRender.sprite = playerFormSprite[0];
-                    anim.enabled = false;
-                    rb.freezeRotation = false;
-                    break;
-
-                case playerForms.Pogo:
-                    transform.rotation = quaternion.RotateZ(0);//Puts the character up straight
-                    ballCol.enabled = false;//changes the collider from ball to pogo
-                    pogoCol.enabled = true;
-                    anim.enabled = true;
-                    playerSpriteRender.sprite = playerFormSprite[1];//changes the sprites from ball to pogo man
-                    rb.freezeRotation = true;
-                    anim.SetInteger("Horizontal", (int)horizontal);//this is for walking animation 
-                    break;
-
-                case playerForms.Arm:
-                    //Where all of the settings for arm goes
-                    ballCol.enabled = false;
-                    pogoCol.enabled = true;
-                    rb.freezeRotation = false;
-                    break;
-            }
-        }
         
         if (!devControl)
         {
@@ -260,10 +206,43 @@ public class PlayerController : MonoBehaviour
         }
 
     }
+    void FormSettings(){//defualt settings for each form(mainly for the sprites of each form)
+            switch (playerForm)
+            {
+                case playerForms.Ball:
+                    //Sets the balls sprite, unfreezes rotation, and changes the animation
+                    ballCol.enabled = true;
+                    pogoCol.enabled = false;
+                    playerSpriteRender.sprite = playerFormSprite[0];
+                    anim.enabled = false;
+                    rb.freezeRotation = false;
+                    Debug.Log("ball");
+                    break;
+
+                case playerForms.Pogo:
+                    transform.rotation = quaternion.RotateZ(0);//Puts the character up straight
+                    ballCol.enabled = false;//changes the collider from ball to pogo
+                    pogoCol.enabled = true;
+                    anim.enabled = true;
+                    playerSpriteRender.sprite = playerFormSprite[1];//changes the sprites from ball to pogo man
+                    rb.freezeRotation = true;
+                    anim.SetInteger("Horizontal", (int)horizontal);//this is for walking animation 
+                    Debug.Log("Head");
+                    break;
+
+                case playerForms.Arm:
+                    //Where all of the settings for arm goes
+                    ballCol.enabled = false;
+                    pogoCol.enabled = true;
+                    rb.freezeRotation = false;
+                    break;
+            }
+        }
+        
 
     private void Movements()
     {//different movements for each form
-        rb.AddForce(new Vector2(horizontal * speed * Time.deltaTime, 0), ForceMode2D.Impulse);//moves the player in the direction the player is pressing
+        rb.AddForce(new Vector2(horizontal * speed * Time.fixedDeltaTime, 0), ForceMode2D.Impulse);//moves the player in the direction the player is pressing
 
     }
     private void OnDrawGizmos()  
@@ -274,19 +253,20 @@ public class PlayerController : MonoBehaviour
     void AirResistance()
     {
         // Air resistance opposes motion
-        int OppositedirectionMultipleX = -1 * directionMultipleX;
-        int OppositedirectionMultipleY = -1 * directionMultipleY;
+        int OppositedirectionMultipleX = -1 * Mathf.RoundToInt(rb.velocity.x / Mathf.Abs(rb.velocity.x));
+        int OppositedirectionMultipleY = -1 * Mathf.RoundToInt(rb.velocity.y / Mathf.Abs(rb.velocity.y));
         // Multiplies the direction then coefficient of air resistence and the velocity squared
         rb.AddForce(new Vector2(OppositedirectionMultipleX * coefficientOfAirResistence * (rb.velocity.x * rb.velocity.x),
         OppositedirectionMultipleY * coefficientOfAirResistence * (rb.velocity.y * rb.velocity.y)));
     }
     void Friction()
     {
-        // Air resistance opposes motion
-        int OppositedirectionMultipleX = -1 * directionMultipleX;
-        int OppositedirectionMultipleY = -1 * directionMultipleY;
+        // Air resistance opposes motion but in ball motion is reversed because rotation
+        // Grabs the sign of velocity and multiplies it by -1 to get opposite
+        int OppositedirectionMultipleX = -1 * Mathf.RoundToInt(rb.velocity.x / Mathf.Abs(rb.velocity.x));
+        int OppositedirectionMultipleY = -1 * Mathf.RoundToInt(rb.velocity.y / Mathf.Abs(rb.velocity.y));
         // Multiplies the direction then coefficient of air resistence and the velocity squared
-        rb.AddForce(new Vector2(OppositedirectionMultipleX * coefficientOfFriction * (rb.velocity.x * rb.velocity.x),
-        OppositedirectionMultipleY * coefficientOfFriction * (rb.velocity.y * rb.velocity.y)));
+        rb.AddForce(new Vector2(OppositedirectionMultipleX * coefficientOfFriction * Mathf.Abs(rb.velocity.x * rb.velocity.x),
+        OppositedirectionMultipleY * coefficientOfFriction * Mathf.Abs(rb.velocity.y * rb.velocity.y)));
     }
 }

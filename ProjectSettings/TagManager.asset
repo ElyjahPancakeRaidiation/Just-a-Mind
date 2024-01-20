@@ -6,11 +6,12 @@ TagManager:
   tags:
   - hand
   - vine
+  - Ground
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Interactable
   - Water
   - UI
   - Ground
