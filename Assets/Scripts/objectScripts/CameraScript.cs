@@ -6,10 +6,12 @@ using UnityEngine;
 public class CameraScript : MonoBehaviour
 {
     private GameObject cameraObj;
+    private Camera cam;
     public static GameObject playerObj;
     private Rigidbody2D playerRB;
     public float cameraSpeed;
-
+    [SerializeField]private float zoomBackSpeed, zoomBackSpeedFaster;//How fast the camera goes back to following the player
+    private bool isComingBack;
     private bool goingRight, goingUp;//If player is going left, right will be false if player is going down, up will be false
 
     [SerializeField]public bool isFollowingPlayer;
@@ -22,15 +24,16 @@ public class CameraScript : MonoBehaviour
     public struct cameraDefualt
     {
         public float camPosX, camPosY;
-        public float camFOV;
+        public float camFOV;//Called orthographic size in code 
     }
     public cameraDefualt camDefaultValues;//I wanted to play around with structs.
     
 
     private void Start() {
+        cam = GetComponentInChildren<Camera>();
         camDefaultValues.camPosX = 0;
         camDefaultValues.camPosY = 0;
-        camDefaultValues.camFOV = 5;
+        camDefaultValues.camFOV = 8;
         cameraObj = GameObject.FindGameObjectWithTag("MainCamera");
         playerObj = GameObject.FindGameObjectWithTag("Player");
         playerRB = playerObj.GetComponent<Rigidbody2D>();
@@ -40,19 +43,36 @@ public class CameraScript : MonoBehaviour
     }
 
     private void Update(){
+        if (isFollowingPlayer)
+        {
+            if(cam.orthographicSize != camDefaultValues.camFOV){
+                isComingBack = true;
+                if (isComingBack)
+                {
+                    ZoomBackToPlayer();
+                }
+            }
+        }
         CameraShake();      
-        
     }
     private void FixedUpdate() {
         if (isFollowingPlayer)
         {
-            FollowObjDelay(cameraSpeed);
+            if (cam.orthographicSize == camDefaultValues.camFOV)
+            {
+                isComingBack = false;
+                if (!isComingBack)
+                {
+                    FollowObjDelay(cameraSpeed, playerObj.transform);
+                }
+            }
         }
     }
 
-    public void FollowObjDelay(float speed)//Follows any obj(Should always be put in fixed update so it can add the rigidbody. If it is not in F.U it will make anything with a rigidbody jitter when moved.)
+    public void FollowObjDelay(float speed, Transform followObj)//Follows any obj(Should always be put in fixed update so it can add the rigidbody. If it is not in F.U it will make anything with a rigidbody jitter when moved.)
     {
-        transform.position = Vector2.Lerp(transform.position, (Vector2)playerObj.transform.position + cameraOffset, speed);
+        print("Following obj");
+        transform.position = Vector2.Lerp(transform.position, (Vector2)followObj.position + cameraOffset, speed);
         GoingToFast(40, 40);
 
     }
@@ -70,18 +90,6 @@ public class CameraScript : MonoBehaviour
             goingRight = false;
             cameraOffset.x += Time.deltaTime / playerRB.velocity.x;
         }
-        /*
-        if (playerRB.velocity.y > maxLimitY)
-        {
-            print("Going Up");
-            cameraOffset.y += Time.deltaTime / playerRB.velocity.y;
-            goingUp = true;
-        }else if(playerRB.velocity.y < -maxLimitY){
-            print("Going Down");
-            goingUp = false;
-            cameraOffset.y += -(Time.deltaTime * yIncreaser);
-        }
-        */
 
         if (goingRight && playerRB.velocity.x < maxLimitX)
         {
@@ -104,28 +112,17 @@ public class CameraScript : MonoBehaviour
             }
         }
 
-        /*
-        if (goingUp && playerRB.velocity.y < maxLimitY)
+    }
+
+    public void ZoomBackToPlayer(){
+        print("Zooming back");
+        float dist = Vector2.Distance(playerObj.transform.position, transform.position);
+        if (dist < 2)
         {
-            if (cameraOffset.y > startCamOffset.y)
-            {
-                cameraOffset.y -= Time.deltaTime / playerRB.velocity.y;
-            }
-            else
-            {
-                cameraOffset.y = startCamOffset.y;
-            }
-        }else if(!goingUp && playerRB.velocity.y > -maxLimitY){
-            if (cameraOffset.y < startCamOffset.y)
-            {
-                cameraOffset.y -= Time.deltaTime / playerRB.velocity.y;
-            }
-            else
-            {
-                cameraOffset.y = startCamOffset.y;
-            }
+            transform.position = Vector2.MoveTowards(transform.position, (Vector2)playerObj.transform.position + cameraOffset, zoomBackSpeed);
+        }else if(dist > 2){
+            transform.position = Vector2.MoveTowards(transform.position, (Vector2)playerObj.transform.position + cameraOffset, zoomBackSpeedFaster);
         }
-        */
 
     }
 
@@ -133,20 +130,20 @@ public class CameraScript : MonoBehaviour
 
         if (!isFollowingPlayer)
         {
-            if (cameraObj.GetComponent<Camera>().orthographicSize < FOV)
+            if (cam.orthographicSize < FOV)
             {
-                cameraObj.GetComponent<Camera>().orthographicSize += Time.deltaTime * zoomSpeed;
+                cam.orthographicSize += Time.deltaTime * zoomSpeed;
             }else{
-                cameraObj.GetComponent<Camera>().orthographicSize = FOV;
+                cam.orthographicSize = FOV;
             }
         }
         else
         {
-            if (cameraObj.GetComponent<Camera>().orthographicSize > camDefaultValues.camFOV)
+            if (cam.orthographicSize > camDefaultValues.camFOV)
             {
-                cameraObj.GetComponent<Camera>().orthographicSize -= Time.deltaTime * zoomSpeed;
+                cam.orthographicSize -= Time.deltaTime * zoomSpeed;
             }else{
-                cameraObj.GetComponent<Camera>().orthographicSize = camDefaultValues.camFOV;
+                cam.orthographicSize = camDefaultValues.camFOV;
             }
         }
     }
