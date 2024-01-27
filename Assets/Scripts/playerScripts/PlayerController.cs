@@ -10,6 +10,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [Header("General")]
+    Abilities abilityScript;
     public KeyCode formChangeKey;
     [SerializeField]public bool devControl;//Just used to override the locked forms(I got really lazy and I dont want to keep going back and fourth changing the bools)
     public int neareastSpawner;
@@ -68,6 +69,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]private Collider2D pogoCol;
     #endregion
     #region Arm movement variables
+
+
     [Header("Sound")]
     AudioSource walkingSound;
 
@@ -77,14 +80,21 @@ public class PlayerController : MonoBehaviour
 
 
     private void Start(){
+        abilityScript = GetComponent<Abilities>();
+        if (!devControl)
+        {
+            playerPieces[0] = true;
+            playerPieces[1] = false;
+            playerPieces[2] = false;
+        }
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         groundedScript = GameObject.Find("Ground Ray Object").GetComponent<isGroundedScript>();
         playerSpriteRender = GetComponent<SpriteRenderer>();
-        gm = GameObject.Find("Game Manager").GetComponent<GameManager>();
+        //gm = GameObject.Find("Game Manager").GetComponent<GameManager>();
         player = GameObject.Find("Player");
         playerForm = playerForms.Ball;
-        guideText.text = "";
+        // guideText.text = "";
         FormSettings();
     }
         
@@ -189,11 +199,13 @@ public class PlayerController : MonoBehaviour
         if (!devControl)
         {
             maxForm = 0;
-            for (int i = 0; i < playerPieces.Length; i++)//runs through the bools and see what form is not active yet
+            // Start at one because ball always true and its playerform zero so dont increase max form for that
+            for (int i = 1; i < playerPieces.Length; i++)//runs through the bools and see what form is not active yet
             {
                 if (playerPieces[i])
                 {
                     maxForm++;
+                    print(maxForm);
                     break;
                 }
             }
@@ -216,14 +228,10 @@ public class PlayerController : MonoBehaviour
         {
             if (Input.GetKeyDown(formChangeKey))
             {
-                
+                playerForm++;
                 if ((int)playerForm >= 3)
                 {
                     playerForm = 0;
-                }
-                else
-                {
-                    playerForm++;
                 }
                 FormSettings();//main change
             }
@@ -231,6 +239,7 @@ public class PlayerController : MonoBehaviour
 
     }
     void FormSettings(){//defualt settings for each form(mainly for the sprites of each form)
+    print(playerForm);
             switch (playerForm)
             {
                 case playerForms.Ball:
@@ -238,6 +247,10 @@ public class PlayerController : MonoBehaviour
                     rb.mass = 1;
                     ballCol.enabled = true;
                     pogoCol.enabled = false;
+                    if (pogoCol.enabled == false)
+                    {
+                        print("wait but this is working");
+                    }
                     playerSpriteRender.sprite = playerFormSprite[0];
                     anim.enabled = false;
                     rb.freezeRotation = false;
@@ -249,7 +262,7 @@ public class PlayerController : MonoBehaviour
                     transform.rotation = quaternion.RotateZ(0);//Puts the character up straight
                     ballCol.enabled = false;//changes the collider from ball to pogo
                     pogoCol.enabled = true;
-                    anim.enabled = true;
+                    //anim.enabled = true;
                     playerSpriteRender.sprite = playerFormSprite[1];//changes the sprites from ball to pogo man
                     rb.freezeRotation = true;
                     anim.SetInteger("Horizontal", (int)horizontal);//this is for walking animation 
@@ -262,6 +275,10 @@ public class PlayerController : MonoBehaviour
                     ballCol.enabled = false;
                     pogoCol.enabled = true;
                     rb.freezeRotation = false;
+                    foreach (Abilities.shoulderType shoulder in abilityScript.shoulders)
+                    {
+                        shoulder.shoulderObject.SetActive(true);
+                    }
                     break;
             }
         }

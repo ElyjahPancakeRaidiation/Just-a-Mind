@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public PlayerController pc;
     public GameObject player;
+    float speedrunTimer;
 
     void Start()
     {
@@ -16,6 +17,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        speedrunTimer += Time.deltaTime;
 		/*if (pc.devControl == true)
 		{
             if (Input.GetKeyDown(KeyCode.R))
