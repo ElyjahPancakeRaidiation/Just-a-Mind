@@ -8,8 +8,8 @@ TagManager:
   - vine
   - Ground
   - CameraManager
-  - Spikes
   - BonusCrystal
+  - Spike
   layers:
   - Default
   - TransparentFX
