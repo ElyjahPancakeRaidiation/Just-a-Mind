@@ -28,7 +28,10 @@ public class CameraBorder : MonoBehaviour
     void Update()
     {
         //Overall Script is to check if the border is between two points of the screen. If it is it will stop the camera from moving until it is not. 
+        StopCamAxis(); 
+    }
 
+    private void StopCamAxis(){
         float borderCamX = cam.WorldToViewportPoint(transform.position).x;
         //Uncomment this to see the objects position in the screen if you don't fully understand.
         //print(borderCamX);
@@ -62,9 +65,5 @@ public class CameraBorder : MonoBehaviour
         }else{
             atBorder = false;
         }
-        
-
-        
-        
     }
 }

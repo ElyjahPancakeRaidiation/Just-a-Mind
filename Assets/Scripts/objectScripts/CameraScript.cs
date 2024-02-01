@@ -14,7 +14,7 @@ public class CameraScript : MonoBehaviour
     public bool isComingBack;
     private bool goingRight, goingUp;//If player is going left, right will be false if player is going down, up will be false
 
-    [SerializeField]public bool isFollowingPlayer;
+    public bool isFollowingPlayer, followingX, followingY;
     [SerializeField]private Vector2 cameraOffset;
     private Vector2 startCamOffset; 
     //public float yIncreaser;
@@ -47,16 +47,11 @@ public class CameraScript : MonoBehaviour
     }
 
     private void Update(){
-        if (isFollowingPlayer)
-        {
-            //FollowBackToPlayer();
-        }
         CameraShake();      
     }
     private void FixedUpdate() {
         if (isFollowingPlayer)
         {
-            //FollowObjDelay(cameraSpeed, playerObj.transform);
             FollowBackToPlayer(cameraSpeed, playerObj.transform);
         }
     }
@@ -106,14 +101,20 @@ public class CameraScript : MonoBehaviour
     }
 
     public void FollowBackToPlayer(float speed, Transform followObj){
-        /*
-        float dist = Vector2.Distance(playerObj.transform.position, transform.position);
-        
-        
-        */
 
-        transform.position = (isComingBack) ? Vector2.MoveTowards(transform.position, (Vector2)playerObj.transform.position + cameraOffset, zoomBackSpeed * Time.deltaTime):
-        Vector2.Lerp(transform.position, (Vector2)followObj.position + cameraOffset, speed);
+        if (!followingX)
+        {
+            float Y = Mathf.Lerp(transform.position.y, playerObj.transform.position.y + cameraOffset.y, speed);
+            transform.position = new Vector2(transform.position.x, Y);
+
+            //transform.position = Vector2.Lerp(new Vector2(0, transform.position.y), (Vector2)followObj.position + cameraOffset, speed);
+            //float curTransformX = transform.position.x;
+            //transform.position = (isComingBack) ? Vector2.MoveTowards(new Vector2(0, transform.position.y), (Vector2)followObj.transform.position + cameraOffset, zoomBackSpeed * Time.deltaTime):
+            //Vector2.Lerp(new Vector2(0, transform.position.y), (Vector2)followObj.position + cameraOffset, speed);
+        }
+        
+
+
 
         float dist = Vector2.Distance(playerObj.transform.position, transform.position);
         if (dist < Distance)
