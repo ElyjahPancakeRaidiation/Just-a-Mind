@@ -26,12 +26,12 @@ public class isGroundedScript : MonoBehaviour
     {
         if (Physics2D.Raycast(transform.position, Vector2.up, rayScales[(int) PlayerController.playerForm], groundLayer))
         {
-            Debug.Log("True");
+            Debug.DrawRay(transform.position, Vector2.up * rayScales[(int) PlayerController.playerForm], Color.red);
             return true;
         }
         else
         {
-            Debug.DrawRay(transform.position, Vector2.up * 1.5f, Color.red);
+            Debug.DrawRay(transform.position, Vector2.up * rayScales[(int) PlayerController.playerForm], Color.red);
             return false;
         }
     }

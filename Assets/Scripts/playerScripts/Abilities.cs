@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.Callbacks;
 using UnityEngine;
 
 public class Abilities : MonoBehaviour
 {
     [Header("General Variables")]
     private PlayerController player;
-
     public KeyCode abilityKey;
    
     private int bonusCharges;//bonus charges for the abilities 
@@ -29,8 +29,8 @@ public class Abilities : MonoBehaviour
     [Header("Pogo Variables")]
 
     #region Pogo Jumpy up up variables
-    public Vector3 jumpForce;
-    public Vector3 superJumpForce;
+    public float jumpForce;
+    public float superJumpForce;
     public Transform groundPoint;
     public bool canSuperJump = false;
     public float keyHoldDown;//Amount the jump is held down
@@ -60,7 +60,26 @@ public class Abilities : MonoBehaviour
     // How much we want to favor higher vines in the algorithm
     const float yFavor = .5f;
     const float armExtendSpeed = 5;
+    #region Hookshot
+	public float hookshotSpeed; // Sets how fast you're going towards your hookshot
+	public LineRenderer LR;
+    public struct shoulderType
+    {
+        public GameObject shoulderObject;
+        public bool isLeftShoulder;
+        public Transform shoulderTransform;
+        public Sprite shoulderSprite;
+        public Vector2 shoulderPosition;
+        public Vector2 handPosition;
+        public HingeJoint2D socketJoint;
 
+    }
+    shoulderType curShoulder;
+    // Left shoulder is the 0 shoulder and right shoulder is the 1 shoulder
+    public List<shoulderType> shoulders;
+
+    [SerializeField] float armShootSpeed;
+	#endregion
     #endregion
 
     private void Start() {
@@ -70,16 +89,14 @@ public class Abilities : MonoBehaviour
         hJ = this.GetComponent<HingeJoint2D>();
         playerTransform = GetComponent<Transform>();
         groundedScript = GameObject.Find("Ground Ray Object").GetComponent<isGroundedScript>();
+        LR = GetComponent<LineRenderer>();
+		LR.enabled = false;
     }
 
 
     void Update()
     {
-
-    }
-
-    void FixedUpdate() 
-    {
+        // We must call in update because input breaks if we dont
         switch (PlayerController.playerForm)
         {
             case PlayerController.playerForms.Ball:
@@ -95,13 +112,26 @@ public class Abilities : MonoBehaviour
         }
     }
 
+    void FixedUpdate() 
+    {
+
+
+    }
+
+    IEnumerator ignoreResistences()
+    {
+        player.ignoreResistences = true;
+        yield return new WaitForSeconds(.25f);
+        player.ignoreResistences = false;
+    }
     #region Ball abilites
     private void Dash(){
-        if (Input.GetKeyDown(abilityKey) && !isDashing && groundedScript.isGrounded())
+        if (Input.GetKeyDown(abilityKey) && !isDashing)
         {
             if (dashAmount > 0 || bonusCharges > 0)
             {
                 StartCoroutine(Dashing(dashingDuration));
+                StartCoroutine(ignoreResistences());
             }
         }
     }
@@ -115,8 +145,11 @@ public class Abilities : MonoBehaviour
         // wait then turn off cammera shake
         yield return new WaitForSeconds(duration);
         CameraScript.isCameraShaking = false;
+        if (groundedScript.isGrounded())
+        {
+            yield return new WaitForSeconds(dashDelay);
+        }
         yield return new WaitUntil(() => groundedScript.isGrounded());
-        yield return new WaitForSeconds(dashDelay);
         ResetDash();
     }
     private void ResetDash(){//Resets all of the variables in dash mechanic
@@ -145,32 +178,32 @@ public class Abilities : MonoBehaviour
             {
                 if (!canSuperJump)//if its a regular jump use regular jump force
                 {
-                    player.rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+                    StartCoroutine(ignoreResistences());
+                    player.rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
                     canSuperJump = false;
                     keyHoldDown = 0;
                 }
     
                 if (canSuperJump)//if its a super jump use super jump force
                 {
-                    player.rb.AddForce(Vector2.up * superJumpForce, ForceMode2D.Impulse);
+                    StartCoroutine(ignoreResistences());
+                    player.rb.AddForce(new Vector2(0, superJumpForce), ForceMode2D.Impulse);
+                    StartCoroutine(debugger());
                     canSuperJump = false;
                     keyHoldDown = 0;
                 }
             }
         }
-
-        if (!groundedScript.isGrounded() && bonusCharges > 0)//if player has bonus charges and presses space do a super jump but only while the player is not on the ground
+        IEnumerator debugger()
         {
-            if (Input.GetKeyDown(abilityKey))
+            for(int i = 0; i < 100; i++)
             {
-                player.rb.AddForce(Vector2.up * superJumpForce, ForceMode2D.Impulse);
-                canSuperJump = false;
-                keyHoldDown = 0;
-                bonusCharges--;
+                Debug.Log(this.GetComponent<Rigidbody2D>().velocity.y);
+                yield return null;
             }
         }
 
-        Debug.DrawRay(groundPoint.position, Vector2.down * 1.5f, Color.red);
+
     }
 
     #endregion
@@ -182,6 +215,14 @@ public class Abilities : MonoBehaviour
     {
         if (Input.GetKeyDown(abilityKey) && !isConnected)
         {
+            if (player.horiLatestInput == 1)
+            {
+                curShoulder = shoulders[1];
+            }
+            else
+            {
+                curShoulder = shoulders[0];
+            }
             armMovementAbilityInput();
         }
     }
@@ -200,12 +241,28 @@ public class Abilities : MonoBehaviour
     }
     IEnumerator shootArmOut(GameObject vinePosObj)
     {
-        // Finds the distance
-        float distance = Vector2.Distance(vinePosObj.transform.position, playerTransform.position);
+        LR.enabled = true; // Line Renderer is enabled
+        float distance = Vector2.Distance(vinePosObj.transform.position, curShoulder.shoulderPosition);
         // Gets rotation needed to point towards vinePosObj
-        float rotation = Mathf.Rad2Deg * Mathf.Atan((playerTransform.position.y - vinePosObj.transform.position.y) 
-        / (playerTransform.position.x - vinePosObj.transform.position.x)); 
-        curArm.transform.eulerAngles = new Vector3(curArm.transform.rotation.x, curArm.transform.rotation.y, rotation);
+        float renderDist = 0;
+        bool breakLoop = false;
+        do
+        {
+            // Finds the distance
+            renderDist += hookshotSpeed;
+            // Gets the angle between the player and the vine
+            float theta = Mathf.Atan((curShoulder.shoulderPosition.y - vinePosObj.transform.position.y) 
+            / (curShoulder.shoulderPosition.x - vinePosObj.transform.position.x)); 
+			LR.SetPosition(0, curShoulder.shoulderPosition); // Starts at grapple tip
+			LR.SetPosition(1, new Vector2(renderDist * Mathf.Cos(theta), renderDist * Mathf.Sin(theta))); // Ends at the target
+            if (renderDist >= distance)
+            {
+                renderDist = distance;
+                breakLoop = true;
+            }
+            yield return null;
+        }
+        while(!breakLoop);
         // Shoot the arm out over a time interval
         // Todo if space is pressed here just cancel
 
@@ -217,6 +274,7 @@ public class Abilities : MonoBehaviour
     void armMovementConnected(GameObject vinePosObj)
     {
         // Stage three: Turning on Hinge Joint
+        
         hJ.enabled = true;
         hJ.connectedBody = vinePosObj.GetComponentInParent<Rigidbody2D>();
         while (isConnected)
@@ -232,13 +290,13 @@ public class Abilities : MonoBehaviour
         // returns an array of the objects with layer vineColliders
         Collider2D[] vines = Physics2D.OverlapCircleAll(this.gameObject.transform.position, maxRange, vineColliders);
         // initialize at a 10000 as the game is not that big so shouldnt be an issue
-        float min = 100000;
+        float min = maxRange + 1;
         int place = -1;
         int iteration = 0;
         foreach (Collider2D vine in vines)
         {
             // If the x position of the vine is less then the players and left arm is active we execute
-            if (isLeftArmActive && vine.transform.position.x - playerTransform.position.x < 0)
+            if (curShoulder.isLeftShoulder && vine.transform.position.x - playerTransform.position.x < 0)
             {
                 float dist = Vector2.Distance(vine.transform.position, playerTransform.position)
                 // this adds a bias towards vines that are higher and 
