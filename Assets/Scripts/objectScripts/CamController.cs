@@ -36,8 +36,12 @@ public class CamController : MonoBehaviour
             cam.isFollowingPlayer = false;
             cam.FollowObjDelay(followSpeed, this.transform);
             cam.ZoomCameraChange(zoomCameraAmount, zoomCameraSpeed);
+            cam.isComingBack = true;
         }else{
-            cam.isFollowingPlayer = true;
+            if (!CameraBorder.atBorder)
+            {
+                cam.isFollowingPlayer = true;
+            }
             cam.ZoomCameraChange(cam.camDefaultValues.camFOV, zoomCameraSpeed);
         }
     }

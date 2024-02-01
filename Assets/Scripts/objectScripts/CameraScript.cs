@@ -10,8 +10,8 @@ public class CameraScript : MonoBehaviour
     public static GameObject playerObj;
     private Rigidbody2D playerRB;
     public float cameraSpeed;
-    [SerializeField]private float zoomBackSpeed, zoomBackSpeedFaster;//How fast the camera goes back to following the player
-    private bool isComingBack;
+    [SerializeField]private float zoomBackSpeed, Distance;//How fast the camera goes back to following the player
+    public bool isComingBack;
     private bool goingRight, goingUp;//If player is going left, right will be false if player is going down, up will be false
 
     [SerializeField]public bool isFollowingPlayer;
@@ -27,6 +27,10 @@ public class CameraScript : MonoBehaviour
         public float camFOV;//Called orthographic size in code 
     }
     public cameraDefualt camDefaultValues;//I wanted to play around with structs.
+
+
+    Vector2 vel;
+
     
 
     private void Start() {
@@ -45,33 +49,20 @@ public class CameraScript : MonoBehaviour
     private void Update(){
         if (isFollowingPlayer)
         {
-            if(cam.orthographicSize != camDefaultValues.camFOV){
-                isComingBack = true;
-                if (isComingBack)
-                {
-                    ZoomBackToPlayer();
-                }
-            }
+            //FollowBackToPlayer();
         }
         CameraShake();      
     }
     private void FixedUpdate() {
         if (isFollowingPlayer)
         {
-            if (cam.orthographicSize == camDefaultValues.camFOV)
-            {
-                isComingBack = false;
-                if (!isComingBack)
-                {
-                    FollowObjDelay(cameraSpeed, playerObj.transform);
-                }
-            }
+            //FollowObjDelay(cameraSpeed, playerObj.transform);
+            FollowBackToPlayer(cameraSpeed, playerObj.transform);
         }
     }
 
     public void FollowObjDelay(float speed, Transform followObj)//Follows any obj(Should always be put in fixed update so it can add the rigidbody. If it is not in F.U it will make anything with a rigidbody jitter when moved.)
     {
-        print("Following obj");
         transform.position = Vector2.Lerp(transform.position, (Vector2)followObj.position + cameraOffset, speed);
         GoingToFast(40, 40);
 
@@ -114,14 +105,21 @@ public class CameraScript : MonoBehaviour
 
     }
 
-    public void ZoomBackToPlayer(){
-        print("Zooming back");
+    public void FollowBackToPlayer(float speed, Transform followObj){
+        /*
         float dist = Vector2.Distance(playerObj.transform.position, transform.position);
-        if (dist < 2)
+        
+        
+        */
+
+        transform.position = (isComingBack) ? Vector2.MoveTowards(transform.position, (Vector2)playerObj.transform.position + cameraOffset, zoomBackSpeed * Time.deltaTime):
+        Vector2.Lerp(transform.position, (Vector2)followObj.position + cameraOffset, speed);
+
+        float dist = Vector2.Distance(playerObj.transform.position, transform.position);
+        if (dist < Distance)
         {
-            transform.position = Vector2.MoveTowards(transform.position, (Vector2)playerObj.transform.position + cameraOffset, zoomBackSpeed);
-        }else if(dist > 2){
-            transform.position = Vector2.MoveTowards(transform.position, (Vector2)playerObj.transform.position + cameraOffset, zoomBackSpeedFaster);
+            isComingBack = false;
+
         }
 
     }
