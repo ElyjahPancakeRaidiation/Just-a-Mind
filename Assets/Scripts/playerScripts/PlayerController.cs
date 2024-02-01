@@ -70,7 +70,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]private Collider2D pogoCol;
     #endregion
     #region Arm movement variables
-    
+    [Header("Sound")]
+    AudioSource walkingSound;
 
     #endregion
 
@@ -84,7 +85,7 @@ public class PlayerController : MonoBehaviour
         playerSpriteRender = GetComponent<SpriteRenderer>();
         gm = GameObject.Find("Game Manager").GetComponent<GameManager>();
         player = GameObject.Find("Player");
-
+        playerForm = playerForms.Ball;
         guideText.text = "";
         FormSettings();
     }
