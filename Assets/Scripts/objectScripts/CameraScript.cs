@@ -148,13 +148,13 @@ public class CameraScript : MonoBehaviour
     {
     
         if (isCameraShaking){
-            cameraObj.transform.localPosition = origCamPos + Random.insideUnitCircle * shakeAmount;
-            cameraObj.transform.localPosition = new Vector3(cameraObj.transform.localPosition.x, cameraObj.transform.localPosition.y, -10f);
+            //cameraObj.transform.localPosition = origCamPos + Random.insideUnitCircle * shakeAmount;
+            //cameraObj.transform.localPosition = new Vector3(cameraObj.transform.localPosition.x, cameraObj.transform.localPosition.y, -10f);
         }
         else
         {
-            cameraObj.transform.localPosition = (Vector2)origCamPos;
-            cameraObj.transform.localPosition = new Vector3(cameraObj.transform.localPosition.x, cameraObj.transform.localPosition.y, -10f);
+            //cameraObj.transform.localPosition = (Vector2)origCamPos;
+            //cameraObj.transform.localPosition = new Vector3(cameraObj.transform.localPosition.x, cameraObj.transform.localPosition.y, -10f);
         }
         
     }

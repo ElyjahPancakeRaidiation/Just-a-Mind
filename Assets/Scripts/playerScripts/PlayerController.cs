@@ -24,6 +24,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]private Sprite[] playerFormSprite;
     private Animator anim; 
 
+    private static bool playerDead;
+
     public Collider2D circleCol; // checks for all colliders
     public Collider2D vineCol;
     
@@ -345,6 +347,7 @@ public class PlayerController : MonoBehaviour
 		{
             case "Spike":
                 this.transform.position = spawner.transform.position;
+                playerDead = true;
                 break;
 		}
 	}
@@ -357,7 +360,7 @@ public class PlayerController : MonoBehaviour
             timer += Time.deltaTime;
     		if (timer >= maxTime)
     		{
-                guideText.text = "Yo wasug my G you can't go up you better SHIFT to dash on god fr fr skibdi";
+                guideText.text = "Yo wasug my G you can't go up you better SPACE to dash on god fr fr skibdi";
     		}
         }
 	}
