@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]private Sprite[] playerFormSprite;
     private Animator anim; 
 
-    private static bool playerDead;
+    public static bool playerDead;
 
     public Collider2D circleCol; // checks for all colliders
     public Collider2D vineCol;

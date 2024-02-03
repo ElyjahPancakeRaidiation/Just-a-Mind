@@ -14,7 +14,7 @@ public class CameraScript : MonoBehaviour
     [SerializeField]private float zoomBackSpeed, Distance;//How fast the camera goes back to following the player and how close before switching movements to follow the player
     public bool isFollowingPlayer, isComingBack, isTransitioning;
 
-
+    public float increaseCamAmount;
 
     [Header("----Cam Control Variables----")]
     public bool notFollowingX, notFollowingY;
@@ -81,6 +81,7 @@ public class CameraScript : MonoBehaviour
             if (playerDist < Distance)
             {
                 isComingBack = false;
+                PlayerController.playerDead = false;
             }
         }else if(notFollowingX || notFollowingY){
             if (playerDist < 2f)
