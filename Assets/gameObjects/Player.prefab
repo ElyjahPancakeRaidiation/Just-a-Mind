@@ -48,7 +48,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   rayScales:
-  - 0.35
+  - 0.45
   - 1.6
   - 1
 --- !u!1 &5150928139307579840
@@ -176,8 +176,8 @@ MonoBehaviour:
   swingMask:
     serializedVersion: 2
     m_Bits: 0
-  coefficientOfAirResistence: 0.1
-  coefficientOfFriction: 0.5
+  coefficientOfAirResistence: 0.075
+  coefficientOfFriction: 0.3
   ignoreResistences: 0
   ballCol: {fileID: 4243366355294756771}
   maxSpeedCopy: 0

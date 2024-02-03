@@ -249,7 +249,7 @@ public class Abilities : MonoBehaviour
         do
         {
             // Finds the distance
-            renderDist += hookshotSpeed;
+            renderDist += hookshotSpeed * Time.deltaTime;
             // Gets the angle between the player and the vine
             float theta = Mathf.Atan((curShoulder.shoulderPosition.y - vinePosObj.transform.position.y) 
             / (curShoulder.shoulderPosition.x - vinePosObj.transform.position.x)); 
