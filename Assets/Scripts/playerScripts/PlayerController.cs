@@ -96,7 +96,7 @@ public class PlayerController : MonoBehaviour
         //gm = GameObject.Find("Game Manager").GetComponent<GameManager>();
         player = GameObject.Find("Player");
         playerForm = playerForms.Ball;
-        // guideText.text = "";
+        guideText.text = "";
         FormSettings();
     }
         
@@ -351,12 +351,15 @@ public class PlayerController : MonoBehaviour
 
 	private void OnTriggerStay2D(Collider2D collision)
 	{
-        guideText.transform.position = new Vector2(player.transform.position.x + textOffsetX, player.transform.position.y + textOffsetY);
-        timer += Time.deltaTime;
-		if (timer >= maxTime)
-		{
-            guideText.text = "Hey hello";
-		}
+        if (collision.tag == "Guide")
+        {
+            guideText.transform.position = new Vector2(player.transform.position.x + textOffsetX, player.transform.position.y + textOffsetY);
+            timer += Time.deltaTime;
+    		if (timer >= maxTime)
+    		{
+                guideText.text = "Yo wasug my G you can't go up you better SHIFT to dash on god fr fr skibdi";
+    		}
+        }
 	}
 
 	private void OnTriggerExit2D(Collider2D collision)

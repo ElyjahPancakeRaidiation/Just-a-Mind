@@ -137,10 +137,16 @@ public class Abilities : MonoBehaviour
     }
     
     private IEnumerator Dashing(float duration){//Will push the player forward for a certain amount of time at a certain amount of speed
+        // The modifier we use to buff non diagnol dashes
+        float linearBuff = 1;
         // Starts camera shacking
         CameraScript.isCameraShaking = true;
         // We then add the dash force
-        player.rb.AddForce(new Vector2(player.horiLatestInput * DASHPOWER, yDashModifier * player.vertLatestInput * DASHPOWER), ForceMode2D.Impulse);//dash in any direction boom kachow
+        if (player.vertLatestInput == 0 || player.horiLatestInput == 0)
+        {
+            linearBuff = 1.1f;
+        }
+        player.rb.AddForce(new Vector2(player.horiLatestInput * DASHPOWER * linearBuff, yDashModifier * player.vertLatestInput * DASHPOWER * linearBuff), ForceMode2D.Impulse);//dash in any direction boom kachow
         isDashing = true;        
         // wait then turn off cammera shake
         yield return new WaitForSeconds(duration);

@@ -67,7 +67,7 @@ GameObject:
   - component: {fileID: 6764691651494828799}
   - component: {fileID: 8583233941389115788}
   - component: {fileID: 7043142263348349944}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -166,7 +166,7 @@ MonoBehaviour:
   horiLatestInput: 0
   vertLatestInput: 0
   speed: 15
-  interactRadius: 0.4
+  interactRadius: 0.7
   interactMask:
     serializedVersion: 2
     m_Bits: 8

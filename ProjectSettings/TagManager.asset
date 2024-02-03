@@ -10,6 +10,8 @@ TagManager:
   - CameraManager
   - BonusCrystal
   - Spike
+  - Spikes
+  - Guide
   layers:
   - Default
   - TransparentFX
