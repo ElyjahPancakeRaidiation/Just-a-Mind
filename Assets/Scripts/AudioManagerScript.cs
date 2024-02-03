@@ -43,20 +43,13 @@ public class AudioManagerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		if (gs.isGrounded() && PlayerController.playerForm == PlayerController.playerForms.Ball && Mathf.Abs(pc.rb.velocity.x) > .2f)
+		if (gs.isGrounded() && PlayerController.playerForm == PlayerController.playerForms.Ball && Mathf.Abs(pc.rb.velocity.x) > .5f)
 		{
             StartMoving(); 
 		}
-		else if(!gs.isGrounded() || PlayerController.playerForm != PlayerController.playerForms.Ball || Mathf.Abs(pc.rb.velocity.x) <= .2f) 
+		else if(!gs.isGrounded() || PlayerController.playerForm != PlayerController.playerForms.Ball || Mathf.Abs(pc.rb.velocity.x) <= .5f) 
         {
             StopMoving();
-        }
-        if (pc.rb.velocity.x < 2)
-        {
-            audioSource.pitch = pc.rb.velocity.x / 2;
-        }
-        else{
-            audioSource.pitch = 1;
         }
     }
 
