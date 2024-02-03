@@ -73,6 +73,7 @@ public class AudioManagerScript : MonoBehaviour
 		if (walkingSounds != null)
 		{
             StopCoroutine(walkingSounds);
+            audioSource.Stop();
             musicIsPlaying = false;
 		}
     }
