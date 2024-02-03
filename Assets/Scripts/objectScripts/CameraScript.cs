@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 public class CameraScript : MonoBehaviour
@@ -16,7 +17,7 @@ public class CameraScript : MonoBehaviour
 
 
     [Header("----Cam Control Variables----")]
-    [HideInInspector]public bool notFollowingX, notFollowingY;
+    public bool notFollowingX, notFollowingY;
     public static bool isCameraShaking, isCameraZooming;
     [SerializeField, Range(0, 3)]private float shakeAmount;
     private Vector2 origCamPos;
@@ -44,11 +45,21 @@ public class CameraScript : MonoBehaviour
 
     private void Update(){
         CameraShake();    
+        if (isFollowingPlayer)
+        {
+            if (isComingBack)
+            {
+                FollowBackToPlayer(cameraSpeed, playerObj.transform);
+            }
+        }
     }
     private void FixedUpdate() {
         if (isFollowingPlayer)
         {
-            FollowBackToPlayer(cameraSpeed, playerObj.transform);
+            if (!isComingBack)
+            {
+                FollowBackToPlayer(cameraSpeed, playerObj.transform);
+            }
         }
     }
 
@@ -88,7 +99,7 @@ public class CameraScript : MonoBehaviour
                 Mathf.MoveTowards(transform.position.y, playerObj.transform.position.y, 20 * Time.deltaTime);//Only moves on the Y axis and switches smoothly when the camera is coming back to the player
                 
                 transform.position = new Vector2(transform.position.x, Y);
-                print("Not following X");
+                //print("Not following X");
             }
 
             if (notFollowingY)
@@ -97,7 +108,7 @@ public class CameraScript : MonoBehaviour
                 Mathf.MoveTowards(transform.position.x, playerObj.transform.position.x, 20 * Time.deltaTime);////Only moves on the X axis and switches smoothly when the camera is coming back to the player
 
                 transform.position = new Vector2(X, transform.position.y);
-                print("Not following Y");
+                //print("Not following Y");
             }
         }
         
@@ -132,16 +143,17 @@ public class CameraScript : MonoBehaviour
     
     private void CameraShake()//Shake camera.
     {
+    
         if (isCameraShaking){
             cameraObj.transform.localPosition = origCamPos + Random.insideUnitCircle * shakeAmount;
             cameraObj.transform.localPosition = new Vector3(cameraObj.transform.localPosition.x, cameraObj.transform.localPosition.y, -10f);
-            
         }
         else
         {
             cameraObj.transform.localPosition = origCamPos;
             cameraObj.transform.localPosition = new Vector3(cameraObj.transform.localPosition.x, cameraObj.transform.localPosition.y, -10f);
         }
+        
     }
 
     public void TransitionWithPlayer(Transform transitionCamEndPos){

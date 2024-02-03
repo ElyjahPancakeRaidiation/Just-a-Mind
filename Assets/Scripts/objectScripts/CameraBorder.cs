@@ -72,7 +72,7 @@ public class CameraBorder : MonoBehaviour
     private void StopCamAxis(){
         Vector2 borderCamVec = cam.WorldToViewportPoint(transform.position);
         //Uncomment this to see the objects position in the screen if you don't fully understand.
-        print(borderCamVec);
+        //print(borderCamVec);
 
         if (xAxisBorder)
         {
