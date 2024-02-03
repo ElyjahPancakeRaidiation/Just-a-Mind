@@ -43,15 +43,21 @@ public class AudioManagerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		if (gs.isGrounded() && PlayerController.playerForm == PlayerController.playerForms.Ball && pc.rb.velocity != Vector2.zero)
+		if (gs.isGrounded() && PlayerController.playerForm == PlayerController.playerForms.Ball && Mathf.Abs(pc.rb.velocity.x) > .2f)
 		{
             StartMoving(); 
 		}
-		else if(!gs.isGrounded() || PlayerController.playerForm != PlayerController.playerForms.Ball || pc.rb.velocity == Vector2.zero) 
+		else if(!gs.isGrounded() || PlayerController.playerForm != PlayerController.playerForms.Ball || Mathf.Abs(pc.rb.velocity.x) <= .2f) 
         {
             StopMoving();
         }
-        
+        if (pc.rb.velocity.x < 2)
+        {
+            audioSource.pitch = pc.rb.velocity.x / 2;
+        }
+        else{
+            audioSource.pitch = 1;
+        }
     }
 
     void StartMoving() 
@@ -74,11 +80,13 @@ public class AudioManagerScript : MonoBehaviour
 		if (walkingSounds != null)
 		{
             StopCoroutine(walkingSounds);
+            musicIsPlaying = false;
 		}
     }
 
     IEnumerator playMovingSounds() 
     {
+        Debug.Log("called");
         isMoving = true;
         musicIsPlaying = true;
         for (int i = 0; i < movingClips.Length; i++)
