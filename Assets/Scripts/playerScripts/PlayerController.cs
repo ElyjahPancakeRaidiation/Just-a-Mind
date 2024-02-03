@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]public bool devControl;//Just used to override the locked forms(I got really lazy and I dont want to keep going back and fourth changing the bools)
     public int neareastSpawner;
     public float timer;
+    [SerializeField]public int maxTime; //Can adjust the time it takes for text to appear accordingly
     public float textOffsetX;
     public float textOffsetY;
     public Transform spherePoint;
@@ -25,10 +26,11 @@ public class PlayerController : MonoBehaviour
 
     public Collider2D circleCol; // checks for all colliders
     public Collider2D vineCol;
+    
 
     public GameObject spawner;
-    public GameObject grabOn;
     public GameObject player;
+    public GameObject grabOn;
 
     public TMP_Text guideText;
 
@@ -42,7 +44,7 @@ public class PlayerController : MonoBehaviour
     [Header("Interaction")]
     private Collider2D interactCol;
     [SerializeField]public float interactRadius;
-    [SerializeField]public LayerMask interactMask, groundMask,swingMask;//interact mask is for objects you can interact with by pressing E. Ground is for ground.
+    [SerializeField]public LayerMask interactMask, groundMask;//interact mask is for objects you can interact with by pressing E. Ground is for ground.
 
     public enum playerForms{Ball, Pogo, Arm}
     public static playerForms playerForm;
@@ -319,7 +321,6 @@ public class PlayerController : MonoBehaviour
         circleCol = Physics2D.OverlapCircle(spherePoint.transform.position, interactRadius, interactMask); //set circleCol to Overlap Cirlce
 		if (circleCol != null)
 		{
-            Debug.Log("Respawner at index " + circleCol + " is within the circle cast.");
         }
 
 
@@ -340,9 +341,9 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
 	{
-		switch (collision.gameObject.name)
+		switch (collision.gameObject.tag)
 		{
-            case "Spikes":
+            case "Spike":
                 this.transform.position = spawner.transform.position;
                 break;
 		}
@@ -352,7 +353,7 @@ public class PlayerController : MonoBehaviour
 	{
         guideText.transform.position = new Vector2(player.transform.position.x + textOffsetX, player.transform.position.y + textOffsetY);
         timer += Time.deltaTime;
-		if (timer >= 15)
+		if (timer >= maxTime)
 		{
             guideText.text = "Hey hello";
 		}
