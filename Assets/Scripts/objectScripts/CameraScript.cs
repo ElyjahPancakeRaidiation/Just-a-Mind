@@ -41,7 +41,10 @@ public class CameraScript : MonoBehaviour
         //startCamOffset = cameraOffset;
     }
 
-    private void OnEnable() => origCamPos = cameraObj.transform.position;
+    private void OnEnable(){
+        //cameraObj = GameObject.FindGameObjectWithTag("MainCamera");
+        origCamPos = cameraObj.transform.position;
+    }
 
     private void Update(){
         CameraShake();    
@@ -150,7 +153,7 @@ public class CameraScript : MonoBehaviour
         }
         else
         {
-            cameraObj.transform.localPosition = origCamPos;
+            cameraObj.transform.localPosition = (Vector2)origCamPos;
             cameraObj.transform.localPosition = new Vector3(cameraObj.transform.localPosition.x, cameraObj.transform.localPosition.y, -10f);
         }
         
