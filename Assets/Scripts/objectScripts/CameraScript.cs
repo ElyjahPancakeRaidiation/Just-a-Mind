@@ -127,20 +127,20 @@ public class CameraScript : MonoBehaviour
     public void ZoomCameraChange(float FOV, float zoomSpeed){//Zooms back and fourth wether it is the player or not. Never make the desired FOV smaller than the defualt FOV which is 5
         if (!isFollowingPlayer)
         {
-            if (cam.orthographicSize < FOV)
+            if (cam.fieldOfView < FOV)
             {
-                cam.orthographicSize += Time.deltaTime * zoomSpeed;
+                cam.fieldOfView += Time.deltaTime * zoomSpeed;
             }else{
-                cam.orthographicSize = FOV;
+                cam.fieldOfView = FOV;
             }
         }
         else
         {
-            if (cam.orthographicSize > camDefaultValues.camFOV)
+            if (cam.fieldOfView > camDefaultValues.camFOV)
             {
-                cam.orthographicSize -= Time.deltaTime * zoomSpeed;
+                cam.fieldOfView -= Time.deltaTime * zoomSpeed;
             }else{
-                cam.orthographicSize = camDefaultValues.camFOV;
+                cam.fieldOfView = camDefaultValues.camFOV;
             }
         }
     }
