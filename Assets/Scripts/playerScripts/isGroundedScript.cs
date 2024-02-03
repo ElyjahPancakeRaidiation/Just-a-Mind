@@ -16,7 +16,6 @@ public class isGroundedScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(isGrounded());
     }
     private void FixedUpdate() {
         transform.position = player.transform.position + new Vector3(0, -1 * (rayScales[(int) PlayerController.playerForm] + .2f), 0);

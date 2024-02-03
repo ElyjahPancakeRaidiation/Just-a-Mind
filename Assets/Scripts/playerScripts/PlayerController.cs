@@ -321,7 +321,6 @@ public class PlayerController : MonoBehaviour
         circleCol = Physics2D.OverlapCircle(spherePoint.transform.position, interactRadius, interactMask); //set circleCol to Overlap Cirlce
 		if (circleCol != null)
 		{
-            Debug.Log("Respawner at index " + circleCol + " is within the circle cast.");
         }
 
 
