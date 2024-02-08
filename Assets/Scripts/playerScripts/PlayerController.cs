@@ -33,6 +33,7 @@ public class PlayerController : MonoBehaviour
     public GameObject grabOn;
 
     public TMP_Text guideText;
+    [SerializeField] GameObject thoughtBubble;
 
     #region movements
     [Header("Movement")]
@@ -96,7 +97,7 @@ public class PlayerController : MonoBehaviour
         //gm = GameObject.Find("Game Manager").GetComponent<GameManager>();
         player = GameObject.Find("Player");
         playerForm = playerForms.Ball;
-        // guideText.text = "";
+        guideText.text = "";
         FormSettings();
     }
         
@@ -351,16 +352,31 @@ public class PlayerController : MonoBehaviour
 
 	private void OnTriggerStay2D(Collider2D collision)
 	{
-        guideText.transform.position = new Vector2(player.transform.position.x + textOffsetX, player.transform.position.y + textOffsetY);
-        timer += Time.deltaTime;
-		if (timer >= maxTime)
-		{
-            guideText.text = "Hey hello";
-		}
+        if (collision.tag == "Guide")
+        {
+            guideText.transform.position = new Vector2(player.transform.position.x + textOffsetX, player.transform.position.y + textOffsetY);
+            timer += Time.deltaTime;
+    		if (timer >= maxTime)
+    		{
+                StartCoroutine(DoTextBox());
+                //guideText.text = "Dash by pressing space. \nUse WASD to set the direction";
+    		}
+            else{
+                //guideText.text = "";
+            }
+        }
 	}
 
+    IEnumerator DoTextBox()
+    {
+        Instantiate(thoughtBubble, new Vector2(player.transform.position.x + textOffsetX, player.transform.position.y + textOffsetY), quaternion.identity);
+        yield return new WaitForEndOfFrame();
+        DestroyImmediate(thoughtBubble, true);
+
+    }
 	private void OnTriggerExit2D(Collider2D collision)
 	{
+        Destroy(thoughtBubble);
         guideText.text = "";
         timer = 0;
 	}
