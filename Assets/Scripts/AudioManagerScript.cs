@@ -13,8 +13,6 @@ public class AudioManagerScript : MonoBehaviour
     public AudioSource audioSource;
     public AudioClip[] movingClips;
 
-    public int soundIndex = 0;
-
     public PlayerController pc;
     public isGroundedScript gs;
 
@@ -24,10 +22,11 @@ public class AudioManagerScript : MonoBehaviour
     /*public Rigidbody2D rb;*/
 
     public bool isMoving = false;
-    /*public bool isMoveSoundPlaying;*/
+	public bool isMoveSoundPlaying;
 
-    public IEnumerator walkingSounds;
+	public IEnumerator walkingSounds;
 
+    bool musicIsPlaying;
 
     // Start is called before the first frame update
     void Start()
@@ -44,52 +43,52 @@ public class AudioManagerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		if (!isMoving && gs.isGrounded() && PlayerController.playerForm == PlayerController.playerForms.Ball && pc.rb.velocity != Vector2.zero)
+		if (gs.isGrounded() && PlayerController.playerForm == PlayerController.playerForms.Ball && Mathf.Abs(pc.rb.velocity.x) > .5f)
 		{
-            StartMoving();
+            StartMoving(); 
 		}
-		else if(isMoving || !gs.isGrounded() || PlayerController.playerForm != PlayerController.playerForms.Ball || pc.rb.velocity == Vector2.zero) 
+		else if(!gs.isGrounded() || PlayerController.playerForm != PlayerController.playerForms.Ball || Mathf.Abs(pc.rb.velocity.x) <= .5f) 
         {
             StopMoving();
         }
-        
     }
 
     void StartMoving() 
     {
-        isMoving = true;
-        onMoveStart.Invoke();
+		isMoving = true;
+		onMoveStart.Invoke();
 
-		if (movingClips.Length > 0)
+		if (movingClips.Length > 0 && !musicIsPlaying)
 		{
             walkingSounds = playMovingSounds();
             StartCoroutine(walkingSounds);
 		}
-
-        soundIndex = 0;
     }
 
     void StopMoving() 
     {
-        isMoving = false;
-        onMoveStop.Invoke();
+		isMoving = false;
+		onMoveStop.Invoke();
 
 		if (walkingSounds != null)
 		{
             StopCoroutine(walkingSounds);
+            audioSource.Stop();
+            musicIsPlaying = false;
 		}
     }
 
     IEnumerator playMovingSounds() 
     {
+        Debug.Log("called");
         isMoving = true;
-
+        musicIsPlaying = true;
         for (int i = 0; i < movingClips.Length; i++)
         {
             audioSource.PlayOneShot(movingClips[i]);
             yield return new WaitForSeconds(movingClips[i].length);
         }
-
+        musicIsPlaying = false;
         isMoving = false;
 
 		

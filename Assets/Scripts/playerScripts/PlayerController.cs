@@ -24,6 +24,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]private Sprite[] playerFormSprite;
     private Animator anim; 
 
+    public static bool playerDead;
+
     public Collider2D circleCol; // checks for all colliders
     public Collider2D vineCol;
     
@@ -96,7 +98,7 @@ public class PlayerController : MonoBehaviour
         //gm = GameObject.Find("Game Manager").GetComponent<GameManager>();
         player = GameObject.Find("Player");
         playerForm = playerForms.Ball;
-        // guideText.text = "";
+        guideText.text = "";
         FormSettings();
     }
         
@@ -321,7 +323,6 @@ public class PlayerController : MonoBehaviour
         circleCol = Physics2D.OverlapCircle(spherePoint.transform.position, interactRadius, interactMask); //set circleCol to Overlap Cirlce
 		if (circleCol != null)
 		{
-            Debug.Log("Respawner at index " + circleCol + " is within the circle cast.");
         }
 
 
@@ -346,18 +347,22 @@ public class PlayerController : MonoBehaviour
 		{
             case "Spike":
                 this.transform.position = spawner.transform.position;
+                playerDead = true;
                 break;
 		}
 	}
 
 	private void OnTriggerStay2D(Collider2D collision)
 	{
-        guideText.transform.position = new Vector2(player.transform.position.x + textOffsetX, player.transform.position.y + textOffsetY);
-        timer += Time.deltaTime;
-		if (timer >= maxTime)
-		{
-            guideText.text = "Hey hello";
-		}
+        if (collision.tag == "Guide")
+        {
+            guideText.transform.position = new Vector2(player.transform.position.x + textOffsetX, player.transform.position.y + textOffsetY);
+            timer += Time.deltaTime;
+    		if (timer >= maxTime)
+    		{
+                guideText.text = "Yo wasug my G you can't go up you better SPACE to dash on god fr fr skibdi";
+    		}
+        }
 	}
 
 	private void OnTriggerExit2D(Collider2D collision)
