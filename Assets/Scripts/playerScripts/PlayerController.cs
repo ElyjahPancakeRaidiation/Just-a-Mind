@@ -40,7 +40,7 @@ public class PlayerController : MonoBehaviour
     public Rigidbody2D rb;
     public float horizontal, vertical;
     public int horiLatestInput = 1, vertLatestInput = 0;
-    public float speed;
+    public float speed,jumpSpeedX,jumpSpeedY;
     [Header("Interaction")]
     private Collider2D interactCol;
     [SerializeField]public float interactRadius;
@@ -288,9 +288,30 @@ public class PlayerController : MonoBehaviour
 
     private void Movements()
     {//different movements for each form
-        rb.AddForce(new Vector2(horizontal * speed * Time.fixedDeltaTime, 0), ForceMode2D.Impulse);//moves the player in the direction the player is pressing
+    
 
-    }
+		switch (playerForm)
+		{
+			case playerForms.Ball:
+                rb.AddForce(new Vector2(horizontal * speed * Time.fixedDeltaTime, 0), ForceMode2D.Impulse);//moves the player in the direction the player is pressing
+                break;
+			case playerForms.Pogo:
+				if (Input.GetKey(KeyCode.D))
+				{
+					if (groundedScript.isGrounded())
+					{
+                        rb.AddForce(new Vector2(1 * jumpSpeedX * Time.fixedDeltaTime, 1 * jumpSpeedY * Time.fixedDeltaTime), ForceMode2D.Impulse);
+                    }
+                    
+				}
+				break;
+			case playerForms.Arm:
+				break;
+			default:
+				break;
+		}
+
+	}
     private void OnDrawGizmos()  
     {
         Gizmos.DrawWireSphere(transform.position, interactRadius);
@@ -321,6 +342,7 @@ public class PlayerController : MonoBehaviour
         circleCol = Physics2D.OverlapCircle(spherePoint.transform.position, interactRadius, interactMask); //set circleCol to Overlap Cirlce
 		if (circleCol != null)
 		{
+
         }
 
 
