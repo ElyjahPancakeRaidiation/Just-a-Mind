@@ -2648,6 +2648,10 @@ PrefabInstance:
       value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 6156709126799240589, guid: 0eebf9695a3cace40a4f744a5d99a8fe, type: 3}
+      propertyPath: jumpTime
+      value: 0.00001
+      objectReference: {fileID: 0}
+    - target: {fileID: 6156709126799240589, guid: 0eebf9695a3cace40a4f744a5d99a8fe, type: 3}
       propertyPath: guideText
       value: 
       objectReference: {fileID: 2007617644}
@@ -2657,11 +2661,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6156709126799240589, guid: 0eebf9695a3cace40a4f744a5d99a8fe, type: 3}
       propertyPath: jumpSpeedX
-      value: 150
+      value: 7.5
       objectReference: {fileID: 0}
     - target: {fileID: 6156709126799240589, guid: 0eebf9695a3cace40a4f744a5d99a8fe, type: 3}
       propertyPath: jumpSpeedY
-      value: 100
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6156709126799240589, guid: 0eebf9695a3cace40a4f744a5d99a8fe, type: 3}
       propertyPath: interactRadius

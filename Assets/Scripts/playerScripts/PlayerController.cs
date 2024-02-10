@@ -70,7 +70,7 @@ public class PlayerController : MonoBehaviour
     [Header("Body")]
     [SerializeField]private Collider2D pogoCol;
     public IEnumerator jumping;
-    public bool isJumping = false;
+    public bool canJump = true;
     #endregion
     #region Arm movement variables
 
@@ -298,7 +298,7 @@ public class PlayerController : MonoBehaviour
                 rb.AddForce(new Vector2(horizontal * speed * Time.fixedDeltaTime, 0), ForceMode2D.Impulse);//moves the player in the direction the player is pressing
                 break;
 			case playerForms.Pogo:
-                /*if (Input.GetKey(KeyCode.D))
+				/*if (Input.GetKey(KeyCode.D))
 				{
 					if (groundedScript.isGrounded())
 					{
@@ -316,10 +316,19 @@ public class PlayerController : MonoBehaviour
 
                 }*/
 
-                if (Input.GetKey(KeyCode.D))
-                {
-                    jumping = Jump();
-                    StartCoroutine(jumping);
+				if (canJump)
+				{
+                    if (Input.GetKey(KeyCode.D))
+                    {
+                        jumping = Jump();
+                        StartCoroutine(jumping);
+                    }
+
+                    if (Input.GetKey(KeyCode.A))
+                    {
+                        jumping = Jump();
+                        StartCoroutine(jumping);
+                    }
                 }
                 break;
 			case playerForms.Arm:
@@ -409,10 +418,16 @@ public class PlayerController : MonoBehaviour
 
     public IEnumerator Jump() 
     {
-        isJumping = true;
+        Debug.Log("Starting");
+        canJump = true;
         yield return new WaitUntil(() => groundedScript.isGrounded());
-        rb.AddForce(new Vector2(horizontal * jumpSpeedX * Time.fixedDeltaTime, 1 * jumpSpeedY * Time.fixedDeltaTime), ForceMode2D.Impulse);
-        isJumping = false;
+        Vector2 jumpForce = new Vector2(horizontal * jumpSpeedX, jumpSpeedY);
+        rb.AddForce(jumpForce, ForceMode2D.Impulse);
+        Debug.Log("Ending");
+        canJump = false;
+        yield return new WaitUntil(() => groundedScript.isGrounded());
+        canJump = true;
+        
     }
 
 
