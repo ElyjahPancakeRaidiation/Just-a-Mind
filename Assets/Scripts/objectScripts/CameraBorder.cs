@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -39,6 +40,8 @@ public class CameraBorder : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        StopCamAxis();
+        /*
         //Overall Script is to check if the border is between two points of the screen. If it is it will stop the camera from moving until it is not. 
         if (camCol != null)
         {
@@ -64,6 +67,7 @@ public class CameraBorder : MonoBehaviour
                 camController.ZoomCameraChange(zoomCameraAmount, zoomCameraSpeed);
             }
         }
+        */
     }
 
     private void FixedUpdate() => camCol = Physics2D.OverlapBox(colTransform.position, camVec, camRadius, playerMask);    
@@ -71,12 +75,22 @@ public class CameraBorder : MonoBehaviour
 
     private void StopCamAxis(){
         Vector2 borderCamVec = cam.WorldToViewportPoint(transform.position);
+        /*
+        Vector2 toFarCol = (Vector2)cam.WorldToViewportPoint(borderCamVec) - (Vector2)cam.WorldToViewportPoint(new Vector2(0.99f, 0));
+        print("How far the border is" + toFarCol);
+        Vector2 toFarSubtract = (Vector2)cam.WorldToViewportPoint(borderCamVec) - toFarCol;
+        print("The border at the correct position" + toFarSubtract);
+        this.transform.position = toFarSubtract;
+        */
+
+        cam.gameObject.transform.position = (Vector2)cam.WorldToViewportPoint(new Vector2(0.99f, 0.46f));
+
         //Uncomment this to see the objects position in the screen if you don't fully understand.
         //print(borderCamVec);
 
         if (xAxisBorder)
         {
-            if (borderCamVec.x <= 0.98f && borderCamVec.x >= 0.90f)//Right Side
+            if (borderCamVec.x <= 0.99f && borderCamVec.x >= 0.56f)//Right Side
             {
                 if (CameraScript.playerObj.transform.position.x > cam.gameObject.transform.position.x)
                 {
@@ -89,7 +103,7 @@ public class CameraBorder : MonoBehaviour
                     camController.notFollowingX = false;
                 }
             }
-            else if(borderCamVec.x >= 0.01f && borderCamVec.x <= 0.05f){//Left Side
+            else if(borderCamVec.x >= 0.01f && borderCamVec.x <= 0.46f){//Left Side
                 if (CameraScript.playerObj.transform.position.x > cam.gameObject.transform.position.x)
                 {
                     //right

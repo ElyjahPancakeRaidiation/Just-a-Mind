@@ -46,10 +46,6 @@ public class CamController : MonoBehaviour
                 {
                     cam.isFollowingPlayer = true;
                     cam.ZoomCameraChange(cam.camDefaultValues.camFOV, zoomCameraSpeed);
-                    if(PlayerController.playerDead){
-                        cam.gameObject.transform.position = CameraScript.playerObj.transform.position + new Vector3(0, 3);
-                        
-                    }
                 }
             }
 

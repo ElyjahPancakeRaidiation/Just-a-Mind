@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
-using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 public class CameraScript : MonoBehaviour
@@ -34,7 +33,7 @@ public class CameraScript : MonoBehaviour
 
     private void Start() {
         cam = GetComponentInChildren<Camera>();
-        camDefaultValues.camFOV = 8;
+        camDefaultValues.camFOV = 70f;
         cameraObj = GameObject.FindGameObjectWithTag("MainCamera");
         playerObj = GameObject.FindGameObjectWithTag("Player");
         //playerRB = playerObj.GetComponent<Rigidbody2D>();
@@ -81,7 +80,7 @@ public class CameraScript : MonoBehaviour
             if (playerDist < Distance)
             {
                 isComingBack = false;
-                PlayerController.playerDead = false;
+                //PlayerController.playerDead = false;
             }
         }else if(notFollowingX || notFollowingY){
             if (playerDist < 2f)
