@@ -69,6 +69,8 @@ public class PlayerController : MonoBehaviour
     #region Pogo movement variables
     [Header("Body")]
     [SerializeField]private Collider2D pogoCol;
+    public IEnumerator jumping;
+    public bool isJumping = false;
     #endregion
     #region Arm movement variables
 
@@ -296,7 +298,7 @@ public class PlayerController : MonoBehaviour
                 rb.AddForce(new Vector2(horizontal * speed * Time.fixedDeltaTime, 0), ForceMode2D.Impulse);//moves the player in the direction the player is pressing
                 break;
 			case playerForms.Pogo:
-				if (Input.GetKey(KeyCode.D))
+                /*if (Input.GetKey(KeyCode.D))
 				{
 					if (groundedScript.isGrounded())
 					{
@@ -304,7 +306,22 @@ public class PlayerController : MonoBehaviour
                     }
                     
 				}
-				break;
+
+                if (Input.GetKey(KeyCode.A))
+                {
+                    if (groundedScript.isGrounded())
+                    {
+                        rb.AddForce(new Vector2(-1 * jumpSpeedX * Time.fixedDeltaTime, 1 * jumpSpeedY * Time.fixedDeltaTime), ForceMode2D.Impulse);
+                    }
+
+                }*/
+
+                if (Input.GetKey(KeyCode.D))
+                {
+                    jumping = Jump();
+                    StartCoroutine(jumping);
+                }
+                break;
 			case playerForms.Arm:
 				break;
 			default:
@@ -389,6 +406,14 @@ public class PlayerController : MonoBehaviour
         guideText.text = "";
         timer = 0;
 	}
+
+    public IEnumerator Jump() 
+    {
+        isJumping = true;
+        yield return new WaitUntil(() => groundedScript.isGrounded());
+        rb.AddForce(new Vector2(horizontal * jumpSpeedX * Time.fixedDeltaTime, 1 * jumpSpeedY * Time.fixedDeltaTime), ForceMode2D.Impulse);
+        isJumping = false;
+    }
 
 
 }
