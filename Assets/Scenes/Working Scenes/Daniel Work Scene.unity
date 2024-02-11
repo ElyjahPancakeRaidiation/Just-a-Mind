@@ -2675,6 +2675,14 @@ PrefabInstance:
       propertyPath: interactMask.m_Bits
       value: 264
       objectReference: {fileID: 0}
+    - target: {fileID: 6764691651494828799, guid: 0eebf9695a3cace40a4f744a5d99a8fe, type: 3}
+      propertyPath: m_Size.y
+      value: 2.2477503
+      objectReference: {fileID: 0}
+    - target: {fileID: 6764691651494828799, guid: 0eebf9695a3cace40a4f744a5d99a8fe, type: 3}
+      propertyPath: m_Offset.y
+      value: -0.41214973
+      objectReference: {fileID: 0}
     - target: {fileID: 8064381564403545213, guid: 0eebf9695a3cace40a4f744a5d99a8fe, type: 3}
       propertyPath: rayScales.Array.data[1]
       value: 1
@@ -3871,8 +3879,8 @@ Transform:
   m_GameObject: {fileID: 1765005975}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.863504, y: 0, z: 0}
-  m_LocalScale: {x: 2.6081889, y: 1, z: 1}
+  m_LocalPosition: {x: 1.887485, y: 0, z: 0}
+  m_LocalScale: {x: 100, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 315398003}
