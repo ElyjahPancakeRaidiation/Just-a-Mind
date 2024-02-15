@@ -15,7 +15,6 @@ public class CameraScript : MonoBehaviour
 
     public float increaseCamAmount;
 
-    [Header("----Cam Control Variables----")]
     public bool notFollowingX, notFollowingY;
     public static bool isCameraShaking, isCameraZooming;
     [SerializeField, Range(0, 3)]private float shakeAmount;
@@ -25,6 +24,8 @@ public class CameraScript : MonoBehaviour
         public float camFOV;//Called orthographic size in code 
     }
     public cameraDefualt camDefaultValues;//I wanted to play around with structs.
+
+    public Vector2 offset;
 
     
     //private bool goingRight, goingUp;//If player is going left, right will be false if player is going down, up will be false
@@ -42,7 +43,7 @@ public class CameraScript : MonoBehaviour
 
     private void OnEnable(){
         //cameraObj = GameObject.FindGameObjectWithTag("MainCamera");
-        origCamPos = cameraObj.transform.position;
+        //origCamPos = cameraObj.transform.position;
     }
 
     private void Update(){
@@ -118,12 +119,37 @@ public class CameraScript : MonoBehaviour
         if (!notFollowingX && !notFollowingY)
         {
             transform.position = (isComingBack) ? Vector2.MoveTowards(transform.position, (Vector2)followObj.transform.position, zoomBackSpeed * Time.deltaTime):
-            Vector2.Lerp(transform.position, (Vector2)followObj.position, speed);//Moves in all directions and smoothly comes back to the player
+            Vector2.Lerp(transform.position, (Vector2)followObj.position + offset, speed);//Moves in all directions and smoothly comes back to the player
         }
 
     }
 
-    public void ZoomCameraChange(float FOV, float zoomSpeed){//Zooms back and fourth wether it is the player or not. Never make the desired FOV smaller than the defualt FOV which is 5
+    public void ZoomCameraChange(Vector2 target, float zoomSpeed){//Zooms back and fourth wether it is the player or not. Never make the desired FOV smaller than the defualt FOV which is 5
+        
+        if (target.x > offset.x)
+        {
+            //Target is to the right
+            offset.x += Time.deltaTime * zoomSpeed;
+
+        }else if(target.x < offset.x){
+            //Target is to the left
+
+
+        }
+
+        if (target.y > offset.y)
+        {
+            //Target is above
+            offset.y += Time.deltaTime * zoomSpeed;
+
+            
+        }else if(target.y < offset.y){
+            //Target is below
+
+
+        }
+        
+        /*
         if (!isFollowingPlayer)
         {
             if (cam.fieldOfView < FOV)
@@ -142,6 +168,7 @@ public class CameraScript : MonoBehaviour
                 cam.fieldOfView = camDefaultValues.camFOV;
             }
         }
+        */
     }
     
     private void CameraShake()//Shake camera.

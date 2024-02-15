@@ -2,6 +2,7 @@ using System.Runtime.InteropServices;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Runtime.CompilerServices;
 
 public class CameraBorder : MonoBehaviour
 {
@@ -40,11 +41,12 @@ public class CameraBorder : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        StopCamAxis();
-        /*
+        
         //Overall Script is to check if the border is between two points of the screen. If it is it will stop the camera from moving until it is not. 
         if (camCol != null)
         {
+            StopCamAxis();
+            /*
             if (!isTransitionActivator)
             {
                 if (!CamController.activeController)
@@ -57,99 +59,116 @@ public class CameraBorder : MonoBehaviour
                 isTransitionActivator = true;
                 camController.isTransitioning = true;
             }
+            */
         }
-
-        if (isTransitionActivator)
-        {
-            if (camController.isTransitioning)
-            {
-                camController.TransitionWithPlayer(transitionCamEndPos);
-                camController.ZoomCameraChange(zoomCameraAmount, zoomCameraSpeed);
-            }
-        }
-        */
+        
     }
 
     private void FixedUpdate() => camCol = Physics2D.OverlapBox(colTransform.position, camVec, camRadius, playerMask);    
     private void OnDrawGizmos() => Gizmos.DrawWireCube(colTransform.position, camVec);
 
     private void StopCamAxis(){
-        Vector2 borderCamVec = cam.WorldToViewportPoint(transform.position);
-        /*
-        Vector2 toFarCol = (Vector2)cam.WorldToViewportPoint(borderCamVec) - (Vector2)cam.WorldToViewportPoint(new Vector2(0.99f, 0));
-        print("How far the border is" + toFarCol);
-        Vector2 toFarSubtract = (Vector2)cam.WorldToViewportPoint(borderCamVec) - toFarCol;
-        print("The border at the correct position" + toFarSubtract);
-        this.transform.position = toFarSubtract;
-        */
-
-        cam.gameObject.transform.position = (Vector2)cam.WorldToViewportPoint(new Vector2(0.99f, 0.46f));
-
+        Vector2 borderCamVec = cam.WorldToViewportPoint(transform.position);//The border cam but in viewport position or the cameras point of view
         //Uncomment this to see the objects position in the screen if you don't fully understand.
         //print(borderCamVec);
-
+        
         if (xAxisBorder)
         {
             if (borderCamVec.x <= 0.99f && borderCamVec.x >= 0.56f)//Right Side
             {
-                if (CameraScript.playerObj.transform.position.x > cam.gameObject.transform.position.x)
+                
+                if (CameraScript.playerObj.transform.position.x >= camController.gameObject.transform.position.x)
                 {
-                    //if the player is going right
-                    camController.notFollowingX = true;
+                    if (borderCamVec.x <= 0.90f && borderCamVec.x >= 0.56f)//Checks if the border is past the pos it should be
+                    {
+                        camController.notFollowingX = true;   
+                        float edgeOfCameraX = cam.ViewportToWorldPoint(new Vector3(0.98f, 0, 0)).x;//Puts the edge of the camera into a world position
+                        float correctPosX = edgeOfCameraX - cam.ViewportToWorldPoint(new Vector3(borderCamVec.x, 0, 0)).x;//Converting the border cameras X back to world position
+                        camController.gameObject.transform.position = new Vector3(camController.gameObject.transform.position.x - (correctPosX), camController.gameObject.transform.position.y, camController.gameObject.transform.position.z);
+                        //In summary this entire section gets the correct position on where the camera needs to be if the border is closer to the camera than intended.                
+                    }
+                    else{
+                        camController.notFollowingX = true;
+                    }
                 }
-                else if(CameraScript.playerObj.transform.position.x < cam.gameObject.transform.position.x )
-                {
-                    //if the player is going left
+                else{
                     camController.notFollowingX = false;
                 }
             }
-            else if(borderCamVec.x >= 0.01f && borderCamVec.x <= 0.46f){//Left Side
-                if (CameraScript.playerObj.transform.position.x > cam.gameObject.transform.position.x)
+            else if(borderCamVec.x >= 0.01f && borderCamVec.x <= 0.46f)//Left Side
+            {
+
+                print("Inside the fisrt step");
+                if (CameraScript.playerObj.transform.position.x <= camController.gameObject.transform.position.x)
                 {
-                    //right
+                    print("Ok were past the camera");
+                    if (borderCamVec.x >= 0.09f && borderCamVec.x <= 0.46f)//Checks if the border is past the pos it should be
+                    {
+                        print("FUck you");
+                        camController.notFollowingX = true;
+                        float edgeOfCameraX = cam.ViewportToWorldPoint(new Vector3(0.02f, 0, 0)).x;//Puts the edge of the camera into a world position
+                        float correctPosX = edgeOfCameraX - cam.ViewportToWorldPoint(new Vector3(borderCamVec.x, 0, 0)).x;//Converting the border cameras X back to world position
+                        camController.gameObject.transform.position = new Vector3(camController.gameObject.transform.position.x - (correctPosX), camController.gameObject.transform.position.y, camController.gameObject.transform.position.z);
+                        //In summary this entire section gets the correct position on where the camera needs to be if the border is closer to the camera than intended.                
+                    }
+                    else{
+                        camController.notFollowingX = true;
+                    }
+                }
+                else{
                     camController.notFollowingX = false;
                 }
-                else if(CameraScript.playerObj.transform.position.x < cam.gameObject.transform.position.x)
-                {
-                    //left
-                    camController.notFollowingX = true;
-                }
+
+            }
+            else{
+                camController.notFollowingX = false;
             }
             
         }
-        else{
-            if (borderCamVec.y <= 0.98f && borderCamVec.y >= 0.90f)//Up Side
+        else{//For Y axis
+            if (borderCamVec.y <= 0.99f && borderCamVec.y >= 0.56f)//Up Side
             {
-                if (CameraScript.playerObj.transform.position.y > cam.gameObject.transform.position.y)
+                if (CameraScript.playerObj.transform.position.y >= camController.gameObject.transform.position.y)
                 {
-                    //if the player is going up
-                    camController.notFollowingY = true;
+                    if (borderCamVec.y <= 0.90f && borderCamVec.y >= 0.56f)//Checks if the border is past the pos it should be
+                    {
+                        camController.notFollowingY = true;
+                        float edgeOfCameraY = cam.ViewportToWorldPoint(new Vector3(0, 0.98f, 0)).y;//Puts the edge of the camera into a world position
+                        float correctPosY = edgeOfCameraY - cam.ViewportToWorldPoint(new Vector3(0, borderCamVec.y, 0)).y;//Converting the border cameras Y back to world position
+                        camController.gameObject.transform.position = new Vector3(camController.gameObject.transform.position.x, camController.gameObject.transform.position.y - (correctPosY), camController.gameObject.transform.position.z);
+                        //In summary this entire section gets the correct position on where the camera needs to be if the border is closer to the camera than intended.                
+                    }
+                    else{
+                        camController.notFollowingY = true;
+                    }
                 }
-                else if(CameraScript.playerObj.transform.position.y < cam.gameObject.transform.position.y)
-                {
-                    //if the player is going down
+                else{
                     camController.notFollowingY = false;
-                    camController.isComingBack = true;
                 }
             }
-            else if(borderCamVec.y >= 0.01f && borderCamVec.y <= 0.05f){//Down Side
-                if (CameraScript.playerObj.transform.position.y > cam.gameObject.transform.position.y)
+            else if(borderCamVec.y >= 0.01f && borderCamVec.y <= 0.46f){//Down Side
+                if (CameraScript.playerObj.transform.position.y <= camController.gameObject.transform.position.y)
                 {
-                    //if the player is going up
-                    camController.notFollowingY = false;
-                    camController.isComingBack = true;
+                    if (borderCamVec.y >= 0.09f && borderCamVec.y <= 0.46f)//Checks if the border is past the pos it should be
+                    {
+                        camController.notFollowingY = true;
+                        float edgeOfCameraY = cam.ViewportToWorldPoint(new Vector3(0, 0.02f, 0)).y;//Puts the edge of the camera into a world position
+                        float correctPosY = edgeOfCameraY - cam.ViewportToWorldPoint(new Vector3(0, borderCamVec.y, 0)).y;//Converting the border cameras Y back to world position
+                        camController.gameObject.transform.position = new Vector3(camController.gameObject.transform.position.x, camController.gameObject.transform.position.y - (correctPosY), camController.gameObject.transform.position.z);
+                        //In summary this entire section gets the correct position on where the camera needs to be if the border is closer to the camera than intended.                
+                    }
+                    else{
+                        camController.notFollowingY = true;
+                    }
                 }
-                else if(CameraScript.playerObj.transform.position.y < cam.gameObject.transform.position.y)
-                {
-                    //if the player is going down
-                    camController.notFollowingY = true;
+                else{
+                    camController.notFollowingY = false;
                 }
             }
             else{
                 camController.notFollowingY = false;
             }
         }
-        
     }
 
 }

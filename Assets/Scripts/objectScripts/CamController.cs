@@ -14,6 +14,9 @@ public class CamController : MonoBehaviour
     private Collider2D camHitCol;
     [SerializeField]private LayerMask playerMask;
 
+    bool once;
+    Vector2 conToCam;
+
 
 
     // Start is called before the first frame update
@@ -34,12 +37,25 @@ public class CamController : MonoBehaviour
     {
         if (camHitCol != null)
         {
+            
+            print("control to cam: " + (this.transform.position - cam.gameObject.transform.position));
+            if (!once)
+            {
+                conToCam = this.transform.position - cam.gameObject.transform.position;
+                once = true;
+            }
+            cam.ZoomCameraChange(conToCam, 2f);
+
+            /*
             activeController = true;
             cam.isFollowingPlayer = false;
             cam.FollowObjDelay(followSpeed, transform);
             cam.ZoomCameraChange(zoomCameraAmount, zoomCameraSpeed);
             cam.isComingBack = true;
+            */
         }else{
+            once = false;
+            /*
             if (!activeController)
             {
                 if (!cam.isTransitioning)
@@ -50,6 +66,7 @@ public class CamController : MonoBehaviour
             }
 
             activeController = false;
+            */
         }
     }
 
