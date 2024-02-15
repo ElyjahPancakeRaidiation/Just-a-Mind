@@ -99,8 +99,8 @@ public class CameraScript : MonoBehaviour
         {
             if (notFollowingX)
             {
-                float Y = (!isComingBack) ? Mathf.Lerp(transform.position.y, playerObj.transform.position.y, speed):
-                Mathf.MoveTowards(transform.position.y, playerObj.transform.position.y, 20 * Time.deltaTime);//Only moves on the Y axis and switches smoothly when the camera is coming back to the player
+                float Y = (!isComingBack) ? Mathf.Lerp(transform.position.y, playerObj.transform.position.y + offset.y, speed):
+                Mathf.MoveTowards(transform.position.y, playerObj.transform.position.y + offset.y, 20 * Time.deltaTime);//Only moves on the Y axis and switches smoothly when the camera is coming back to the player
                 
                 transform.position = new Vector2(transform.position.x, Y);
                 //print("Not following X");
@@ -108,8 +108,8 @@ public class CameraScript : MonoBehaviour
 
             if (notFollowingY)
             {
-                float X = (!isComingBack) ? Mathf.Lerp(transform.position.x, playerObj.transform.position.x, speed):
-                Mathf.MoveTowards(transform.position.x, playerObj.transform.position.x, 20 * Time.deltaTime);////Only moves on the X axis and switches smoothly when the camera is coming back to the player
+                float X = (!isComingBack) ? Mathf.Lerp(transform.position.x, playerObj.transform.position.x + offset.x, speed):
+                Mathf.MoveTowards(transform.position.x, playerObj.transform.position.x + offset.x, 20 * Time.deltaTime);////Only moves on the X axis and switches smoothly when the camera is coming back to the player
 
                 transform.position = new Vector2(X, transform.position.y);
                 //print("Not following Y");
@@ -118,7 +118,7 @@ public class CameraScript : MonoBehaviour
         
         if (!notFollowingX && !notFollowingY)
         {
-            transform.position = (isComingBack) ? Vector2.MoveTowards(transform.position, (Vector2)followObj.transform.position, zoomBackSpeed * Time.deltaTime):
+            transform.position = (isComingBack) ? Vector2.MoveTowards(transform.position, (Vector2)followObj.transform.position + offset, zoomBackSpeed * Time.deltaTime):
             Vector2.Lerp(transform.position, (Vector2)followObj.position + offset, speed);//Moves in all directions and smoothly comes back to the player
         }
 
@@ -130,7 +130,6 @@ public class CameraScript : MonoBehaviour
         {
             //Target is to the right
             offset.x += Time.deltaTime * zoomSpeed;
-
         }else if(target.x < offset.x){
             //Target is to the left
 

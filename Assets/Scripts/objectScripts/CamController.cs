@@ -38,7 +38,7 @@ public class CamController : MonoBehaviour
         if (camHitCol != null)
         {
             
-            print("control to cam: " + (this.transform.position - cam.gameObject.transform.position));
+            //print("control to cam: " + (this.transform.position - cam.gameObject.transform.position));
             if (!once)
             {
                 conToCam = this.transform.position - cam.gameObject.transform.position;
