@@ -178,6 +178,11 @@ public class Abilities : MonoBehaviour
             
         }
 
+		if (Input.GetKeyUp(abilityKey))
+		{
+            keyHoldDown = 0;
+		}
+
         if (groundedScript.isGrounded())
         {
             if (Input.GetKeyUp(abilityKey))
