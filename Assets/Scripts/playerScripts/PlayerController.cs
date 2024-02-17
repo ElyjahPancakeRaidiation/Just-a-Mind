@@ -35,6 +35,7 @@ public class PlayerController : MonoBehaviour
     public GameObject grabOn;
 
     public TMP_Text guideText;
+    [SerializeField] GameObject thoughtBubble;
 
     #region movements
     [Header("Movement")]
@@ -42,7 +43,7 @@ public class PlayerController : MonoBehaviour
     public Rigidbody2D rb;
     public float horizontal, vertical;
     public int horiLatestInput = 1, vertLatestInput = 0;
-    public float speed;
+    public float speed,jumpSpeedX,jumpSpeedY;
     [Header("Interaction")]
     private Collider2D interactCol;
     [SerializeField]public float interactRadius;
@@ -71,6 +72,8 @@ public class PlayerController : MonoBehaviour
     #region Pogo movement variables
     [Header("Body")]
     [SerializeField]private Collider2D pogoCol;
+    public IEnumerator jumping;
+    public bool canJump = true;
     #endregion
     #region Arm movement variables
 
@@ -290,9 +293,54 @@ public class PlayerController : MonoBehaviour
 
     private void Movements()
     {//different movements for each form
-        rb.AddForce(new Vector2(horizontal * speed * Time.fixedDeltaTime, 0), ForceMode2D.Impulse);//moves the player in the direction the player is pressing
+    
 
-    }
+		switch (playerForm)
+		{
+			case playerForms.Ball:
+                rb.AddForce(new Vector2(horizontal * speed * Time.fixedDeltaTime, 0), ForceMode2D.Impulse);//moves the player in the direction the player is pressing
+                break;
+			case playerForms.Pogo:
+				/*if (Input.GetKey(KeyCode.D))
+				{
+					if (groundedScript.isGrounded())
+					{
+                        rb.AddForce(new Vector2(1 * jumpSpeedX * Time.fixedDeltaTime, 1 * jumpSpeedY * Time.fixedDeltaTime), ForceMode2D.Impulse);
+                    }
+                    
+				}
+
+                if (Input.GetKey(KeyCode.A))
+                {
+                    if (groundedScript.isGrounded())
+                    {
+                        rb.AddForce(new Vector2(-1 * jumpSpeedX * Time.fixedDeltaTime, 1 * jumpSpeedY * Time.fixedDeltaTime), ForceMode2D.Impulse);
+                    }
+
+                }*/
+
+				if (canJump)
+				{
+                    if (Input.GetKey(KeyCode.D))
+                    {
+                        jumping = Jump();
+                        StartCoroutine(jumping);
+                    }
+
+                    if (Input.GetKey(KeyCode.A))
+                    {
+                        jumping = Jump();
+                        StartCoroutine(jumping);
+                    }
+                }
+                break;
+			case playerForms.Arm:
+				break;
+			default:
+				break;
+		}
+
+	}
     private void OnDrawGizmos()  
     {
         Gizmos.DrawWireSphere(transform.position, interactRadius);
@@ -323,6 +371,7 @@ public class PlayerController : MonoBehaviour
         circleCol = Physics2D.OverlapCircle(spherePoint.transform.position, interactRadius, interactMask); //set circleCol to Overlap Cirlce
 		if (circleCol != null)
 		{
+
         }
 
 
@@ -360,16 +409,42 @@ public class PlayerController : MonoBehaviour
             timer += Time.deltaTime;
     		if (timer >= maxTime)
     		{
-                guideText.text = "Yo wasug my G you can't go up you better SPACE to dash on god fr fr skibdi";
+                StartCoroutine(DoTextBox());
+                //guideText.text = "Dash by pressing space. \nUse WASD to set the direction";
     		}
+            else{
+                //guideText.text = "";
+            }
         }
 	}
 
+    IEnumerator DoTextBox()
+    {
+        Instantiate(thoughtBubble, new Vector2(player.transform.position.x + textOffsetX, player.transform.position.y + textOffsetY), quaternion.identity);
+        yield return new WaitForEndOfFrame();
+        DestroyImmediate(thoughtBubble, true);
+
+    }
 	private void OnTriggerExit2D(Collider2D collision)
 	{
+        Destroy(thoughtBubble);
         guideText.text = "";
         timer = 0;
 	}
+
+    public IEnumerator Jump() 
+    {
+        Debug.Log("Starting");
+        canJump = true;
+        yield return new WaitUntil(() => groundedScript.isGrounded());
+        Vector2 jumpForce = new Vector2(horizontal * jumpSpeedX, jumpSpeedY);
+        rb.AddForce(jumpForce, ForceMode2D.Impulse);
+        Debug.Log("Ending");
+        canJump = false;
+        yield return new WaitUntil(() => groundedScript.isGrounded());
+        canJump = true;
+        
+    }
 
 
 }
