@@ -22,7 +22,8 @@ public class PlayerController : MonoBehaviour
     public GameManager gm;
     [SerializeField]private SpriteRenderer playerSpriteRender;
     [SerializeField]private Sprite[] playerFormSprite;
-    private Animator anim; 
+    private Animator anim;
+    public float jumpTime;
 
     private static bool playerDead;
 
@@ -116,6 +117,7 @@ public class PlayerController : MonoBehaviour
         if (canMove) {
             horizontal = Input.GetAxisRaw("Horizontal");
             vertical = Input.GetAxisRaw("Vertical");
+            Movements();
         }
 
         LatestInput((int)horizontal, (int)vertical);
@@ -126,7 +128,7 @@ public class PlayerController : MonoBehaviour
 
         if (canMove){
             interactCol = Physics2D.OverlapCircle(transform.position, interactRadius, interactMask);
-            Movements();
+
             if (!ignoreResistences)
             {
                 if (groundedScript.isGrounded())
@@ -301,33 +303,15 @@ public class PlayerController : MonoBehaviour
                 rb.AddForce(new Vector2(horizontal * speed * Time.fixedDeltaTime, 0), ForceMode2D.Impulse);//moves the player in the direction the player is pressing
                 break;
 			case playerForms.Pogo:
-				/*if (Input.GetKey(KeyCode.D))
-				{
-					if (groundedScript.isGrounded())
-					{
-                        rb.AddForce(new Vector2(1 * jumpSpeedX * Time.fixedDeltaTime, 1 * jumpSpeedY * Time.fixedDeltaTime), ForceMode2D.Impulse);
-                    }
-                    
-				}
-
-                if (Input.GetKey(KeyCode.A))
-                {
-                    if (groundedScript.isGrounded())
-                    {
-                        rb.AddForce(new Vector2(-1 * jumpSpeedX * Time.fixedDeltaTime, 1 * jumpSpeedY * Time.fixedDeltaTime), ForceMode2D.Impulse);
-                    }
-
-                }*/
-
 				if (canJump)
 				{
-                    if (Input.GetKey(KeyCode.D))
+                    if (Input.GetKeyDown(KeyCode.D) && groundedScript.isGrounded())
                     {
                         jumping = Jump();
                         StartCoroutine(jumping);
                     }
 
-                    if (Input.GetKey(KeyCode.A))
+                    if (Input.GetKeyDown(KeyCode.A) && groundedScript.isGrounded())
                     {
                         jumping = Jump();
                         StartCoroutine(jumping);
@@ -434,16 +418,14 @@ public class PlayerController : MonoBehaviour
 
     public IEnumerator Jump() 
     {
-        Debug.Log("Starting");
+        Debug.Log("Jumped");
         canJump = true;
-        yield return new WaitUntil(() => groundedScript.isGrounded());
         Vector2 jumpForce = new Vector2(horizontal * jumpSpeedX, jumpSpeedY);
         rb.AddForce(jumpForce, ForceMode2D.Impulse);
         Debug.Log("Ending");
         canJump = false;
-        yield return new WaitUntil(() => groundedScript.isGrounded());
-        canJump = true;
-        
+		yield return new WaitForSeconds(jumpTime);
+		canJump = true;
     }
 
 

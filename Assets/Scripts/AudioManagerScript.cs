@@ -1,3 +1,4 @@
+using System.Net.Sockets;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,8 +11,12 @@ public class AudioManagerScript : MonoBehaviour
     public UnityEvent onMoveStart;
     public UnityEvent onMoveStop;
 
-    public AudioSource audioSource;
+    public AudioSource[] audioSource;
+    
     public AudioClip[] movingClips;
+    public AudioClip[] soundTrack;
+
+    public AudioClip currentMusic; 
 
     public PlayerController pc;
     public isGroundedScript gs;
@@ -35,7 +40,9 @@ public class AudioManagerScript : MonoBehaviour
         pc = player.GetComponent<PlayerController>();
         groundRay = GameObject.Find("Ground Ray Object");
         gs = groundRay.GetComponent<isGroundedScript>();
-        audioSource = GetComponent<AudioSource>();
+        audioSource[0] = GetComponent<AudioSource>();
+        audioSource[1] = GetComponent<AudioSource>();
+        currentMusic = soundTrack[0];
         /*rb = player.GetComponent<Rigidbody2D>();*/
         
     }
@@ -51,6 +58,14 @@ public class AudioManagerScript : MonoBehaviour
         {
             StopMoving();
         }
+
+      PlayAudioClip();  
+    }
+
+    public void PlayAudioClip()
+    {
+        audioSource[1].clip = currentMusic;
+        audioSource[1].Play();
     }
 
     void StartMoving() 
@@ -73,7 +88,7 @@ public class AudioManagerScript : MonoBehaviour
 		if (walkingSounds != null)
 		{
             StopCoroutine(walkingSounds);
-            audioSource.Stop();
+            audioSource[0].Stop();
             musicIsPlaying = false;
 		}
     }
@@ -85,7 +100,7 @@ public class AudioManagerScript : MonoBehaviour
         musicIsPlaying = true;
         for (int i = 0; i < movingClips.Length; i++)
         {
-            audioSource.PlayOneShot(movingClips[i]);
+            audioSource[0].PlayOneShot(movingClips[i]);
             yield return new WaitForSeconds(movingClips[i].length);
         }
         musicIsPlaying = false;
@@ -93,4 +108,6 @@ public class AudioManagerScript : MonoBehaviour
 
 		
     }
+
+    
 }
