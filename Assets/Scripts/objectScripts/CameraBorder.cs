@@ -21,6 +21,7 @@ public class CameraBorder : MonoBehaviour
     [SerializeField]private Transform colTransform;
     [SerializeField]private Vector2 camVec;
     [SerializeField]private LayerMask playerMask;
+    private bool luvProgramming;
 
     // Start is called before the first frame update
     void Start()
@@ -45,7 +46,12 @@ public class CameraBorder : MonoBehaviour
         //Overall Script is to check if the border is between two points of the screen. If it is it will stop the camera from moving until it is not. 
         if (camCol != null)
         {
-            StopCamAxis();
+            luvProgramming = true;
+            if (luvProgramming)
+            {
+                StopCamAxis();
+            }
+            
             /*
             if (!isTransitionActivator)
             {
@@ -60,6 +66,9 @@ public class CameraBorder : MonoBehaviour
                 camController.isTransitioning = true;
             }
             */
+        }else{
+            luvProgramming = false;
+            
         }
         
     }
@@ -97,14 +106,11 @@ public class CameraBorder : MonoBehaviour
             }
             else if(borderCamVec.x >= 0.01f && borderCamVec.x <= 0.46f)//Left Side
             {
-
-                print("Inside the fisrt step");
                 if (CameraScript.playerObj.transform.position.x <= camController.gameObject.transform.position.x)
                 {
-                    print("Ok were past the camera");
                     if (borderCamVec.x >= 0.09f && borderCamVec.x <= 0.46f)//Checks if the border is past the pos it should be
                     {
-                        print("FUck you");
+                        
                         camController.notFollowingX = true;
                         float edgeOfCameraX = cam.ViewportToWorldPoint(new Vector3(0.02f, 0, 0)).x;//Puts the edge of the camera into a world position
                         float correctPosX = edgeOfCameraX - cam.ViewportToWorldPoint(new Vector3(borderCamVec.x, 0, 0)).x;//Converting the border cameras X back to world position

@@ -14,10 +14,6 @@ public class CamController : MonoBehaviour
     private Collider2D camHitCol;
     [SerializeField]private LayerMask playerMask;
 
-    bool once;
-    Vector2 conToCam;
-
-
 
     // Start is called before the first frame update
     void Start()
@@ -36,7 +32,7 @@ public class CamController : MonoBehaviour
     void Update()
     {
         if (camHitCol != null)
-        {
+        {   
             activeController = true;
             cam.isFollowingPlayer = false;
             cam.FollowObjDelay(followSpeed, transform);
@@ -44,8 +40,6 @@ public class CamController : MonoBehaviour
             cam.isComingBack = true;
             
         }else{
-            once = false;
-            
             if (!activeController)
             {
                 if (!cam.isTransitioning)
