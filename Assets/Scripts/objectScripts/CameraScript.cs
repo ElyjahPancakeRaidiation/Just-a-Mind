@@ -25,8 +25,6 @@ public class CameraScript : MonoBehaviour
     }
     public cameraDefualt camDefaultValues;//I wanted to play around with structs.
 
-    public Vector2 offset;
-
     
     //private bool goingRight, goingUp;//If player is going left, right will be false if player is going down, up will be false
     //[SerializeField]private Vector2 cameraOffset;
@@ -34,7 +32,7 @@ public class CameraScript : MonoBehaviour
 
     private void Start() {
         cam = GetComponentInChildren<Camera>();
-        camDefaultValues.camFOV = 70f;
+        camDefaultValues.camFOV = 8;
         cameraObj = GameObject.FindGameObjectWithTag("MainCamera");
         playerObj = GameObject.FindGameObjectWithTag("Player");
         //playerRB = playerObj.GetComponent<Rigidbody2D>();
@@ -68,7 +66,8 @@ public class CameraScript : MonoBehaviour
 
     public void FollowObjDelay(float speed, Transform followObj)//Follows any obj(Should always be put in fixed update so it can add the rigidbody. If it is not in F.U it will make anything with a rigidbody jitter when moved.)
     {
-        transform.position = Vector2.Lerp(transform.position, (Vector2)followObj.position , speed);
+        //transform.position = Vector2.Lerp(transform.position, (Vector2)followObj.position , speed);
+        transform.position = Vector2.MoveTowards(transform.position, followObj.position, speed * Time.deltaTime);
         //GoingToFast(40, 40);
 
     }
@@ -99,8 +98,9 @@ public class CameraScript : MonoBehaviour
         {
             if (notFollowingX)
             {
-                float Y = (!isComingBack) ? Mathf.Lerp(transform.position.y, playerObj.transform.position.y + offset.y, speed):
-                Mathf.MoveTowards(transform.position.y, playerObj.transform.position.y + offset.y, 20 * Time.deltaTime);//Only moves on the Y axis and switches smoothly when the camera is coming back to the player
+                //Only follows the y axis
+                float Y = (!isComingBack) ? Mathf.Lerp(transform.position.y, followObj.transform.position.y, speed):
+                Mathf.MoveTowards(transform.position.y, followObj.transform.position.y, 20 * Time.deltaTime);//Only moves on the Y axis and switches smoothly when the camera is coming back to the player
                 
                 transform.position = new Vector2(transform.position.x, Y);
                 //print("Not following X");
@@ -108,8 +108,8 @@ public class CameraScript : MonoBehaviour
 
             if (notFollowingY)
             {
-                float X = (!isComingBack) ? Mathf.Lerp(transform.position.x, playerObj.transform.position.x + offset.x, speed):
-                Mathf.MoveTowards(transform.position.x, playerObj.transform.position.x + offset.x, 20 * Time.deltaTime);////Only moves on the X axis and switches smoothly when the camera is coming back to the player
+                float X = (!isComingBack) ? Mathf.Lerp(transform.position.x, followObj.transform.position.x, speed):
+                Mathf.MoveTowards(transform.position.x, followObj.transform.position.x, 20 * Time.deltaTime);////Only moves on the X axis and switches smoothly when the camera is coming back to the player
 
                 transform.position = new Vector2(X, transform.position.y);
                 //print("Not following Y");
@@ -118,56 +118,33 @@ public class CameraScript : MonoBehaviour
         
         if (!notFollowingX && !notFollowingY)
         {
-            transform.position = (isComingBack) ? Vector2.MoveTowards(transform.position, (Vector2)followObj.transform.position + offset, zoomBackSpeed * Time.deltaTime):
-            Vector2.Lerp(transform.position, (Vector2)followObj.position + offset, speed);//Moves in all directions and smoothly comes back to the player
+            transform.position = (isComingBack) ? Vector2.MoveTowards(transform.position, (Vector2)followObj.transform.position, zoomBackSpeed * Time.deltaTime):
+            Vector2.Lerp(transform.position, (Vector2)followObj.position, speed);//Moves in all directions and smoothly comes back to the player
         }
 
     }
 
-    public void ZoomCameraChange(Vector2 target, float zoomSpeed){//Zooms back and fourth wether it is the player or not. Never make the desired FOV smaller than the defualt FOV which is 5
+    public void ZoomCameraChange(float FOV, float zoomSpeed){//Zooms back and fourth wether it is the player or not. Never make the desired FOV smaller than the defualt FOV which is 5
         
-        if (target.x > offset.x)
-        {
-            //Target is to the right
-            offset.x += Time.deltaTime * zoomSpeed;
-        }else if(target.x < offset.x){
-            //Target is to the left
-
-
-        }
-
-        if (target.y > offset.y)
-        {
-            //Target is above
-            offset.y += Time.deltaTime * zoomSpeed;
-
-            
-        }else if(target.y < offset.y){
-            //Target is below
-
-
-        }
-        
-        /*
         if (!isFollowingPlayer)
         {
-            if (cam.fieldOfView < FOV)
+            if (cam.orthographicSize < FOV)
             {
-                cam.fieldOfView += Time.deltaTime * zoomSpeed;
+                cam.orthographicSize += Time.deltaTime * zoomSpeed;
             }else{
-                cam.fieldOfView = FOV;
+                cam.orthographicSize = FOV;
             }
         }
         else
         {
-            if (cam.fieldOfView > camDefaultValues.camFOV)
+            if (cam.orthographicSize > camDefaultValues.camFOV)
             {
-                cam.fieldOfView -= Time.deltaTime * zoomSpeed;
+                cam.orthographicSize -= Time.deltaTime * zoomSpeed;
             }else{
-                cam.fieldOfView = camDefaultValues.camFOV;
+                cam.orthographicSize = camDefaultValues.camFOV;
             }
         }
-        */
+        
     }
     
     private void CameraShake()//Shake camera.
