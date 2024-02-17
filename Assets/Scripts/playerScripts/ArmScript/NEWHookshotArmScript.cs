@@ -130,11 +130,6 @@ public class NEWHookshotArmScript : MonoBehaviour
 		*/
 	}
 
-	
-
-	
-
-
 	public GameObject checkForClosestValidVine()
     {
         // returns an array of the objects with layer vineColliders
@@ -186,9 +181,10 @@ public class NEWHookshotArmScript : MonoBehaviour
 		
         if (grabOn == null)
         {
+			isConnected = false;
             return;
         }
-		Debug.Log(grabOn + "Drugs");
+		Debug.Log(grabOn + " Drugs");
 
 		if (isConnected) // If the cirlce hits something that is in the hook shot range and is in the ground layer
 		{
@@ -198,6 +194,10 @@ public class NEWHookshotArmScript : MonoBehaviour
 			LR.enabled = true; // Line Renderer is enabled
 			LR.SetPosition(0, transform.position); // Starts at grapple tip
 			LR.SetPosition(1, grabOn.transform.position); // Ends at the target
+		}
+		else
+		{
+			areYouHookShooting = false;
 		}
     }
 
