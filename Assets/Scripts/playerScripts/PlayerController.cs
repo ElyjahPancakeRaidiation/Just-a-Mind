@@ -24,6 +24,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]private Sprite[] playerFormSprite;
     private Animator anim; 
 
+    private static bool playerDead;
+
     public Collider2D circleCol; // checks for all colliders
     public Collider2D vineCol;
     
@@ -33,6 +35,7 @@ public class PlayerController : MonoBehaviour
     public GameObject grabOn;
 
     public TMP_Text guideText;
+    [SerializeField] GameObject thoughtBubble;
 
     #region movements
     [Header("Movement")]
@@ -393,6 +396,7 @@ public class PlayerController : MonoBehaviour
 		{
             case "Spike":
                 this.transform.position = spawner.transform.position;
+                playerDead = true;
                 break;
 		}
 	}
@@ -405,13 +409,25 @@ public class PlayerController : MonoBehaviour
             timer += Time.deltaTime;
     		if (timer >= maxTime)
     		{
-                guideText.text = "Yo wasug my G you can't go up you better SHIFT to dash on god fr fr skibdi";
+                StartCoroutine(DoTextBox());
+                //guideText.text = "Dash by pressing space. \nUse WASD to set the direction";
     		}
+            else{
+                //guideText.text = "";
+            }
         }
 	}
 
+    IEnumerator DoTextBox()
+    {
+        Instantiate(thoughtBubble, new Vector2(player.transform.position.x + textOffsetX, player.transform.position.y + textOffsetY), quaternion.identity);
+        yield return new WaitForEndOfFrame();
+        DestroyImmediate(thoughtBubble, true);
+
+    }
 	private void OnTriggerExit2D(Collider2D collision)
 	{
+        Destroy(thoughtBubble);
         guideText.text = "";
         timer = 0;
 	}
