@@ -160,6 +160,7 @@ MonoBehaviour:
   player: {fileID: 0}
   grabOn: {fileID: 0}
   guideText: {fileID: 0}
+  thoughtBubble: {fileID: 0}
   canMove: 1
   rb: {fileID: 0}
   horizontal: 0
@@ -167,6 +168,8 @@ MonoBehaviour:
   horiLatestInput: 0
   vertLatestInput: 0
   speed: 15
+  jumpSpeedX: 0
+  jumpSpeedY: 0
   interactRadius: 0.7
   interactMask:
     serializedVersion: 2
@@ -180,6 +183,7 @@ MonoBehaviour:
   ballCol: {fileID: 4243366355294756771}
   maxSpeedCopy: 0
   pogoCol: {fileID: 6764691651494828799}
+  canJump: 1
 --- !u!50 &3374888515853459002
 Rigidbody2D:
   serializedVersion: 4
@@ -347,7 +351,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5150928139307579840}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 49e4cb1a9e1e37e48b1da0ee8de0267a, type: 2}
   m_CullingMode: 0

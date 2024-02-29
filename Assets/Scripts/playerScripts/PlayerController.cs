@@ -22,7 +22,10 @@ public class PlayerController : MonoBehaviour
     public GameManager gm;
     [SerializeField]private SpriteRenderer playerSpriteRender;
     [SerializeField]private Sprite[] playerFormSprite;
-    private Animator anim; 
+    private Animator anim;
+    public float jumpTime;
+
+    private static bool playerDead;
 
     public Collider2D circleCol; // checks for all colliders
     public Collider2D vineCol;
@@ -41,7 +44,7 @@ public class PlayerController : MonoBehaviour
     public Rigidbody2D rb;
     public float horizontal, vertical;
     public int horiLatestInput = 1, vertLatestInput = 0;
-    public float speed;
+    public float speed,jumpSpeedX,jumpSpeedY;
     [Header("Interaction")]
     private Collider2D interactCol;
     [SerializeField]public float interactRadius;
@@ -70,6 +73,8 @@ public class PlayerController : MonoBehaviour
     #region Pogo movement variables
     [Header("Body")]
     [SerializeField]private Collider2D pogoCol;
+    public IEnumerator jumping;
+    public bool canJump = true;
     #endregion
     #region Arm movement variables
 
@@ -112,6 +117,7 @@ public class PlayerController : MonoBehaviour
         if (canMove) {
             horizontal = Input.GetAxisRaw("Horizontal");
             vertical = Input.GetAxisRaw("Vertical");
+            Movements();
         }
 
         LatestInput((int)horizontal, (int)vertical);
@@ -122,7 +128,7 @@ public class PlayerController : MonoBehaviour
 
         if (canMove){
             interactCol = Physics2D.OverlapCircle(transform.position, interactRadius, interactMask);
-            Movements();
+
             if (!ignoreResistences)
             {
                 if (groundedScript.isGrounded())
@@ -289,9 +295,36 @@ public class PlayerController : MonoBehaviour
 
     private void Movements()
     {//different movements for each form
-        rb.AddForce(new Vector2(horizontal * speed * Time.fixedDeltaTime, 0), ForceMode2D.Impulse);//moves the player in the direction the player is pressing
+    
 
-    }
+		switch (playerForm)
+		{
+			case playerForms.Ball:
+                rb.AddForce(new Vector2(horizontal * speed * Time.fixedDeltaTime, 0), ForceMode2D.Impulse);//moves the player in the direction the player is pressing
+                break;
+			case playerForms.Pogo:
+				if (canJump)
+				{
+                    if (Input.GetKeyDown(KeyCode.D) && groundedScript.isGrounded())
+                    {
+                        jumping = Jump();
+                        StartCoroutine(jumping);
+                    }
+
+                    if (Input.GetKeyDown(KeyCode.A) && groundedScript.isGrounded())
+                    {
+                        jumping = Jump();
+                        StartCoroutine(jumping);
+                    }
+                }
+                break;
+			case playerForms.Arm:
+				break;
+			default:
+				break;
+		}
+
+	}
     private void OnDrawGizmos()  
     {
         Gizmos.DrawWireSphere(transform.position, interactRadius);
@@ -322,6 +355,7 @@ public class PlayerController : MonoBehaviour
         circleCol = Physics2D.OverlapCircle(spherePoint.transform.position, interactRadius, interactMask); //set circleCol to Overlap Cirlce
 		if (circleCol != null)
 		{
+
         }
 
 
@@ -346,6 +380,7 @@ public class PlayerController : MonoBehaviour
 		{
             case "Spike":
                 this.transform.position = spawner.transform.position;
+                playerDead = true;
                 break;
 		}
 	}
@@ -380,6 +415,18 @@ public class PlayerController : MonoBehaviour
         guideText.text = "";
         timer = 0;
 	}
+
+    public IEnumerator Jump() 
+    {
+        Debug.Log("Jumped");
+        canJump = true;
+        Vector2 jumpForce = new Vector2(horizontal * jumpSpeedX, jumpSpeedY);
+        rb.AddForce(jumpForce, ForceMode2D.Impulse);
+        Debug.Log("Ending");
+        canJump = false;
+		yield return new WaitForSeconds(jumpTime);
+		canJump = true;
+    }
 
 
 }
