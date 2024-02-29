@@ -15,7 +15,6 @@ public class CamController : MonoBehaviour
     [SerializeField]private LayerMask playerMask;
 
 
-
     // Start is called before the first frame update
     void Start()
     {
@@ -33,12 +32,13 @@ public class CamController : MonoBehaviour
     void Update()
     {
         if (camHitCol != null)
-        {
+        {   
             activeController = true;
             cam.isFollowingPlayer = false;
             cam.FollowObjDelay(followSpeed, transform);
             cam.ZoomCameraChange(zoomCameraAmount, zoomCameraSpeed);
             cam.isComingBack = true;
+            
         }else{
             if (!activeController)
             {
@@ -50,6 +50,7 @@ public class CamController : MonoBehaviour
             }
 
             activeController = false;
+            
         }
     }
 
