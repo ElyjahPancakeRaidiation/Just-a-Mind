@@ -45,14 +45,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b495ec7e25473b146a432603899185a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firstCam: 1
-  secondCam: 0
   cameraSpeed: 2
+  transitionSpeed: 0
+  zoomBackSpeed: 7
+  Distance: 0
   isFollowingPlayer: 1
-  cameraOffset: {x: 0, y: 1}
-  yIncreaser: 0.3
-  maxCameraShakePosX: 0.3
-  maxCameraShakePosY: 0.3
+  isComingBack: 0
+  isTransitioning: 0
+  increaseCamAmount: 0
+  notFollowingX: 0
+  notFollowingY: 0
+  shakeAmount: 0
 --- !u!1 &4894482292068320695
 GameObject:
   m_ObjectHideFlags: 0
@@ -121,7 +124,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 8
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2

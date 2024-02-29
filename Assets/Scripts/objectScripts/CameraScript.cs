@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
-using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 public class CameraScript : MonoBehaviour
@@ -14,9 +13,8 @@ public class CameraScript : MonoBehaviour
     [SerializeField]private float zoomBackSpeed, Distance;//How fast the camera goes back to following the player and how close before switching movements to follow the player
     public bool isFollowingPlayer, isComingBack, isTransitioning;
 
+    public float increaseCamAmount;
 
-
-    [Header("----Cam Control Variables----")]
     public bool notFollowingX, notFollowingY;
     public static bool isCameraShaking, isCameraZooming;
     [SerializeField, Range(0, 3)]private float shakeAmount;
@@ -43,7 +41,7 @@ public class CameraScript : MonoBehaviour
 
     private void OnEnable(){
         //cameraObj = GameObject.FindGameObjectWithTag("MainCamera");
-        origCamPos = cameraObj.transform.position;
+        //origCamPos = cameraObj.transform.position;
     }
 
     private void Update(){
@@ -68,7 +66,8 @@ public class CameraScript : MonoBehaviour
 
     public void FollowObjDelay(float speed, Transform followObj)//Follows any obj(Should always be put in fixed update so it can add the rigidbody. If it is not in F.U it will make anything with a rigidbody jitter when moved.)
     {
-        transform.position = Vector2.Lerp(transform.position, (Vector2)followObj.position , speed);
+        //transform.position = Vector2.Lerp(transform.position, (Vector2)followObj.position , speed);
+        transform.position = Vector2.MoveTowards(transform.position, followObj.position, speed * Time.deltaTime);
         //GoingToFast(40, 40);
 
     }
@@ -81,6 +80,7 @@ public class CameraScript : MonoBehaviour
             if (playerDist < Distance)
             {
                 isComingBack = false;
+                //PlayerController.playerDead = false;
             }
         }else if(notFollowingX || notFollowingY){
             if (playerDist < 2f)
@@ -98,8 +98,9 @@ public class CameraScript : MonoBehaviour
         {
             if (notFollowingX)
             {
-                float Y = (!isComingBack) ? Mathf.Lerp(transform.position.y, playerObj.transform.position.y, speed):
-                Mathf.MoveTowards(transform.position.y, playerObj.transform.position.y, 20 * Time.deltaTime);//Only moves on the Y axis and switches smoothly when the camera is coming back to the player
+                //Only follows the y axis
+                float Y = (!isComingBack) ? Mathf.Lerp(transform.position.y, followObj.transform.position.y, speed):
+                Mathf.MoveTowards(transform.position.y, followObj.transform.position.y, 20 * Time.deltaTime);//Only moves on the Y axis and switches smoothly when the camera is coming back to the player
                 
                 transform.position = new Vector2(transform.position.x, Y);
                 //print("Not following X");
@@ -107,8 +108,8 @@ public class CameraScript : MonoBehaviour
 
             if (notFollowingY)
             {
-                float X = (!isComingBack) ? Mathf.Lerp(transform.position.x, playerObj.transform.position.x, speed):
-                Mathf.MoveTowards(transform.position.x, playerObj.transform.position.x, 20 * Time.deltaTime);////Only moves on the X axis and switches smoothly when the camera is coming back to the player
+                float X = (!isComingBack) ? Mathf.Lerp(transform.position.x, followObj.transform.position.x, speed):
+                Mathf.MoveTowards(transform.position.x, followObj.transform.position.x, 20 * Time.deltaTime);////Only moves on the X axis and switches smoothly when the camera is coming back to the player
 
                 transform.position = new Vector2(X, transform.position.y);
                 //print("Not following Y");
@@ -124,6 +125,7 @@ public class CameraScript : MonoBehaviour
     }
 
     public void ZoomCameraChange(float FOV, float zoomSpeed){//Zooms back and fourth wether it is the player or not. Never make the desired FOV smaller than the defualt FOV which is 5
+        
         if (!isFollowingPlayer)
         {
             if (cam.orthographicSize < FOV)
@@ -142,19 +144,20 @@ public class CameraScript : MonoBehaviour
                 cam.orthographicSize = camDefaultValues.camFOV;
             }
         }
+        
     }
     
     private void CameraShake()//Shake camera.
     {
     
         if (isCameraShaking){
-            cameraObj.transform.localPosition = origCamPos + Random.insideUnitCircle * shakeAmount;
-            cameraObj.transform.localPosition = new Vector3(cameraObj.transform.localPosition.x, cameraObj.transform.localPosition.y, -10f);
+            //cameraObj.transform.localPosition = origCamPos + Random.insideUnitCircle * shakeAmount;
+            //cameraObj.transform.localPosition = new Vector3(cameraObj.transform.localPosition.x, cameraObj.transform.localPosition.y, -10f);
         }
         else
         {
-            cameraObj.transform.localPosition = (Vector2)origCamPos;
-            cameraObj.transform.localPosition = new Vector3(cameraObj.transform.localPosition.x, cameraObj.transform.localPosition.y, -10f);
+            //cameraObj.transform.localPosition = (Vector2)origCamPos;
+            //cameraObj.transform.localPosition = new Vector3(cameraObj.transform.localPosition.x, cameraObj.transform.localPosition.y, -10f);
         }
         
     }

@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
-using UnityEditor.Callbacks;
 using UnityEngine;
 
 public class Abilities : MonoBehaviour
@@ -171,6 +170,11 @@ public class Abilities : MonoBehaviour
             canSuperJump = true;
             
         }
+
+		if (Input.GetKeyUp(abilityKey))
+		{
+            keyHoldDown = 0;
+		}
 
         if (groundedScript.isGrounded())
         {
