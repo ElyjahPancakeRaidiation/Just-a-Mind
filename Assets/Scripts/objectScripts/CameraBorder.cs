@@ -74,7 +74,7 @@ public class CameraBorder : MonoBehaviour
     }
 
     private void FixedUpdate() => camCol = Physics2D.OverlapBox(colTransform.position, camVec, camRadius, playerMask);    
-    private void OnDrawGizmos() => Gizmos.DrawWireCube(colTransform.position, camVec);
+    private void OnDrawGizmosSelected() => Gizmos.DrawWireCube(colTransform.position, camVec);
 
     private void StopCamAxis(){
         Vector2 borderCamVec = cam.WorldToViewportPoint(transform.position);//The border cam but in viewport position or the cameras point of view
