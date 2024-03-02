@@ -38,12 +38,7 @@ public class Abilities : MonoBehaviour
 
     #region Arm variables
     
-    public float speed;
-    public float dashMag;
-    public float shiftTime = 0;
-    public float shiftTimeMax;
     public Transform playerTransform;
-    [SerializeField] private Vector3 COM;
     [Space(10)]
 
     // this variable may not be relevent and may be able to be removed
@@ -62,12 +57,13 @@ public class Abilities : MonoBehaviour
     #region Hookshot
 	public float hookshotSpeed; // Sets how fast you're going towards your hookshot
 	public LineRenderer LR;
+    public List<GameObject> arms;
+    // not sure this stuff is necessary
     public struct shoulderType
     {
         public GameObject shoulderObject;
         public bool isLeftShoulder;
         public Transform shoulderTransform;
-        public Sprite shoulderSprite;
         public Vector2 shoulderPosition;
         public Vector2 handPosition;
         public HingeJoint2D socketJoint;
@@ -90,6 +86,9 @@ public class Abilities : MonoBehaviour
         groundedScript = GameObject.Find("Ground Ray Object").GetComponent<isGroundedScript>();
         LR = GetComponent<LineRenderer>();
 		LR.enabled = false;
+
+        // grab arms
+
     }
 
 
@@ -109,12 +108,6 @@ public class Abilities : MonoBehaviour
                 armMovementAbilityInput();
                 break;
         }
-    }
-
-    void FixedUpdate() 
-    {
-
-
     }
 
     IEnumerator ignoreResistences()
@@ -159,61 +152,31 @@ public class Abilities : MonoBehaviour
     #region Pogo abilities
     void Jumping()
     {
-
-        if (Input.GetKey(abilityKey))
-        {
-            keyHoldDown += Time.deltaTime * 3f;
-        }
-
-        if (keyHoldDown >= 5)
-        {
-            canSuperJump = true;
-            
-        }
-
-		if (Input.GetKeyUp(abilityKey))
-		{
-            keyHoldDown = 0;
-		}
-
         if (groundedScript.isGrounded())
-        {
-            if (Input.GetKeyUp(abilityKey))
+        {   if (Input.GetKeyDown(abilityKey))
             {
-                if (!canSuperJump)//if its a regular jump use regular jump force
-                {
-                    StartCoroutine(ignoreResistences());
-                    player.rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
-                    canSuperJump = false;
-                    keyHoldDown = 0;
-                }
-    
-                if (canSuperJump)//if its a super jump use super jump force
-                {
-                    StartCoroutine(ignoreResistences());
-                    player.rb.AddForce(new Vector2(0, superJumpForce), ForceMode2D.Impulse);
-                    StartCoroutine(debugger());
-                    canSuperJump = false;
-                    keyHoldDown = 0;
-                }
+                StartCoroutine(ignoreResistences());
+                player.rb.AddForce(new Vector2(0, superJumpForce), ForceMode2D.Impulse);
             }
         }
-        IEnumerator debugger()
+        /*IEnumerator debugger()
         {
             for(int i = 0; i < 100; i++)
             {
                 Debug.Log(this.GetComponent<Rigidbody2D>().velocity.y);
                 yield return null;
             }
-        }
-
-
+        }*/
     }
 
     #endregion
 
     // Not done
     #region Arm abilities 
+    void initializeArmValues()
+    {
+
+    }
 
     void armMovement()
     {

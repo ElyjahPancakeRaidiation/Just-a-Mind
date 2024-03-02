@@ -247,7 +247,6 @@ public class PlayerController : MonoBehaviour
 
     }
     void FormSettings(){//defualt settings for each form(mainly for the sprites of each form)
-    print(playerForm);
             switch (playerForm)
             {
                 case playerForms.Ball:
@@ -275,6 +274,7 @@ public class PlayerController : MonoBehaviour
                     rb.freezeRotation = true;
                     anim.SetInteger("Horizontal", (int)horizontal);//this is for walking animation 
                     Debug.Log("Head");
+                    canJump = true; 
                     break;
 
                 case playerForms.Arm:
@@ -283,10 +283,10 @@ public class PlayerController : MonoBehaviour
                     ballCol.enabled = false;
                     pogoCol.enabled = true;
                     rb.freezeRotation = false;
-                    foreach (Abilities.shoulderType shoulder in abilityScript.shoulders)
+                    /*foreach (Abilities.shoulderType shoulder in abilityScript.shoulders)
                     {
                         shoulder.shoulderObject.SetActive(true);
-                    }
+                    }*/
                     break;
             }
         }
@@ -294,27 +294,18 @@ public class PlayerController : MonoBehaviour
 
     private void Movements()
     {//different movements for each form
-    
-
 		switch (playerForm)
 		{
 			case playerForms.Ball:
-                rb.AddForce(new Vector2(horizontal * speed * Time.fixedDeltaTime, 0), ForceMode2D.Impulse);//moves the player in the direction the player is pressing
+                rb.AddForce(new Vector2(horizontal * speed * Time.deltaTime, 0), ForceMode2D.Impulse);//moves the player in the direction the player is pressing
                 break;
 			case playerForms.Pogo:
-				if (canJump)
-				{
-                    if (Input.GetKeyDown(KeyCode.D) && groundedScript.isGrounded())
-                    {
-                        jumping = Jump();
-                        StartCoroutine(jumping);
-                    }
-
-                    if (Input.GetKeyDown(KeyCode.A) && groundedScript.isGrounded())
-                    {
-                        jumping = Jump();
-                        StartCoroutine(jumping);
-                    }
+                if (horizontal != 0 && groundedScript.isGrounded() && canJump)
+                {
+                    canJump = false;
+                    print("being called");
+                    jumping = Jump();
+                    StartCoroutine(jumping);
                 }
                 break;
 			case playerForms.Arm:
@@ -423,13 +414,10 @@ public class PlayerController : MonoBehaviour
 
     public IEnumerator Jump() 
     {
-        Debug.Log("Jumped");
-        canJump = true;
         Vector2 jumpForce = new Vector2(horizontal * jumpSpeedX, jumpSpeedY);
         rb.AddForce(jumpForce, ForceMode2D.Impulse);
-        Debug.Log("Ending");
-        canJump = false;
-		yield return new WaitForSeconds(jumpTime);
+        yield return new WaitForSeconds(.5f);
+		yield return new WaitUntil (() => groundedScript.isGrounded());
 		canJump = true;
     }
 

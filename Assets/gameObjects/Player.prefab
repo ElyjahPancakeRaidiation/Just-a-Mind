@@ -115,11 +115,11 @@ MonoBehaviour:
   dashDelay: 1.25
   yDashModifier: 1.3
   jumpForce: 15
-  superJumpForce: 50
+  superJumpForce: 65
   groundPoint: {fileID: 2556725374051482418}
   canSuperJump: 0
   keyHoldDown: 0
-  speed: 7
+  speed: 15
   dashMag: 0
   shiftTime: 0
   shiftTimeMax: 0
