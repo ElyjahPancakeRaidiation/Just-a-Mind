@@ -25,6 +25,9 @@ public class CameraScript : MonoBehaviour
     }
     public cameraDefualt camDefaultValues;//I wanted to play around with structs.
 
+    [SerializeField]private float rayDistance;
+    [SerializeField]private RaycastHit2D findPlayer;
+
     
     //private bool goingRight, goingUp;//If player is going left, right will be false if player is going down, up will be false
     //[SerializeField]private Vector2 cameraOffset;
@@ -45,24 +48,32 @@ public class CameraScript : MonoBehaviour
     }
 
     private void Update(){
-        CameraShake();    
+        if (findPlayer.collider.gameObject == playerObj)
+        {
+            isComingBack = false;
+        }
+
+        CameraShake();
         if (isFollowingPlayer)
         {
             if (isComingBack)
             {
-                //FollowBackToPlayer(cameraSpeed, playerObj.transform);
+                FollowBackToPlayer(backSpeed, playerObj.transform);
             }
         }
     }
     private void FixedUpdate() {
+
+        findPlayer = Physics2D.Raycast(transform.position, -Vector2.up * rayDistance);
+        Debug.DrawRay(transform.position, -Vector2.up * rayDistance, Color.blue);
+        //print(findPlayer);
+
+
         if (isFollowingPlayer)
         {
             if (!isComingBack)
             {
                 FollowBackToPlayer(cameraSpeed, playerObj.transform);
-            }else
-            {
-                FollowBackToPlayer(backSpeed, playerObj.transform);
             }
         }
     }
@@ -78,6 +89,7 @@ public class CameraScript : MonoBehaviour
     public void FollowBackToPlayer(float speed, Transform followObj){
 
         float playerDist = Vector2.Distance(playerObj.transform.position, transform.position);
+        /*
         if (!notFollowingX && !notFollowingY)
         {
             if (playerDist < Distance)
@@ -91,6 +103,7 @@ public class CameraScript : MonoBehaviour
                 isComingBack = false;
             }
         }
+        */
 
         if (notFollowingX && notFollowingY)
         {
@@ -102,9 +115,9 @@ public class CameraScript : MonoBehaviour
             if (notFollowingX)
             {
                 //Only follows the y axis
-                float Y = Mathf.Lerp(transform.position.y, followObj.transform.position.y, speed);
-                //float Y = (!isComingBack) ? Mathf.Lerp(transform.position.y, followObj.transform.position.y, speed):
-                //Mathf.MoveTowards(transform.position.y, followObj.transform.position.y, 20 * Time.deltaTime);//Only moves on the Y axis and switches smoothly when the camera is coming back to the player
+                //float Y = Mathf.Lerp(transform.position.y, followObj.transform.position.y, speed);
+                float Y = (!isComingBack) ? Mathf.Lerp(transform.position.y, followObj.transform.position.y, speed):
+                Mathf.MoveTowards(transform.position.y, followObj.transform.position.y, backSpeed * Time.deltaTime);//Only moves on the Y axis and switches smoothly when the camera is coming back to the player
                 
                 transform.position = new Vector2(transform.position.x, Y);
                 //print("Not following X");
@@ -112,9 +125,9 @@ public class CameraScript : MonoBehaviour
 
             if (notFollowingY)
             {
-                float X = Mathf.Lerp(transform.position.x, followObj.transform.position.x, speed);
-                //float X = (!isComingBack) ? Mathf.Lerp(transform.position.x, followObj.transform.position.x, speed):
-                //Mathf.MoveTowards(transform.position.x, followObj.transform.position.x, 20 * Time.deltaTime);////Only moves on the X axis and switches smoothly when the camera is coming back to the player
+                //float X = Mathf.Lerp(transform.position.x, followObj.transform.position.x, speed);
+                float X = (!isComingBack) ? Mathf.Lerp(transform.position.x, followObj.transform.position.x, speed):
+                Mathf.MoveTowards(transform.position.x, followObj.transform.position.x, backSpeed * Time.deltaTime);////Only moves on the X axis and switches smoothly when the camera is coming back to the player
 
                 transform.position = new Vector2(X, transform.position.y);
                 //print("Not following Y");
@@ -123,9 +136,9 @@ public class CameraScript : MonoBehaviour
         
         if (!notFollowingX && !notFollowingY)
         {
-            transform.position = Vector2.Lerp(transform.position, (Vector2)followObj.position, speed);
-            //transform.position = (isComingBack) ? Vector2.MoveTowards(transform.position, (Vector2)followObj.transform.position, zoomBackSpeed * Time.deltaTime):
-            //Vector2.Lerp(transform.position, (Vector2)followObj.position, speed);//Moves in all directions and smoothly comes back to the player
+            //transform.position = Vector2.Lerp(transform.position, (Vector2)followObj.position, speed);
+            transform.position = (isComingBack) ? Vector2.MoveTowards(transform.position, (Vector2)followObj.transform.position, backSpeed * Time.deltaTime):
+            Vector2.Lerp(transform.position, (Vector2)followObj.position, speed);//Moves in all directions and smoothly comes back to the player
         }
 
     }
