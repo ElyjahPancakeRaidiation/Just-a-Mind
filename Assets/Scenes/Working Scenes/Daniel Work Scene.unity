@@ -1330,7 +1330,7 @@ SpriteRenderer:
   m_Size: {x: 70.166626, y: 49.61}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &556537178
@@ -3144,7 +3144,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: e0da94810304823409eb75dbd27ca9e0, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -3230,6 +3230,11 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!82 &1440875270 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 8523772457180881858, guid: 39cc9506b51a3134faac9f56fbb708e3, type: 3}
+  m_PrefabInstance: {fileID: 8187697654731843404}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1495484289
 GameObject:
   m_ObjectHideFlags: 0
@@ -5244,7 +5249,7 @@ SpriteRenderer:
   m_Size: {x: 70.166626, y: 49.61}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &2005722933
@@ -5907,6 +5912,10 @@ PrefabInstance:
       value: AudioManager
       objectReference: {fileID: 0}
     - target: {fileID: 4669489155033618253, guid: 39cc9506b51a3134faac9f56fbb708e3, type: 3}
+      propertyPath: sfx
+      value: 
+      objectReference: {fileID: 1440875270}
+    - target: {fileID: 4669489155033618253, guid: 39cc9506b51a3134faac9f56fbb708e3, type: 3}
       propertyPath: musAudio
       value: 
       objectReference: {fileID: 1440875269}
@@ -5920,7 +5929,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4669489155033618253, guid: 39cc9506b51a3134faac9f56fbb708e3, type: 3}
       propertyPath: audioSource.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4669489155033618253, guid: 39cc9506b51a3134faac9f56fbb708e3, type: 3}
       propertyPath: soundTrack.Array.data[0]
@@ -5929,7 +5938,7 @@ PrefabInstance:
     - target: {fileID: 4669489155033618253, guid: 39cc9506b51a3134faac9f56fbb708e3, type: 3}
       propertyPath: audioSource.Array.data[0]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1440875269}
     - target: {fileID: 4669489155033618253, guid: 39cc9506b51a3134faac9f56fbb708e3, type: 3}
       propertyPath: audioSource.Array.data[1]
       value: 

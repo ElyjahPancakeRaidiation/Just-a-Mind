@@ -12,6 +12,7 @@ public class AudioManagerScript : MonoBehaviour
     public UnityEvent onMoveStop;
 
     public AudioSource[] audioSource;
+    public AudioSource sfx;
     
     public AudioClip[] movingClips;
     public AudioClip[] soundTrack;
@@ -40,10 +41,9 @@ public class AudioManagerScript : MonoBehaviour
         pc = player.GetComponent<PlayerController>();
         groundRay = GameObject.Find("Ground Ray Object");
         gs = groundRay.GetComponent<isGroundedScript>();
-        audioSource[0] = GetComponent<AudioSource>();
-        audioSource[1] = GetComponent<AudioSource>();
-        currentMusic = soundTrack[0];
-        /*rb = player.GetComponent<Rigidbody2D>();*/
+		audioSource[0] = GetComponent<AudioSource>();
+		/*audioSource[1] = GetComponent<AudioSource>();*/
+		currentMusic = soundTrack[0];
         
     }
 
@@ -64,8 +64,8 @@ public class AudioManagerScript : MonoBehaviour
 
     public void PlayAudioClip()
     {
-        audioSource[1].clip = currentMusic;
-        audioSource[1].Play();
+        audioSource[0].clip = currentMusic;
+        audioSource[0].Play();
     }
 
     void StartMoving() 
@@ -88,7 +88,7 @@ public class AudioManagerScript : MonoBehaviour
 		if (walkingSounds != null)
 		{
             StopCoroutine(walkingSounds);
-            audioSource[0].Stop();
+            sfx.Stop();
             musicIsPlaying = false;
 		}
     }
@@ -100,7 +100,7 @@ public class AudioManagerScript : MonoBehaviour
         musicIsPlaying = true;
         for (int i = 0; i < movingClips.Length; i++)
         {
-            audioSource[0].PlayOneShot(movingClips[i]);
+            sfx.PlayOneShot(movingClips[i]);
             yield return new WaitForSeconds(movingClips[i].length);
         }
         musicIsPlaying = false;
