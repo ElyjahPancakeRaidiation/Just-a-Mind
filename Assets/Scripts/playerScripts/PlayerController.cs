@@ -371,7 +371,10 @@ public class PlayerController : MonoBehaviour
 		switch (collision.gameObject.tag)
 		{
             case "Spike":
+                Debug.Log("dead");
                 this.transform.position = spawner.transform.position;
+                rb.velocity = Vector3.zero;
+                rb.angularVelocity = 0;
                 playerDead = true;
                 break;
 		}
