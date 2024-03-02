@@ -159,43 +159,13 @@ public class Abilities : MonoBehaviour
     #region Pogo abilities
     void Jumping()
     {
-
-        if (Input.GetKey(abilityKey))
-        {
-            keyHoldDown += Time.deltaTime * 3f;
-        }
-
-        if (keyHoldDown >= 5)
-        {
-            canSuperJump = true;
-            
-        }
-
-		if (Input.GetKeyUp(abilityKey))
-		{
-            keyHoldDown = 0;
-		}
-
         if (groundedScript.isGrounded())
         {
             if (Input.GetKeyUp(abilityKey))
             {
-                if (!canSuperJump)//if its a regular jump use regular jump force
-                {
-                    StartCoroutine(ignoreResistences());
-                    player.rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
-                    canSuperJump = false;
-                    keyHoldDown = 0;
-                }
-    
-                if (canSuperJump)//if its a super jump use super jump force
-                {
-                    StartCoroutine(ignoreResistences());
-                    player.rb.AddForce(new Vector2(0, superJumpForce), ForceMode2D.Impulse);
-                    StartCoroutine(debugger());
-                    canSuperJump = false;
-                    keyHoldDown = 0;
-                }
+                StartCoroutine(ignoreResistences());
+                player.rb.AddForce(new Vector2(0, superJumpForce), ForceMode2D.Impulse);
+                StartCoroutine(debugger());
             }
         }
         IEnumerator debugger()
@@ -206,8 +176,6 @@ public class Abilities : MonoBehaviour
                 yield return null;
             }
         }
-
-
     }
 
     #endregion

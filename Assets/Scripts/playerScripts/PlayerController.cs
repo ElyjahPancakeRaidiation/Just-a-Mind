@@ -300,7 +300,7 @@ public class PlayerController : MonoBehaviour
 		switch (playerForm)
 		{
 			case playerForms.Ball:
-                rb.AddForce(new Vector2(horizontal * speed * Time.fixedDeltaTime, 0), ForceMode2D.Impulse);//moves the player in the direction the player is pressing
+                rb.AddForce(new Vector2(horizontal * speed * Time.deltaTime, 0), ForceMode2D.Impulse);//moves the player in the direction the player is pressing
                 break;
 			case playerForms.Pogo:
 				if (canJump)
@@ -332,6 +332,7 @@ public class PlayerController : MonoBehaviour
 
     void AirResistance()
     {
+        print("friction is not happening");
         // Air resistance opposes motion
         int OppositedirectionMultipleX = -1 * Mathf.RoundToInt(rb.velocity.x / Mathf.Abs(rb.velocity.x));
         int OppositedirectionMultipleY = -1 * Mathf.RoundToInt(rb.velocity.y / Mathf.Abs(rb.velocity.y));
@@ -341,6 +342,7 @@ public class PlayerController : MonoBehaviour
     }
     void Friction()
     {
+        print("friction is happening");
         // Air resistance opposes motion but in ball motion is reversed because rotation
         // Grabs the sign of velocity and multiplies it by -1 to get opposite
         int OppositedirectionMultipleX = -1 * Mathf.RoundToInt(rb.velocity.x / Mathf.Abs(rb.velocity.x));
