@@ -5,6 +5,7 @@ using System.Threading;
 using JetBrains.Annotations;
 using TMPro;
 using Unity.Mathematics;
+using UnityEditor.Timeline.Actions;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -394,6 +395,7 @@ public class PlayerController : MonoBehaviour
 		{
             AMS.sfx.clip = AMS.currentSfx;
             AMS.sfx.Play();
+            
 		}
 	}
     
