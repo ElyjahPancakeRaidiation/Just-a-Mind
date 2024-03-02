@@ -40,6 +40,9 @@ public class PlayerController : MonoBehaviour
     public TMP_Text guideText;
     [SerializeField] GameObject thoughtBubble;
 
+    IEnumerator playingSound;
+    private bool ILoveCoding;
+
     #region movements
     [Header("Movement")]
     public bool canMove = true;
@@ -363,6 +366,13 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    private IEnumerator PlaySound(float waitAmount){
+        AMS.sfx.clip = AMS.currentSfx;
+        AMS.sfx.Play();
+        yield return new WaitForSeconds(AMS.sfx.clip.length + waitAmount);
+        ILoveCoding = false;
+    }
+
    
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -393,8 +403,12 @@ public class PlayerController : MonoBehaviour
         }*/
 		if (collision.tag == "sfx")
 		{
-            AMS.sfx.clip = AMS.currentSfx;
-            AMS.sfx.Play();
+            if (!ILoveCoding && horizontal != 0)
+            {
+                playingSound = PlaySound(0.6f);
+                StartCoroutine(playingSound);
+                ILoveCoding = true;
+            }
             
 		}
 	}
@@ -411,6 +425,9 @@ public class PlayerController : MonoBehaviour
         /*Destroy(thoughtBubble);
         guideText.text = "";
         timer = 0;*/
+
+        StopCoroutine(playingSound);
+        ILoveCoding = false;
 
 	}
 
