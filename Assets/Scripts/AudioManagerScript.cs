@@ -11,13 +11,14 @@ public class AudioManagerScript : MonoBehaviour
     public UnityEvent onMoveStart;
     public UnityEvent onMoveStop;
 
-    public AudioSource[] audioSource;
+    public AudioSource soundTrackSource;
     public AudioSource sfx;
     
     public AudioClip[] movingClips;
     public AudioClip[] soundTrack;
 
     public AudioClip currentMusic; 
+    public AudioClip currentSfx;
 
     public PlayerController pc;
     public isGroundedScript gs;
@@ -41,34 +42,34 @@ public class AudioManagerScript : MonoBehaviour
         pc = player.GetComponent<PlayerController>();
         groundRay = GameObject.Find("Ground Ray Object");
         gs = groundRay.GetComponent<isGroundedScript>();
-		audioSource[0] = GetComponent<AudioSource>();
-		/*audioSource[1] = GetComponent<AudioSource>();*/
 		currentMusic = soundTrack[0];
+        currentSfx = movingClips[0];
         
     }
 
     // Update is called once per frame
     void Update()
     {
-		if (gs.isGrounded() && PlayerController.playerForm == PlayerController.playerForms.Ball && Mathf.Abs(pc.rb.velocity.x) > .5f)
+		/*if (gs.isGrounded() && PlayerController.playerForm == PlayerController.playerForms.Ball && Mathf.Abs(pc.rb.velocity.x) > .5f)
 		{
             StartMoving(); 
 		}
 		else if(!gs.isGrounded() || PlayerController.playerForm != PlayerController.playerForms.Ball || Mathf.Abs(pc.rb.velocity.x) <= .5f) 
         {
             StopMoving();
-        }
+        }*/
 
       PlayAudioClip();  
     }
 
     public void PlayAudioClip()
     {
-        audioSource[0].clip = currentMusic;
-        audioSource[0].Play();
+       soundTrackSource.clip = currentMusic;
+       soundTrackSource.Play();
     }
 
-    void StartMoving() 
+
+    /*void StartMoving() 
     {
 		isMoving = true;
 		onMoveStart.Invoke();
@@ -107,7 +108,8 @@ public class AudioManagerScript : MonoBehaviour
         isMoving = false;
 
 		
-    }
+    }*/
 
-    
+
+
 }
