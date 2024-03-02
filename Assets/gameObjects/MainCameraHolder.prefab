@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8800216991974821305}
-  - component: {fileID: 8085453249156929018}
+  - component: {fileID: 1366189344555112423}
   m_Layer: 0
   m_Name: MainCameraHolder
   m_TagString: Untagged
@@ -33,7 +33,7 @@ Transform:
   - {fileID: 3468957511578000513}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8085453249156929018
+--- !u!114 &1366189344555112423
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -45,14 +45,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b495ec7e25473b146a432603899185a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firstCam: 1
-  secondCam: 0
   cameraSpeed: 2
+  backSpeed: 20
+  transitionSpeed: 0
+  zoomBackSpeed: 0.1
+  Distance: 4
   isFollowingPlayer: 1
-  cameraOffset: {x: 0, y: 1}
-  yIncreaser: 0.3
-  maxCameraShakePosX: 0.3
-  maxCameraShakePosY: 0.3
+  isComingBack: 0
+  isTransitioning: 0
+  increaseCamAmount: 0
+  notFollowingX: 0
+  notFollowingY: 0
+  shakeAmount: 0
+  rayDistance: 5.5
 --- !u!1 &4894482292068320695
 GameObject:
   m_ObjectHideFlags: 0
@@ -121,7 +126,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 8
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2

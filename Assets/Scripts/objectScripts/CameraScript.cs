@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
-using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 public class CameraScript : MonoBehaviour
@@ -10,13 +9,12 @@ public class CameraScript : MonoBehaviour
     private GameObject cameraObj;
     public static GameObject playerObj;
     private Camera cam;
-    public float cameraSpeed, transitionSpeed;
+    public float cameraSpeed, backSpeed, transitionSpeed;
     [SerializeField]private float zoomBackSpeed, Distance;//How fast the camera goes back to following the player and how close before switching movements to follow the player
     public bool isFollowingPlayer, isComingBack, isTransitioning;
 
     public float increaseCamAmount;
 
-    [Header("----Cam Control Variables----")]
     public bool notFollowingX, notFollowingY;
     public static bool isCameraShaking, isCameraZooming;
     [SerializeField, Range(0, 3)]private float shakeAmount;
@@ -26,6 +24,9 @@ public class CameraScript : MonoBehaviour
         public float camFOV;//Called orthographic size in code 
     }
     public cameraDefualt camDefaultValues;//I wanted to play around with structs.
+
+    [SerializeField]private float rayDistance;
+    [SerializeField]private RaycastHit2D findPlayer;
 
     
     //private bool goingRight, goingUp;//If player is going left, right will be false if player is going down, up will be false
@@ -43,20 +44,31 @@ public class CameraScript : MonoBehaviour
 
     private void OnEnable(){
         //cameraObj = GameObject.FindGameObjectWithTag("MainCamera");
-        origCamPos = cameraObj.transform.position;
+        //origCamPos = cameraObj.transform.position;
     }
 
     private void Update(){
-        CameraShake();    
+        if (findPlayer.collider.gameObject == playerObj)
+        {
+            isComingBack = false;
+        }
+
+        CameraShake();
         if (isFollowingPlayer)
         {
             if (isComingBack)
             {
-                FollowBackToPlayer(cameraSpeed, playerObj.transform);
+                FollowBackToPlayer(backSpeed, playerObj.transform);
             }
         }
     }
     private void FixedUpdate() {
+
+        findPlayer = Physics2D.Raycast(transform.position, -Vector2.up * rayDistance);
+        Debug.DrawRay(transform.position, -Vector2.up * rayDistance, Color.blue);
+        //print(findPlayer);
+
+
         if (isFollowingPlayer)
         {
             if (!isComingBack)
@@ -68,7 +80,8 @@ public class CameraScript : MonoBehaviour
 
     public void FollowObjDelay(float speed, Transform followObj)//Follows any obj(Should always be put in fixed update so it can add the rigidbody. If it is not in F.U it will make anything with a rigidbody jitter when moved.)
     {
-        transform.position = Vector2.Lerp(transform.position, (Vector2)followObj.position , speed);
+        //transform.position = Vector2.Lerp(transform.position, (Vector2)followObj.position , speed);
+        transform.position = Vector2.MoveTowards(transform.position, followObj.position, speed * Time.deltaTime);
         //GoingToFast(40, 40);
 
     }
@@ -76,19 +89,21 @@ public class CameraScript : MonoBehaviour
     public void FollowBackToPlayer(float speed, Transform followObj){
 
         float playerDist = Vector2.Distance(playerObj.transform.position, transform.position);
+        /*
         if (!notFollowingX && !notFollowingY)
         {
             if (playerDist < Distance)
             {
                 isComingBack = false;
-                PlayerController.playerDead = false;
+                //PlayerController.playerDead = false;
             }
         }else if(notFollowingX || notFollowingY){
-            if (playerDist < 2f)
+            if (playerDist < Distance)
             {
                 isComingBack = false;
             }
         }
+        */
 
         if (notFollowingX && notFollowingY)
         {
@@ -99,8 +114,10 @@ public class CameraScript : MonoBehaviour
         {
             if (notFollowingX)
             {
-                float Y = (!isComingBack) ? Mathf.Lerp(transform.position.y, playerObj.transform.position.y, speed):
-                Mathf.MoveTowards(transform.position.y, playerObj.transform.position.y, 20 * Time.deltaTime);//Only moves on the Y axis and switches smoothly when the camera is coming back to the player
+                //Only follows the y axis
+                //float Y = Mathf.Lerp(transform.position.y, followObj.transform.position.y, speed);
+                float Y = (!isComingBack) ? Mathf.Lerp(transform.position.y, followObj.transform.position.y, speed):
+                Mathf.MoveTowards(transform.position.y, followObj.transform.position.y, backSpeed * Time.deltaTime);//Only moves on the Y axis and switches smoothly when the camera is coming back to the player
                 
                 transform.position = new Vector2(transform.position.x, Y);
                 //print("Not following X");
@@ -108,8 +125,9 @@ public class CameraScript : MonoBehaviour
 
             if (notFollowingY)
             {
-                float X = (!isComingBack) ? Mathf.Lerp(transform.position.x, playerObj.transform.position.x, speed):
-                Mathf.MoveTowards(transform.position.x, playerObj.transform.position.x, 20 * Time.deltaTime);////Only moves on the X axis and switches smoothly when the camera is coming back to the player
+                //float X = Mathf.Lerp(transform.position.x, followObj.transform.position.x, speed);
+                float X = (!isComingBack) ? Mathf.Lerp(transform.position.x, followObj.transform.position.x, speed):
+                Mathf.MoveTowards(transform.position.x, followObj.transform.position.x, backSpeed * Time.deltaTime);////Only moves on the X axis and switches smoothly when the camera is coming back to the player
 
                 transform.position = new Vector2(X, transform.position.y);
                 //print("Not following Y");
@@ -118,31 +136,35 @@ public class CameraScript : MonoBehaviour
         
         if (!notFollowingX && !notFollowingY)
         {
-            transform.position = (isComingBack) ? Vector2.MoveTowards(transform.position, (Vector2)followObj.transform.position, zoomBackSpeed * Time.deltaTime):
+            //transform.position = Vector2.Lerp(transform.position, (Vector2)followObj.position, speed);
+            transform.position = (isComingBack) ? Vector2.MoveTowards(transform.position, (Vector2)followObj.transform.position, backSpeed * Time.deltaTime):
             Vector2.Lerp(transform.position, (Vector2)followObj.position, speed);//Moves in all directions and smoothly comes back to the player
         }
 
     }
 
+
     public void ZoomCameraChange(float FOV, float zoomSpeed){//Zooms back and fourth wether it is the player or not. Never make the desired FOV smaller than the defualt FOV which is 5
+        
         if (!isFollowingPlayer)
         {
-            if (cam.fieldOfView < FOV)
+            if (cam.orthographicSize < FOV)
             {
-                cam.fieldOfView += Time.deltaTime * zoomSpeed;
+                cam.orthographicSize += Time.deltaTime * zoomSpeed;
             }else{
-                cam.fieldOfView = FOV;
+                cam.orthographicSize = FOV;
             }
         }
         else
         {
-            if (cam.fieldOfView > camDefaultValues.camFOV)
+            if (cam.orthographicSize > camDefaultValues.camFOV)
             {
-                cam.fieldOfView -= Time.deltaTime * zoomSpeed;
+                cam.orthographicSize -= Time.deltaTime * zoomSpeed;
             }else{
-                cam.fieldOfView = camDefaultValues.camFOV;
+                cam.orthographicSize = camDefaultValues.camFOV;
             }
         }
+        
     }
     
     private void CameraShake()//Shake camera.

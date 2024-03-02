@@ -5,6 +5,7 @@ using System.Threading;
 using JetBrains.Annotations;
 using TMPro;
 using Unity.Mathematics;
+using UnityEngine.UI;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -22,9 +23,11 @@ public class PlayerController : MonoBehaviour
     public GameManager gm;
     [SerializeField]private SpriteRenderer playerSpriteRender;
     [SerializeField]private Sprite[] playerFormSprite;
-    private Animator anim; 
+    private Animator anim;
+    public float jumpTime;
+    public AudioManagerScript AMS;
 
-    public static bool playerDead;
+    private static bool playerDead;
 
     public Collider2D circleCol; // checks for all colliders
     public Collider2D vineCol;
@@ -35,6 +38,12 @@ public class PlayerController : MonoBehaviour
     public GameObject grabOn;
 
     public TMP_Text guideText;
+    public Image thoughtBub;
+    [SerializeField] GameObject thoughtBubble;
+    public IEnumerator thoughtBubbleTime;
+
+    IEnumerator playingSound;
+    private bool ILoveCoding;
 
     #region movements
     [Header("Movement")]
@@ -42,7 +51,7 @@ public class PlayerController : MonoBehaviour
     public Rigidbody2D rb;
     public float horizontal, vertical;
     public int horiLatestInput = 1, vertLatestInput = 0;
-    public float speed;
+    public float speed,jumpSpeedX,jumpSpeedY;
     [Header("Interaction")]
     private Collider2D interactCol;
     [SerializeField]public float interactRadius;
@@ -71,19 +80,17 @@ public class PlayerController : MonoBehaviour
     #region Pogo movement variables
     [Header("Body")]
     [SerializeField]private Collider2D pogoCol;
-    #endregion
-    #region Arm movement variables
+    public IEnumerator jumping;
+    public bool canJump = true;
+	#endregion
+	#region Arm movement variables
+	#endregion
 
 
-    [Header("Sound")]
-    AudioSource walkingSound;
+	#endregion
 
-    #endregion
-
-    #endregion
-
-
-    private void Start(){
+	private void Start(){
+        thoughtBub.enabled = false;
         abilityScript = GetComponent<Abilities>();
         if (!devControl)
         {
@@ -98,8 +105,10 @@ public class PlayerController : MonoBehaviour
         //gm = GameObject.Find("Game Manager").GetComponent<GameManager>();
         player = GameObject.Find("Player");
         playerForm = playerForms.Ball;
-        guideText.text = "";
+        //guideText.text = "";
         FormSettings();
+        AMS = GameObject.Find("AudioManager").GetComponent<AudioManagerScript>();
+        
     }
         
     // Update is called once per frame
@@ -113,6 +122,7 @@ public class PlayerController : MonoBehaviour
         if (canMove) {
             horizontal = Input.GetAxisRaw("Horizontal");
             vertical = Input.GetAxisRaw("Vertical");
+            Movements();
         }
 
         LatestInput((int)horizontal, (int)vertical);
@@ -123,7 +133,7 @@ public class PlayerController : MonoBehaviour
 
         if (canMove){
             interactCol = Physics2D.OverlapCircle(transform.position, interactRadius, interactMask);
-            Movements();
+
             if (!ignoreResistences)
             {
                 if (groundedScript.isGrounded())
@@ -233,7 +243,7 @@ public class PlayerController : MonoBehaviour
             if (Input.GetKeyDown(formChangeKey))
             {
                 playerForm++;
-                if ((int)playerForm >= 3)
+                if ((int)playerForm >= 2)
                 {
                     playerForm = 0;
                 }
@@ -243,7 +253,6 @@ public class PlayerController : MonoBehaviour
 
     }
     void FormSettings(){//defualt settings for each form(mainly for the sprites of each form)
-    print(playerForm);
             switch (playerForm)
             {
                 case playerForms.Ball:
@@ -271,6 +280,7 @@ public class PlayerController : MonoBehaviour
                     rb.freezeRotation = true;
                     anim.SetInteger("Horizontal", (int)horizontal);//this is for walking animation 
                     Debug.Log("Head");
+                    canJump = true; 
                     break;
 
                 case playerForms.Arm:
@@ -279,10 +289,10 @@ public class PlayerController : MonoBehaviour
                     ballCol.enabled = false;
                     pogoCol.enabled = true;
                     rb.freezeRotation = false;
-                    foreach (Abilities.shoulderType shoulder in abilityScript.shoulders)
+                    /*foreach (Abilities.shoulderType shoulder in abilityScript.shoulders)
                     {
                         shoulder.shoulderObject.SetActive(true);
-                    }
+                    }*/
                     break;
             }
         }
@@ -290,9 +300,27 @@ public class PlayerController : MonoBehaviour
 
     private void Movements()
     {//different movements for each form
-        rb.AddForce(new Vector2(horizontal * speed * Time.fixedDeltaTime, 0), ForceMode2D.Impulse);//moves the player in the direction the player is pressing
+		switch (playerForm)
+		{
+			case playerForms.Ball:
+                rb.AddForce(new Vector2(horizontal * speed * Time.deltaTime, 0), ForceMode2D.Impulse);//moves the player in the direction the player is pressing
+                break;
+			case playerForms.Pogo:
+                if (horizontal != 0 && groundedScript.isGrounded() && canJump)
+                {
+                    canJump = false;
+                    print("being called");
+                    jumping = Jump();
+                    StartCoroutine(jumping);
+                }
+                break;
+			case playerForms.Arm:
+				break;
+			default:
+				break;
+		}
 
-    }
+	}
     private void OnDrawGizmos()  
     {
         Gizmos.DrawWireSphere(transform.position, interactRadius);
@@ -323,6 +351,7 @@ public class PlayerController : MonoBehaviour
         circleCol = Physics2D.OverlapCircle(spherePoint.transform.position, interactRadius, interactMask); //set circleCol to Overlap Cirlce
 		if (circleCol != null)
 		{
+
         }
 
 
@@ -339,6 +368,13 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    private IEnumerator PlaySound(float waitAmount){
+        AMS.sfx.clip = AMS.currentSfx;
+        AMS.sfx.Play();
+        yield return new WaitForSeconds(AMS.sfx.clip.length + waitAmount);
+        ILoveCoding = false;
+    }
+
    
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -346,7 +382,10 @@ public class PlayerController : MonoBehaviour
 		switch (collision.gameObject.tag)
 		{
             case "Spike":
+                Debug.Log("dead");
                 this.transform.position = spawner.transform.position;
+                rb.velocity = Vector3.zero;
+                rb.angularVelocity = 0;
                 playerDead = true;
                 break;
 		}
@@ -354,22 +393,63 @@ public class PlayerController : MonoBehaviour
 
 	private void OnTriggerStay2D(Collider2D collision)
 	{
-        if (collision.tag == "Guide")
-        {
-            guideText.transform.position = new Vector2(player.transform.position.x + textOffsetX, player.transform.position.y + textOffsetY);
-            timer += Time.deltaTime;
-    		if (timer >= maxTime)
-    		{
-                guideText.text = "Yo wasug my G you can't go up you better SPACE to dash on god fr fr skibdi";
-    		}
-        }
+		if (collision.tag == "Guide")
+		{
+			timer += Time.deltaTime;
+			if (timer >= maxTime)
+			{
+                thoughtBub.enabled = true;
+            }
+			else
+			{
+                thoughtBub.enabled = false;
+			}
+		}
+		if (collision.tag == "sfx")
+		{
+            if (!ILoveCoding && horizontal != 0)
+            {
+                playingSound = PlaySound(0.6f);
+                StartCoroutine(playingSound);
+                ILoveCoding = true;
+            }
+            
+		}
 	}
+    
+   /* IEnumerator DoTextBox()
+    {
+        Instantiate(thoughtBubble, new Vector2(player.transform.position.x + textOffsetX, player.transform.position.y + textOffsetY), quaternion.identity);
+        yield return new WaitForEndOfFrame();
+        DestroyImmediate(thoughtBubble, true);
 
+    }*/
 	private void OnTriggerExit2D(Collider2D collision)
 	{
-        guideText.text = "";
-        timer = 0;
+        /*Destroy(thoughtBubble);
+		guideText.text = "";*/
+        if (collision.tag == "Guide")
+        {
+            thoughtBub.enabled = false;
+            timer = 0;
+        }
+
+        if (collision.tag == "sfx")
+        {
+            StopCoroutine(playingSound);
+            ILoveCoding = false;
+        }
+
 	}
+
+    public IEnumerator Jump() 
+    {
+        Vector2 jumpForce = new Vector2(horizontal * jumpSpeedX, jumpSpeedY);
+        rb.AddForce(jumpForce, ForceMode2D.Impulse);
+        yield return new WaitForSeconds(.5f);
+		yield return new WaitUntil (() => groundedScript.isGrounded());
+		canJump = true;
+    }
 
 
 }
