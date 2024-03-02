@@ -83,7 +83,7 @@ public class CameraScript : MonoBehaviour
                 //PlayerController.playerDead = false;
             }
         }else if(notFollowingX || notFollowingY){
-            if (playerDist < 2f)
+            if (playerDist < Distance)
             {
                 isComingBack = false;
             }
