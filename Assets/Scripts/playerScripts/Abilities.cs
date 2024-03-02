@@ -160,22 +160,20 @@ public class Abilities : MonoBehaviour
     void Jumping()
     {
         if (groundedScript.isGrounded())
-        {
-            if (Input.GetKeyUp(abilityKey))
+        {   if (Input.GetKeyDown(abilityKey))
             {
                 StartCoroutine(ignoreResistences());
                 player.rb.AddForce(new Vector2(0, superJumpForce), ForceMode2D.Impulse);
-                StartCoroutine(debugger());
             }
         }
-        IEnumerator debugger()
+        /*IEnumerator debugger()
         {
             for(int i = 0; i < 100; i++)
             {
                 Debug.Log(this.GetComponent<Rigidbody2D>().velocity.y);
                 yield return null;
             }
-        }
+        }*/
     }
 
     #endregion
