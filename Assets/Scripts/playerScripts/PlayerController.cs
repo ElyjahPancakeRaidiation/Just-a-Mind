@@ -426,11 +426,17 @@ public class PlayerController : MonoBehaviour
 	{
         /*Destroy(thoughtBubble);
 		guideText.text = "";*/
-        thoughtBub.enabled = false;
-        timer = 0;
+        if (collision.tag == "Guide")
+        {
+            thoughtBub.enabled = false;
+            timer = 0;
+        }
 
-        StopCoroutine(playingSound);
-        ILoveCoding = false;
+        if (collision.tag == "sfx")
+        {
+            StopCoroutine(playingSound);
+            ILoveCoding = false;
+        }
 
 	}
 
