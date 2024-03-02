@@ -5,6 +5,7 @@ using System.Threading;
 using JetBrains.Annotations;
 using TMPro;
 using Unity.Mathematics;
+using UnityEngine.UI;
 using UnityEditor.Timeline.Actions;
 using UnityEngine;
 
@@ -38,7 +39,9 @@ public class PlayerController : MonoBehaviour
     public GameObject grabOn;
 
     public TMP_Text guideText;
+    public Image thoughtBub;
     [SerializeField] GameObject thoughtBubble;
+    public IEnumerator thoughtBubbleTime;
 
     #region movements
     [Header("Movement")]
@@ -77,15 +80,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField]private Collider2D pogoCol;
     public IEnumerator jumping;
     public bool canJump = true;
-    #endregion
-    #region Arm movement variables
+	#endregion
+	#region Arm movement variables
 	#endregion
 
 
 	#endregion
-
 
 	private void Start(){
+        thoughtBub.enabled = false;
         abilityScript = GetComponent<Abilities>();
         if (!devControl)
         {
@@ -378,19 +381,18 @@ public class PlayerController : MonoBehaviour
 
 	private void OnTriggerStay2D(Collider2D collision)
 	{
-        /*if (collision.tag == "Guide")
-        {
-            guideText.transform.position = new Vector2(player.transform.position.x + textOffsetX, player.transform.position.y + textOffsetY);
-            timer += Time.deltaTime;
-    		if (timer >= maxTime)
-    		{
-                StartCoroutine(DoTextBox());
-                //guideText.text = "Dash by pressing space. \nUse WASD to set the direction";
-    		}
-            else{
-                //guideText.text = "";
+		if (collision.tag == "Guide")
+		{
+			timer += Time.deltaTime;
+			if (timer >= maxTime)
+			{
+                thoughtBub.enabled = true;
             }
-        }*/
+			else
+			{
+                thoughtBub.enabled = false;
+			}
+		}
 		if (collision.tag == "sfx")
 		{
             AMS.sfx.clip = AMS.currentSfx;
@@ -399,18 +401,19 @@ public class PlayerController : MonoBehaviour
 		}
 	}
     
-    IEnumerator DoTextBox()
+   /* IEnumerator DoTextBox()
     {
         Instantiate(thoughtBubble, new Vector2(player.transform.position.x + textOffsetX, player.transform.position.y + textOffsetY), quaternion.identity);
         yield return new WaitForEndOfFrame();
         DestroyImmediate(thoughtBubble, true);
 
-    }
+    }*/
 	private void OnTriggerExit2D(Collider2D collision)
 	{
         /*Destroy(thoughtBubble);
-        guideText.text = "";
-        timer = 0;*/
+		guideText.text = "";*/
+        thoughtBub.enabled = false;
+        timer = 0;
 
 	}
 
