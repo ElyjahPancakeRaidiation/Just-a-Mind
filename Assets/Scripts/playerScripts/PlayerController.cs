@@ -104,6 +104,7 @@ public class PlayerController : MonoBehaviour
         playerForm = playerForms.Ball;
         guideText.text = "";
         FormSettings();
+
     }
         
     // Update is called once per frame
@@ -248,7 +249,6 @@ public class PlayerController : MonoBehaviour
 
     }
     void FormSettings(){//defualt settings for each form(mainly for the sprites of each form)
-    print(playerForm);
             switch (playerForm)
             {
                 case playerForms.Ball:
@@ -276,6 +276,7 @@ public class PlayerController : MonoBehaviour
                     rb.freezeRotation = true;
                     anim.SetInteger("Horizontal", (int)horizontal);//this is for walking animation 
                     Debug.Log("Head");
+                    canJump = true; 
                     break;
 
                 case playerForms.Arm:
@@ -295,27 +296,18 @@ public class PlayerController : MonoBehaviour
 
     private void Movements()
     {//different movements for each form
-    
-
 		switch (playerForm)
 		{
 			case playerForms.Ball:
                 rb.AddForce(new Vector2(horizontal * speed * Time.deltaTime, 0), ForceMode2D.Impulse);//moves the player in the direction the player is pressing
                 break;
 			case playerForms.Pogo:
-				if (canJump)
-				{
-                    if (Input.GetKeyDown(KeyCode.D) && groundedScript.isGrounded())
-                    {
-                        jumping = Jump();
-                        StartCoroutine(jumping);
-                    }
-
-                    if (Input.GetKeyDown(KeyCode.A) && groundedScript.isGrounded())
-                    {
-                        jumping = Jump();
-                        StartCoroutine(jumping);
-                    }
+                if (horizontal != 0 && groundedScript.isGrounded() && canJump)
+                {
+                    canJump = false;
+                    print("being called");
+                    jumping = Jump();
+                    StartCoroutine(jumping);
                 }
                 break;
 			case playerForms.Arm:
@@ -332,7 +324,6 @@ public class PlayerController : MonoBehaviour
 
     void AirResistance()
     {
-        print("friction is not happening");
         // Air resistance opposes motion
         int OppositedirectionMultipleX = -1 * Mathf.RoundToInt(rb.velocity.x / Mathf.Abs(rb.velocity.x));
         int OppositedirectionMultipleY = -1 * Mathf.RoundToInt(rb.velocity.y / Mathf.Abs(rb.velocity.y));
@@ -342,7 +333,6 @@ public class PlayerController : MonoBehaviour
     }
     void Friction()
     {
-        print("friction is happening");
         // Air resistance opposes motion but in ball motion is reversed because rotation
         // Grabs the sign of velocity and multiplies it by -1 to get opposite
         int OppositedirectionMultipleX = -1 * Mathf.RoundToInt(rb.velocity.x / Mathf.Abs(rb.velocity.x));
@@ -420,13 +410,10 @@ public class PlayerController : MonoBehaviour
 
     public IEnumerator Jump() 
     {
-        Debug.Log("Jumped");
-        canJump = true;
         Vector2 jumpForce = new Vector2(horizontal * jumpSpeedX, jumpSpeedY);
         rb.AddForce(jumpForce, ForceMode2D.Impulse);
-        Debug.Log("Ending");
-        canJump = false;
-		yield return new WaitForSeconds(jumpTime);
+        yield return new WaitForSeconds(.5f);
+		yield return new WaitUntil (() => groundedScript.isGrounded());
 		canJump = true;
     }
 
