@@ -9,7 +9,7 @@ public class CameraScript : MonoBehaviour
     private GameObject cameraObj;
     public static GameObject playerObj;
     private Camera cam;
-    public float cameraSpeed, transitionSpeed;
+    public float cameraSpeed, backSpeed, transitionSpeed;
     [SerializeField]private float zoomBackSpeed, Distance;//How fast the camera goes back to following the player and how close before switching movements to follow the player
     public bool isFollowingPlayer, isComingBack, isTransitioning;
 
@@ -50,7 +50,7 @@ public class CameraScript : MonoBehaviour
         {
             if (isComingBack)
             {
-                FollowBackToPlayer(cameraSpeed, playerObj.transform);
+                //FollowBackToPlayer(cameraSpeed, playerObj.transform);
             }
         }
     }
@@ -60,6 +60,9 @@ public class CameraScript : MonoBehaviour
             if (!isComingBack)
             {
                 FollowBackToPlayer(cameraSpeed, playerObj.transform);
+            }else
+            {
+                FollowBackToPlayer(backSpeed, playerObj.transform);
             }
         }
     }
@@ -99,8 +102,9 @@ public class CameraScript : MonoBehaviour
             if (notFollowingX)
             {
                 //Only follows the y axis
-                float Y = (!isComingBack) ? Mathf.Lerp(transform.position.y, followObj.transform.position.y, speed):
-                Mathf.MoveTowards(transform.position.y, followObj.transform.position.y, 20 * Time.deltaTime);//Only moves on the Y axis and switches smoothly when the camera is coming back to the player
+                float Y = Mathf.Lerp(transform.position.y, followObj.transform.position.y, speed);
+                //float Y = (!isComingBack) ? Mathf.Lerp(transform.position.y, followObj.transform.position.y, speed):
+                //Mathf.MoveTowards(transform.position.y, followObj.transform.position.y, 20 * Time.deltaTime);//Only moves on the Y axis and switches smoothly when the camera is coming back to the player
                 
                 transform.position = new Vector2(transform.position.x, Y);
                 //print("Not following X");
@@ -108,8 +112,9 @@ public class CameraScript : MonoBehaviour
 
             if (notFollowingY)
             {
-                float X = (!isComingBack) ? Mathf.Lerp(transform.position.x, followObj.transform.position.x, speed):
-                Mathf.MoveTowards(transform.position.x, followObj.transform.position.x, 20 * Time.deltaTime);////Only moves on the X axis and switches smoothly when the camera is coming back to the player
+                float X = Mathf.Lerp(transform.position.x, followObj.transform.position.x, speed);
+                //float X = (!isComingBack) ? Mathf.Lerp(transform.position.x, followObj.transform.position.x, speed):
+                //Mathf.MoveTowards(transform.position.x, followObj.transform.position.x, 20 * Time.deltaTime);////Only moves on the X axis and switches smoothly when the camera is coming back to the player
 
                 transform.position = new Vector2(X, transform.position.y);
                 //print("Not following Y");
@@ -118,11 +123,13 @@ public class CameraScript : MonoBehaviour
         
         if (!notFollowingX && !notFollowingY)
         {
-            transform.position = (isComingBack) ? Vector2.MoveTowards(transform.position, (Vector2)followObj.transform.position, zoomBackSpeed * Time.deltaTime):
-            Vector2.Lerp(transform.position, (Vector2)followObj.position, speed);//Moves in all directions and smoothly comes back to the player
+            transform.position = Vector2.Lerp(transform.position, (Vector2)followObj.position, speed);
+            //transform.position = (isComingBack) ? Vector2.MoveTowards(transform.position, (Vector2)followObj.transform.position, zoomBackSpeed * Time.deltaTime):
+            //Vector2.Lerp(transform.position, (Vector2)followObj.position, speed);//Moves in all directions and smoothly comes back to the player
         }
 
     }
+
 
     public void ZoomCameraChange(float FOV, float zoomSpeed){//Zooms back and fourth wether it is the player or not. Never make the desired FOV smaller than the defualt FOV which is 5
         

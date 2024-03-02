@@ -4604,6 +4604,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MainCameraHolder
       objectReference: {fileID: 0}
+    - target: {fileID: 8085453249156929018, guid: eebba41b35200014497e6c2f9a30c305, type: 3}
+      propertyPath: Distance
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 8800216991974821305, guid: eebba41b35200014497e6c2f9a30c305, type: 3}
       propertyPath: m_LocalPosition.x
       value: -19.3
