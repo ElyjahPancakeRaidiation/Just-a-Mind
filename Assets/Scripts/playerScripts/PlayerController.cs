@@ -285,10 +285,10 @@ public class PlayerController : MonoBehaviour
                     ballCol.enabled = false;
                     pogoCol.enabled = true;
                     rb.freezeRotation = false;
-                    foreach (Abilities.shoulderType shoulder in abilityScript.shoulders)
+                    /*foreach (Abilities.shoulderType shoulder in abilityScript.shoulders)
                     {
                         shoulder.shoulderObject.SetActive(true);
-                    }
+                    }*/
                     break;
             }
         }
