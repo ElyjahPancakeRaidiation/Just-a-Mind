@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]private Sprite[] playerFormSprite;
     private Animator anim;
     public float jumpTime;
+    public AudioManagerScript AMS;
 
     private static bool playerDead;
 
@@ -77,17 +78,13 @@ public class PlayerController : MonoBehaviour
     public bool canJump = true;
     #endregion
     #region Arm movement variables
+	#endregion
 
 
-    [Header("Sound")]
-    AudioSource walkingSound;
-
-    #endregion
-
-    #endregion
+	#endregion
 
 
-    private void Start(){
+	private void Start(){
         abilityScript = GetComponent<Abilities>();
         if (!devControl)
         {
@@ -104,7 +101,8 @@ public class PlayerController : MonoBehaviour
         playerForm = playerForms.Ball;
         guideText.text = "";
         FormSettings();
-
+        AMS = GameObject.Find("AudioManager").GetComponent<AudioManagerScript>();
+        
     }
         
     // Update is called once per frame
@@ -379,7 +377,7 @@ public class PlayerController : MonoBehaviour
 
 	private void OnTriggerStay2D(Collider2D collision)
 	{
-        if (collision.tag == "Guide")
+        /*if (collision.tag == "Guide")
         {
             guideText.transform.position = new Vector2(player.transform.position.x + textOffsetX, player.transform.position.y + textOffsetY);
             timer += Time.deltaTime;
@@ -391,9 +389,14 @@ public class PlayerController : MonoBehaviour
             else{
                 //guideText.text = "";
             }
-        }
+        }*/
+		if (collision.tag == "sfx")
+		{
+            AMS.sfx.clip = AMS.currentSfx;
+            AMS.sfx.Play();
+		}
 	}
-
+    
     IEnumerator DoTextBox()
     {
         Instantiate(thoughtBubble, new Vector2(player.transform.position.x + textOffsetX, player.transform.position.y + textOffsetY), quaternion.identity);
@@ -403,9 +406,10 @@ public class PlayerController : MonoBehaviour
     }
 	private void OnTriggerExit2D(Collider2D collision)
 	{
-        Destroy(thoughtBubble);
+        /*Destroy(thoughtBubble);
         guideText.text = "";
-        timer = 0;
+        timer = 0;*/
+
 	}
 
     public IEnumerator Jump() 
