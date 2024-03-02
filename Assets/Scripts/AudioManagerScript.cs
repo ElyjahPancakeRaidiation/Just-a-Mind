@@ -59,14 +59,16 @@ public class AudioManagerScript : MonoBehaviour
             StopMoving();
         }*/
 
-      PlayAudioClip();  
+      //PlayAudioClip();  
     }
 
+    /*
     public void PlayAudioClip()
     {
        soundTrackSource.clip = currentMusic;
        soundTrackSource.Play();
     }
+    */
 
 
     /*void StartMoving() 

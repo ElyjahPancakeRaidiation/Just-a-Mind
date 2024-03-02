@@ -6,7 +6,6 @@ using JetBrains.Annotations;
 using TMPro;
 using Unity.Mathematics;
 using UnityEngine.UI;
-using UnityEditor.Timeline.Actions;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -106,7 +105,7 @@ public class PlayerController : MonoBehaviour
         //gm = GameObject.Find("Game Manager").GetComponent<GameManager>();
         player = GameObject.Find("Player");
         playerForm = playerForms.Ball;
-        guideText.text = "";
+        //guideText.text = "";
         FormSettings();
         AMS = GameObject.Find("AudioManager").GetComponent<AudioManagerScript>();
         
@@ -244,7 +243,7 @@ public class PlayerController : MonoBehaviour
             if (Input.GetKeyDown(formChangeKey))
             {
                 playerForm++;
-                if ((int)playerForm >= 3)
+                if ((int)playerForm >= 2)
                 {
                     playerForm = 0;
                 }
