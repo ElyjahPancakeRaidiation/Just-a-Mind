@@ -70,11 +70,13 @@ public class CameraBorder : MonoBehaviour
             */
         }else{
             luvProgramming = false;
+            /*
             if (inBorder)
             {
                 camController.notFollowingX = false;
                 camController.notFollowingY = false;
             }
+            */
             
         }
         

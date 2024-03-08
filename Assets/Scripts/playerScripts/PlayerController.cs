@@ -43,11 +43,12 @@ public class PlayerController : MonoBehaviour
     public IEnumerator thoughtBubbleTime;
 
     IEnumerator playingSound;
-    private bool ILoveCoding;
+    private bool soundIsPlaying;
 
     #region movements
     [Header("Movement")]
     public bool canMove = true;
+    [SerializeField]private bool isMoving;
     public Rigidbody2D rb;
     public float horizontal, vertical;
     public int horiLatestInput = 1, vertLatestInput = 0;
@@ -145,6 +146,15 @@ public class PlayerController : MonoBehaviour
                     AirResistance();
                 }
             }
+        }
+
+        if (rb.velocity.x > 1.5f || rb.velocity.x < -1.5)
+        {
+            isMoving = true;
+        }
+        else
+        {
+            isMoving = false;
         }
 
         
@@ -368,11 +378,11 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    private IEnumerator PlaySound(float waitAmount){
+    private IEnumerator PlaySound(float waitAmount){//Plays the sound and waits until it is finished + however amount you want to add
         AMS.sfx.clip = AMS.currentSfx;
         AMS.sfx.Play();
         yield return new WaitForSeconds(AMS.sfx.clip.length + waitAmount);
-        ILoveCoding = false;
+        soundIsPlaying = false;
     }
 
    
@@ -407,11 +417,11 @@ public class PlayerController : MonoBehaviour
 		}
 		if (collision.tag == "sfx")
 		{
-            if (!ILoveCoding && horizontal != 0)
+            if (!soundIsPlaying && isMoving)
             {
                 playingSound = PlaySound(0.6f);
                 StartCoroutine(playingSound);
-                ILoveCoding = true;
+                soundIsPlaying = true;
             }
             
 		}
@@ -437,7 +447,7 @@ public class PlayerController : MonoBehaviour
         if (collision.tag == "sfx")
         {
             StopCoroutine(playingSound);
-            ILoveCoding = false;
+            soundIsPlaying = false;
         }
 
 	}

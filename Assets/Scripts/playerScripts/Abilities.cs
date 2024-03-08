@@ -117,12 +117,15 @@ public class Abilities : MonoBehaviour
     }
     #region Ball abilites
     private void Dash(){
-        if (Input.GetKeyDown(abilityKey) && !isDashing && player.horiLatestInput != 0)
+        if (!TestManager.transitioned)
         {
-            if (dashAmount > 0 || bonusCharges > 0)
+            if (Input.GetKeyDown(abilityKey) && !isDashing && player.horiLatestInput != 0)
             {
-                StartCoroutine(Dashing(dashingDuration));
-                StartCoroutine(ignoreResistences());
+                if (dashAmount > 0 || bonusCharges > 0)
+                {
+                    StartCoroutine(Dashing(dashingDuration));
+                    StartCoroutine(ignoreResistences());
+                }
             }
         }
     }
