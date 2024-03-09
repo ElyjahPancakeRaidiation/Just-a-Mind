@@ -5,6 +5,7 @@ using System.Threading;
 using JetBrains.Annotations;
 using TMPro;
 using Unity.Mathematics;
+using UnityEngine.UI;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -24,6 +25,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]private Sprite[] playerFormSprite;
     private Animator anim;
     public float jumpTime;
+    public AudioManagerScript AMS;
 
     private static bool playerDead;
 
@@ -36,11 +38,17 @@ public class PlayerController : MonoBehaviour
     public GameObject grabOn;
 
     public TMP_Text guideText;
+    public Image thoughtBub;
     [SerializeField] GameObject thoughtBubble;
+    public IEnumerator thoughtBubbleTime;
+
+    IEnumerator playingSound;
+    private bool soundIsPlaying;
 
     #region movements
     [Header("Movement")]
     public bool canMove = true;
+    [SerializeField]private bool isMoving;
     public Rigidbody2D rb;
     public float horizontal, vertical;
     public int horiLatestInput = 1, vertLatestInput = 0;
@@ -75,19 +83,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField]private Collider2D pogoCol;
     public IEnumerator jumping;
     public bool canJump = true;
-    #endregion
-    #region Arm movement variables
+	#endregion
+	#region Arm movement variables
+	#endregion
 
 
-    [Header("Sound")]
-    AudioSource walkingSound;
+	#endregion
 
-    #endregion
-
-    #endregion
-
-
-    private void Start(){
+	private void Start(){
+        thoughtBub.enabled = false;
         abilityScript = GetComponent<Abilities>();
         if (!devControl)
         {
@@ -102,9 +106,10 @@ public class PlayerController : MonoBehaviour
         //gm = GameObject.Find("Game Manager").GetComponent<GameManager>();
         player = GameObject.Find("Player");
         playerForm = playerForms.Ball;
-        guideText.text = "";
+        //guideText.text = "";
         FormSettings();
-
+        AMS = GameObject.Find("AudioManager").GetComponent<AudioManagerScript>();
+        
     }
         
     // Update is called once per frame
@@ -141,6 +146,15 @@ public class PlayerController : MonoBehaviour
                     AirResistance();
                 }
             }
+        }
+
+        if (rb.velocity.x > 1.5f || rb.velocity.x < -1.5)
+        {
+            isMoving = true;
+        }
+        else
+        {
+            isMoving = false;
         }
 
         
@@ -239,7 +253,7 @@ public class PlayerController : MonoBehaviour
             if (Input.GetKeyDown(formChangeKey))
             {
                 playerForm++;
-                if ((int)playerForm >= 3)
+                if ((int)playerForm >= 2)
                 {
                     playerForm = 0;
                 }
@@ -364,6 +378,13 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    private IEnumerator PlaySound(float waitAmount){//Plays the sound and waits until it is finished + however amount you want to add
+        AMS.sfx.clip = AMS.currentSfx;
+        AMS.sfx.Play();
+        yield return new WaitForSeconds(AMS.sfx.clip.length + waitAmount);
+        soundIsPlaying = false;
+    }
+
    
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -382,33 +403,53 @@ public class PlayerController : MonoBehaviour
 
 	private void OnTriggerStay2D(Collider2D collision)
 	{
-        if (collision.tag == "Guide")
-        {
-            guideText.transform.position = new Vector2(player.transform.position.x + textOffsetX, player.transform.position.y + textOffsetY);
-            timer += Time.deltaTime;
-    		if (timer >= maxTime)
-    		{
-                StartCoroutine(DoTextBox());
-                //guideText.text = "Dash by pressing space. \nUse WASD to set the direction";
-    		}
-            else{
-                //guideText.text = "";
+		if (collision.tag == "Guide")
+		{
+			timer += Time.deltaTime;
+			if (timer >= maxTime)
+			{
+                thoughtBub.enabled = true;
             }
-        }
+			else
+			{
+                thoughtBub.enabled = false;
+			}
+		}
+		if (collision.tag == "sfx")
+		{
+            if (!soundIsPlaying && isMoving)
+            {
+                playingSound = PlaySound(0.6f);
+                StartCoroutine(playingSound);
+                soundIsPlaying = true;
+            }
+            
+		}
 	}
-
-    IEnumerator DoTextBox()
+    
+   /* IEnumerator DoTextBox()
     {
         Instantiate(thoughtBubble, new Vector2(player.transform.position.x + textOffsetX, player.transform.position.y + textOffsetY), quaternion.identity);
         yield return new WaitForEndOfFrame();
         DestroyImmediate(thoughtBubble, true);
 
-    }
+    }*/
 	private void OnTriggerExit2D(Collider2D collision)
 	{
-        Destroy(thoughtBubble);
-        guideText.text = "";
-        timer = 0;
+        /*Destroy(thoughtBubble);
+		guideText.text = "";*/
+        if (collision.tag == "Guide")
+        {
+            thoughtBub.enabled = false;
+            timer = 0;
+        }
+
+        if (collision.tag == "sfx")
+        {
+            StopCoroutine(playingSound);
+            soundIsPlaying = false;
+        }
+
 	}
 
     public IEnumerator Jump() 

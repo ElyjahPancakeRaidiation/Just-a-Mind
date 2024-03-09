@@ -6,7 +6,7 @@ public class CamController : MonoBehaviour
 {
     private CameraScript cam;
     [SerializeField, Tooltip("zoomCamera is the FOV, zoom speed is how fast it zooms out, and follow speed is how fast it goes into the position of this obj")]
-    private float zoomCameraAmount, zoomCameraSpeed, followSpeed;
+    private float zoomCameraAmount, zoomCameraSpeed, zoomBackCameraSpeed, followSpeed;
     public static bool activeController;
 
     private float camRadius;
@@ -45,7 +45,7 @@ public class CamController : MonoBehaviour
                 if (!cam.isTransitioning)
                 {
                     cam.isFollowingPlayer = true;
-                    cam.ZoomCameraChange(cam.camDefaultValues.camFOV, zoomCameraSpeed);
+                    cam.ZoomCameraChange(cam.camDefaultFOV, zoomBackCameraSpeed);
                 }
             }
 

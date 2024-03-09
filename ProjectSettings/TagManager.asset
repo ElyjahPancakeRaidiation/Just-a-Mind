@@ -12,6 +12,7 @@ TagManager:
   - Spike
   - Spikes
   - Guide
+  - sfx
   layers:
   - Default
   - TransparentFX
