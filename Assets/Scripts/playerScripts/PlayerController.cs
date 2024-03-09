@@ -6,7 +6,6 @@ using JetBrains.Annotations;
 using TMPro;
 using Unity.Mathematics;
 using UnityEngine.UI;
-using UnityEditor.Timeline.Actions;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -43,9 +42,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] GameObject thoughtBubble;
     public IEnumerator thoughtBubbleTime;
 
+    IEnumerator playingSound;
+    private bool soundIsPlaying;
+
     #region movements
     [Header("Movement")]
     public bool canMove = true;
+    [SerializeField]private bool isMoving;
     public Rigidbody2D rb;
     public float horizontal, vertical;
     public int horiLatestInput = 1, vertLatestInput = 0;
@@ -103,7 +106,7 @@ public class PlayerController : MonoBehaviour
         //gm = GameObject.Find("Game Manager").GetComponent<GameManager>();
         player = GameObject.Find("Player");
         playerForm = playerForms.Ball;
-        guideText.text = "";
+        //guideText.text = "";
         FormSettings();
         AMS = GameObject.Find("AudioManager").GetComponent<AudioManagerScript>();
         
@@ -143,6 +146,15 @@ public class PlayerController : MonoBehaviour
                     AirResistance();
                 }
             }
+        }
+
+        if (rb.velocity.x > 1.5f || rb.velocity.x < -1.5)
+        {
+            isMoving = true;
+        }
+        else
+        {
+            isMoving = false;
         }
 
         
@@ -241,7 +253,7 @@ public class PlayerController : MonoBehaviour
             if (Input.GetKeyDown(formChangeKey))
             {
                 playerForm++;
-                if ((int)playerForm >= 3)
+                if ((int)playerForm >= 2)
                 {
                     playerForm = 0;
                 }
@@ -366,6 +378,13 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    private IEnumerator PlaySound(float waitAmount){//Plays the sound and waits until it is finished + however amount you want to add
+        AMS.sfx.clip = AMS.currentSfx;
+        AMS.sfx.Play();
+        yield return new WaitForSeconds(AMS.sfx.clip.length + waitAmount);
+        soundIsPlaying = false;
+    }
+
    
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -373,7 +392,10 @@ public class PlayerController : MonoBehaviour
 		switch (collision.gameObject.tag)
 		{
             case "Spike":
+                Debug.Log("dead");
                 this.transform.position = spawner.transform.position;
+                rb.velocity = Vector3.zero;
+                rb.angularVelocity = 0;
                 playerDead = true;
                 break;
 		}
@@ -395,8 +417,12 @@ public class PlayerController : MonoBehaviour
 		}
 		if (collision.tag == "sfx")
 		{
-            AMS.sfx.clip = AMS.currentSfx;
-            AMS.sfx.Play();
+            if (!soundIsPlaying && isMoving)
+            {
+                playingSound = PlaySound(0.6f);
+                StartCoroutine(playingSound);
+                soundIsPlaying = true;
+            }
             
 		}
 	}
@@ -412,8 +438,17 @@ public class PlayerController : MonoBehaviour
 	{
         /*Destroy(thoughtBubble);
 		guideText.text = "";*/
-        thoughtBub.enabled = false;
-        timer = 0;
+        if (collision.tag == "Guide")
+        {
+            thoughtBub.enabled = false;
+            timer = 0;
+        }
+
+        if (collision.tag == "sfx")
+        {
+            StopCoroutine(playingSound);
+            soundIsPlaying = false;
+        }
 
 	}
 

@@ -6,38 +6,32 @@ using UnityEngine;
 public class CameraScript : MonoBehaviour
 {
     [Header("----Cam Movement Variables----")]
+    public float camDefaultFOV;
+
     private GameObject cameraObj;
     public static GameObject playerObj;
+    public GameObject testobj;
     private Camera cam;
-    public float cameraSpeed, backSpeed, transitionSpeed;
-    [SerializeField]private float zoomBackSpeed, Distance;//How fast the camera goes back to following the player and how close before switching movements to follow the player
-    public bool isFollowingPlayer, isComingBack, isTransitioning;
 
-    public float increaseCamAmount;
+    public float cameraSpeed, backSpeed;//Follows player speed and comes back to player speed
+    [SerializeField]private float zoomBackSpeed, Distance;//How fast the camera goes back to following the player and how close before switching movements to follow the player
+    public bool isFollowingPlayer, isComingBack, isTransitioning;//Different modes for the camera
 
     public bool notFollowingX, notFollowingY;
     public static bool isCameraShaking, isCameraZooming;
     [SerializeField, Range(0, 3)]private float shakeAmount;
     private Vector2 origCamPos;
-    public struct cameraDefualt
-    {
-        public float camFOV;//Called orthographic size in code 
-    }
-    public cameraDefualt camDefaultValues;//I wanted to play around with structs.
 
+    //The ray cast is for finding if the player is on the same Y axis and close enough distacne to switch between the differen ways of following an object
     [SerializeField]private float rayDistance;
     [SerializeField]private RaycastHit2D findPlayer;
 
-    
-    //private bool goingRight, goingUp;//If player is going left, right will be false if player is going down, up will be false
-    //[SerializeField]private Vector2 cameraOffset;
-    //private Vector2 startCamOffset; 
-
     private void Start() {
-        cam = GetComponentInChildren<Camera>();
-        camDefaultValues.camFOV = 8;
-        cameraObj = GameObject.FindGameObjectWithTag("MainCamera");
         playerObj = GameObject.FindGameObjectWithTag("Player");
+        cam = GetComponentInChildren<Camera>();
+        cameraObj = GameObject.FindGameObjectWithTag("MainCamera");
+        //testobj = playerObj;
+        cam.orthographicSize = camDefaultFOV;
         //playerRB = playerObj.GetComponent<Rigidbody2D>();
         //startCamOffset = cameraOffset;
     }
@@ -48,9 +42,13 @@ public class CameraScript : MonoBehaviour
     }
 
     private void Update(){
-        if (findPlayer.collider.gameObject == playerObj)
+        
+        if (isComingBack)
         {
-            isComingBack = false;
+            if (findPlayer.transform.tag == "Player")
+            {
+                isComingBack = false;
+            }
         }
 
         CameraShake();
@@ -89,21 +87,6 @@ public class CameraScript : MonoBehaviour
     public void FollowBackToPlayer(float speed, Transform followObj){
 
         float playerDist = Vector2.Distance(playerObj.transform.position, transform.position);
-        /*
-        if (!notFollowingX && !notFollowingY)
-        {
-            if (playerDist < Distance)
-            {
-                isComingBack = false;
-                //PlayerController.playerDead = false;
-            }
-        }else if(notFollowingX || notFollowingY){
-            if (playerDist < Distance)
-            {
-                isComingBack = false;
-            }
-        }
-        */
 
         if (notFollowingX && notFollowingY)
         {
@@ -157,11 +140,11 @@ public class CameraScript : MonoBehaviour
         }
         else
         {
-            if (cam.orthographicSize > camDefaultValues.camFOV)
+            if (cam.orthographicSize > camDefaultFOV)
             {
                 cam.orthographicSize -= Time.deltaTime * zoomSpeed;
             }else{
-                cam.orthographicSize = camDefaultValues.camFOV;
+                cam.orthographicSize = camDefaultFOV;
             }
         }
         
@@ -180,20 +163,6 @@ public class CameraScript : MonoBehaviour
             //cameraObj.transform.localPosition = new Vector3(cameraObj.transform.localPosition.x, cameraObj.transform.localPosition.y, -10f);
         }
         
-    }
-
-    public void TransitionWithPlayer(Transform transitionCamEndPos){
-        if (transform.position == transitionCamEndPos.position)
-        {
-            isTransitioning = false;
-        }
-
-        if (isTransitioning)
-        {
-            isComingBack = false;
-            isFollowingPlayer = false;
-            transform.position = Vector2.MoveTowards(transform.position, transitionCamEndPos.position, transitionSpeed * Time.deltaTime);
-        }
     }
 
 
