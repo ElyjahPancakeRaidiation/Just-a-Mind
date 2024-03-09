@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Callbacks;
 using UnityEngine;
 
 public class Abilities : MonoBehaviour
@@ -74,7 +75,11 @@ public class Abilities : MonoBehaviour
     */
     [SerializeField] float armShootSpeed;
     GameObject grapplingAnchorPointObject;
-    public float releaseRange;
+    public float armScale;
+    bool usingLeft;
+    public float grappleForce;
+    const float armUnitsToScale = 1 / 2; // 1 scale per 2 unity units
+    [SerializeField] Vector2 toShoulderDist; // the distance to add to get to the shoulder from center of player
 	#endregion
     #endregion
 
@@ -177,6 +182,14 @@ public class Abilities : MonoBehaviour
     {
         if (Input.GetKeyDown(abilityKey) && !isGrappling)
         {
+            if (player.horiLatestInput == -1)
+            {
+                usingLeft = true;
+            }
+            else
+            {
+                usingLeft = false;
+            }
             grapplingAnchorPointObject = findClosestValidVine();
             if (grapplingAnchorPointObject == null)
             {
@@ -226,20 +239,32 @@ public class Abilities : MonoBehaviour
         }
         return vines[place].gameObject;
     }
-     IEnumerator shootArmOut(GameObject vinePosObj)
+
+    // The arm is two unity units long 
+    IEnumerator shootArmOut(GameObject vinePosObj)
     {
-        LR.enabled = true; // Line Renderer is enabled
+        int armNum;
+        if (usingLeft)
+        {
+            armNum = 0;
+            toShoulderDist.x = Mathf.Abs(toShoulderDist.x) * -1;
+        }
+        else
+        {
+            armNum = 1;
+            toShoulderDist.x = Mathf.Abs(toShoulderDist.x);
+        }
         float renderDist = 0;
         bool breakLoop = false;
         do
         {
             // Finds the distance
-            renderDist += hookshotSpeed * Time.deltaTime;
+            armScale += hookshotSpeed * Time.deltaTime;
             // Gets the angle between the player and the vine
             float theta = Mathf.Atan((playerTransform.position.y - vinePosObj.transform.position.y) 
             / (playerTransform.position.x - vinePosObj.transform.position.x)); 
-			LR.SetPosition(0, playerTransform.position); // Starts at player
-			LR.SetPosition(1, new Vector2(renderDist * Mathf.Cos(theta), renderDist * Mathf.Sin(theta))); // Ends at some distance towards the anchor point
+            
+			
 
             // grab distance between the two objects
             float distance = Vector2.Distance(vinePosObj.transform.position, playerTransform.position);
@@ -262,6 +287,14 @@ public class Abilities : MonoBehaviour
 
      IEnumerator armsConnected(GameObject anchorObject)
      {
+        do 
+        {
+            // add a y bias to counteract gravity
+            float theta = Mathf.Atan((playerTransform.position.y - anchorObject.transform.position.y) 
+            / (playerTransform.position.x - anchorObject.transform.position.x)); 
+            player.rb.AddForce(new Vector2(grappleForce * Mathf.Cos(theta), grappleForce * Mathf.Sin(theta)));
+        }
+        while (Vector2.Distance(playerTransform.position, anchorObject.transform.position) < 2);
         yield return null;
      }
     /*void initializeArmValues()
