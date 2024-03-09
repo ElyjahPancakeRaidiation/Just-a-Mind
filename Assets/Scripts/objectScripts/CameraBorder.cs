@@ -21,8 +21,8 @@ public class CameraBorder : MonoBehaviour
     [SerializeField]private Transform colTransform;
     [SerializeField]private Vector2 camVec;
     [SerializeField]private LayerMask playerMask;
-    private bool luvProgramming;
-    private static bool inBorder;
+    private bool inBorder;
+
 
     // Start is called before the first frame update
     void Start()
@@ -48,35 +48,13 @@ public class CameraBorder : MonoBehaviour
         if (camCol != null)
         {
             inBorder = true;
-            luvProgramming = true;
-            if (luvProgramming)
+            if (inBorder)
             {
                 StopCamAxis();
             }
             
-            /*
-            if (!isTransitionActivator)
-            {
-                if (!CamController.activeController)
-                {
-                    StopCamAxis();
-                }
-            }
-            else
-            {
-                isTransitionActivator = true;
-                camController.isTransitioning = true;
-            }
-            */
         }else{
-            luvProgramming = false;
-            /*
-            if (inBorder)
-            {
-                camController.notFollowingX = false;
-                camController.notFollowingY = false;
-            }
-            */
+            inBorder = false;
             
         }
         
