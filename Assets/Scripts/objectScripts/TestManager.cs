@@ -6,20 +6,23 @@ using UnityEngine.SceneManagement;
 public class TestManager : MonoBehaviour
 {
 
-    public static bool transitioned; 
+    public static bool transitioned;
+    public GameObject buttonCotainer;
     [SerializeField]private Animator transitionAnim;
     [SerializeField]private AnimationClip start, end;
     [SerializeField]private int sceneNum;
 
     [Header("Pause Menu")]
     [SerializeField]private GameObject pauseMenu, exitBall;
-    private bool isPaused, exit, restarting;
+    private bool isPaused, exit, restarting, buttonConfig;
     [SerializeField]private AnimationClip mainMenuTransition;
     
     // Start is called before the first frame update
     
     private void Start() {
+        buttonCotainer = GameObject.Find("ContentArea");
         exitBall.SetActive(false);
+        buttonCotainer.SetActive(false);
     }
 
     private void Update() {
@@ -50,6 +53,8 @@ public class TestManager : MonoBehaviour
             StartCoroutine(Transition(SceneManager.GetActiveScene().buildIndex));
             restarting = false;
         }
+
+        Debug.Log(isPaused);
 
     }
 
@@ -96,6 +101,24 @@ public class TestManager : MonoBehaviour
         }
     }
 
+    public void ButtonConfig() 
+    {
+        buttonConfig = false;
+		if (!buttonConfig)
+		{
+            buttonCotainer.SetActive(true);
+		}
+    }
+
+    public void ButtonExit() 
+    {
+        buttonConfig = true;
+		if (buttonConfig)
+		{
+            buttonCotainer.SetActive(false);
+		}
+    }
+    
     
     
 }

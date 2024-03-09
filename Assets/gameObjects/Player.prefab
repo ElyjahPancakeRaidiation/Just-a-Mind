@@ -51,10 +51,6 @@ MonoBehaviour:
   - 0.45
   - 1
   - 1
-  colSize:
-  - {x: 0.77, y: 0.18}
-  - {x: 0, y: 0}
-  - {x: 0, y: 0}
 --- !u!1 &5150928139307579840
 GameObject:
   m_ObjectHideFlags: 0
@@ -119,12 +115,7 @@ MonoBehaviour:
   groundPoint: {fileID: 2556725374051482418}
   canSuperJump: 0
   keyHoldDown: 0
-  speed: 15
-  dashMag: 0
-  shiftTime: 0
-  shiftTimeMax: 0
   playerTransform: {fileID: 0}
-  COM: {x: 0, y: 0, z: 0}
   isConnected: 0
   maxRange: 0
   vineColliders:
@@ -133,6 +124,7 @@ MonoBehaviour:
   hJ: {fileID: 0}
   hookshotSpeed: 0
   LR: {fileID: 0}
+  arms: []
   armShootSpeed: 10
 --- !u!114 &6156709126799240589
 MonoBehaviour:
@@ -147,10 +139,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   formChangeKey: 304
+  rightformChangeKey: 303
   devControl: 1
   neareastSpawner: 0
   timer: 0
-  maxTime: 15
+  maxTime: 7
   textOffsetX: 0
   textOffsetY: 0
   spherePoint: {fileID: 4868531280780533235}
@@ -160,7 +153,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: c48159bb276b640a9b80ce9eebed5a59, type: 3}
   - {fileID: 21300000, guid: 91976d33e7ae9704591ceeeebbf2e155, type: 3}
   jumpTime: 0.1
-  AMO: {fileID: 0}
   AMS: {fileID: 0}
   circleCol: {fileID: 0}
   vineCol: {fileID: 0}
@@ -168,9 +160,11 @@ MonoBehaviour:
   player: {fileID: 0}
   grabOn: {fileID: 0}
   guideText: {fileID: 0}
+  thoughtBub: {fileID: 0}
   thoughtBubble: {fileID: 0}
   canMove: 1
-  rb: {fileID: 0}
+  isMoving: 0
+  rb: {fileID: 3374888515853459002}
   horizontal: 0
   vertical: 0
   horiLatestInput: 0
