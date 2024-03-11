@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     [Header("General")]
     Abilities abilityScript;
     public KeyCode formChangeKey;
+    public KeyCode rightformChangeKey;
     [SerializeField]public bool devControl;//Just used to override the locked forms(I got really lazy and I dont want to keep going back and fourth changing the bools)
     public int neareastSpawner;
     public float timer;
@@ -244,7 +245,7 @@ public class PlayerController : MonoBehaviour
                 }
             }
     
-            if (Input.GetKeyDown(formChangeKey))
+            if (Input.GetKeyDown(formChangeKey) || Input.GetKeyDown(rightformChangeKey))
             {
                 
                 if ((int)playerForm >= maxForm)
@@ -260,7 +261,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            if (Input.GetKeyDown(formChangeKey))
+            if (Input.GetKeyDown(formChangeKey) || Input.GetKeyDown(rightformChangeKey))
             {
                 playerForm++;
                 if ((int)playerForm >= 2)
