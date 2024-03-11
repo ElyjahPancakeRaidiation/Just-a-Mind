@@ -47,10 +47,10 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
-  rayScales:
-  - 0.45
-  - 1
-  - 1
+  vecScales:
+  - {x: 0.76, y: 0.45}
+  - {x: 0.9, y: 0.54}
+  - {x: 0, y: 0}
 --- !u!1 &5150928139307579840
 GameObject:
   m_ObjectHideFlags: 0
@@ -116,7 +116,7 @@ MonoBehaviour:
   canSuperJump: 0
   keyHoldDown: 0
   playerTransform: {fileID: 0}
-  isConnected: 0
+  isGrappling: 0
   maxRange: 0
   vineColliders:
     serializedVersion: 2
@@ -126,6 +126,7 @@ MonoBehaviour:
   LR: {fileID: 0}
   arms: []
   armShootSpeed: 10
+  releaseRange: 0
 --- !u!114 &6156709126799240589
 MonoBehaviour:
   m_ObjectHideFlags: 0

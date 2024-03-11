@@ -1405,38 +1405,6 @@ PrefabInstance:
       propertyPath: thoughtBub
       value: 
       objectReference: {fileID: 1160710160}
-    - target: {fileID: 6156709126799240589, guid: 0eebf9695a3cace40a4f744a5d99a8fe, type: 3}
-      propertyPath: rotChangePointMax
-      value: 800
-      objectReference: {fileID: 0}
-    - target: {fileID: 6156709126799240589, guid: 0eebf9695a3cace40a4f744a5d99a8fe, type: 3}
-      propertyPath: rotChangePointMin
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6156709126799240589, guid: 0eebf9695a3cace40a4f744a5d99a8fe, type: 3}
-      propertyPath: bonusRotationSpeed
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8064381564403545213, guid: 0eebf9695a3cace40a4f744a5d99a8fe, type: 3}
-      propertyPath: vecScales.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8064381564403545213, guid: 0eebf9695a3cace40a4f744a5d99a8fe, type: 3}
-      propertyPath: vecScales.Array.data[0].x
-      value: 0.76
-      objectReference: {fileID: 0}
-    - target: {fileID: 8064381564403545213, guid: 0eebf9695a3cace40a4f744a5d99a8fe, type: 3}
-      propertyPath: vecScales.Array.data[0].y
-      value: 0.45
-      objectReference: {fileID: 0}
-    - target: {fileID: 8064381564403545213, guid: 0eebf9695a3cace40a4f744a5d99a8fe, type: 3}
-      propertyPath: vecScales.Array.data[1].x
-      value: 0.9
-      objectReference: {fileID: 0}
-    - target: {fileID: 8064381564403545213, guid: 0eebf9695a3cace40a4f744a5d99a8fe, type: 3}
-      propertyPath: vecScales.Array.data[1].y
-      value: 0.54
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -9769,6 +9737,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b84ff2d5e20b7674c9052470626d616e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonCotainer: {fileID: 0}
   transitionAnim: {fileID: 1833150923}
   start: {fileID: 7400000, guid: d69baf01c83bd994d8289fe73bdbcdaf, type: 2}
   end: {fileID: 7400000, guid: 44b9703669fd1de42ab7523c018b8ad3, type: 2}
