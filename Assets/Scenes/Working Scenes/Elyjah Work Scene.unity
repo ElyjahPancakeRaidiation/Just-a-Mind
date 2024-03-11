@@ -1338,6 +1338,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1134108300002456243, guid: 0eebf9695a3cace40a4f744a5d99a8fe, type: 3}
+      propertyPath: DASHPOWER
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 1134108300002456243, guid: 0eebf9695a3cace40a4f744a5d99a8fe, type: 3}
       propertyPath: dashDelay
       value: 0.3
       objectReference: {fileID: 0}
@@ -1401,6 +1405,18 @@ PrefabInstance:
       propertyPath: thoughtBub
       value: 
       objectReference: {fileID: 1160710160}
+    - target: {fileID: 6156709126799240589, guid: 0eebf9695a3cace40a4f744a5d99a8fe, type: 3}
+      propertyPath: rotChangePointMax
+      value: 800
+      objectReference: {fileID: 0}
+    - target: {fileID: 6156709126799240589, guid: 0eebf9695a3cace40a4f744a5d99a8fe, type: 3}
+      propertyPath: rotChangePointMin
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6156709126799240589, guid: 0eebf9695a3cace40a4f744a5d99a8fe, type: 3}
+      propertyPath: bonusRotationSpeed
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8064381564403545213, guid: 0eebf9695a3cace40a4f744a5d99a8fe, type: 3}
       propertyPath: vecScales.Array.size
       value: 3
@@ -2122,7 +2138,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &260906690
 Transform:
   m_ObjectHideFlags: 0
@@ -2390,7 +2406,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &363654554
 Transform:
   m_ObjectHideFlags: 0
