@@ -23,6 +23,7 @@ public class TestManager : MonoBehaviour
         buttonCotainer = GameObject.Find("ContentArea");
         exitBall.SetActive(false);
         buttonCotainer.SetActive(false);
+        buttonConfig = false;
     }
 
     private void Update() {
@@ -103,21 +104,21 @@ public class TestManager : MonoBehaviour
 
     public void ButtonConfig() 
     {
-        buttonConfig = false;
+        isPaused = false;
 		if (!buttonConfig)
 		{
-            buttonCotainer.SetActive(true);
+            buttonConfig = true;
 		}
     }
 
-    public void ButtonExit() 
+   /* public void ButtonExit() 
     {
         buttonConfig = true;
 		if (buttonConfig)
 		{
             buttonCotainer.SetActive(false);
 		}
-    }
+    }*/
     
     
     
