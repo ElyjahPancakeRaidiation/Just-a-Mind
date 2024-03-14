@@ -22,6 +22,7 @@ public class CameraBorder : MonoBehaviour
     [SerializeField]private Vector2 camVec;
     [SerializeField]private LayerMask playerMask;
     private bool luvProgramming;
+    private static bool inBorder;
 
     // Start is called before the first frame update
     void Start()
@@ -46,6 +47,7 @@ public class CameraBorder : MonoBehaviour
         //Overall Script is to check if the border is between two points of the screen. If it is it will stop the camera from moving until it is not. 
         if (camCol != null)
         {
+            inBorder = true;
             luvProgramming = true;
             if (luvProgramming)
             {
@@ -68,6 +70,11 @@ public class CameraBorder : MonoBehaviour
             */
         }else{
             luvProgramming = false;
+            if (inBorder)
+            {
+                camController.notFollowingX = false;
+                camController.notFollowingY = false;
+            }
             
         }
         
