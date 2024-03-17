@@ -411,13 +411,13 @@ public class PlayerController : MonoBehaviour
             if(horizontal == 1){
                 if (rb.angularVelocity > 0.02f)
                 {
-                    rb.angularVelocity -= -bonusRotationSpeed * Time.fixedDeltaTime;
+                    rb.angularVelocity -= -bonusRotationSpeed * Time.fixedDeltaTime * 10f;
                     print("Off ground and going right");
                 }
             }else if(horizontal == -1){
                 if (rb.angularVelocity < -0.02f)
                 {
-                    rb.angularVelocity += bonusRotationSpeed * Time.fixedDeltaTime;
+                    rb.angularVelocity += bonusRotationSpeed * Time.fixedDeltaTime * 10f;
                     print("Off ground and going right");
                 }
             }
