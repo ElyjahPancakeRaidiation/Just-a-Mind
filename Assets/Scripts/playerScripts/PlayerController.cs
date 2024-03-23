@@ -253,7 +253,7 @@ public class PlayerController : MonoBehaviour
             if (Input.GetKeyDown(formChangeKey))
             {
                 playerForm++;
-                if ((int)playerForm >= 2)
+                if ((int)playerForm >= 3)
                 {
                     playerForm = 0;
                 }
@@ -281,7 +281,7 @@ public class PlayerController : MonoBehaviour
                     break;
 
                 case playerForms.Pogo:
-                rb.mass = 2.5f;
+                rb.mass = 1f;
                     transform.rotation = quaternion.RotateZ(0);//Puts the character up straight
                     ballCol.enabled = false;//changes the collider from ball to pogo
                     pogoCol.enabled = true;
@@ -294,7 +294,7 @@ public class PlayerController : MonoBehaviour
                     break;
 
                 case playerForms.Arm:
-                rb.mass = 3.5f;
+                rb.mass = 1f;
                     //Where all of the settings for arm goes
                     ballCol.enabled = false;
                     pogoCol.enabled = true;

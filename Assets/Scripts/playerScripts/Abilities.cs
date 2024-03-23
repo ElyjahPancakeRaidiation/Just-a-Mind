@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEditor.Callbacks;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Abilities : MonoBehaviour
 {
@@ -83,6 +85,15 @@ public class Abilities : MonoBehaviour
 	#endregion
     #endregion
 
+    #region New Arm Variables
+    bool handShot;
+    [SerializeField] GameObject hand;
+    [SerializeField] int horrizontalShootForce;
+    [SerializeField] int diagnolxShootForce;
+    [SerializeField] int diagnolyShootForce;
+    [HideInInspector] public Vector2 shootVector;
+
+    #endregion
     private void Start() {
         player = GetComponent<PlayerController>();
         dashAmount = maxDashAmount;
@@ -177,7 +188,9 @@ public class Abilities : MonoBehaviour
     #endregion
 
     // Not done
-    #region Arm abilities 
+    
+    #region Old Arm abilities 
+    /*
     void armMovement()
     {
         if (Input.GetKeyDown(abilityKey) && !isGrappling)
@@ -421,4 +434,30 @@ public class Abilities : MonoBehaviour
     */
     #endregion
     
+    #region New Arm Abilities
+    void armMovement()
+    {
+        if (Input.GetKeyDown(abilityKey))
+        {
+            if (player.horiLatestInput != 0 && !handShot)
+            {
+                if (Input.GetKey(KeyCode.W) || Input.GetKeyDown(KeyCode.W))
+                {
+                    shootVector = new Vector2(diagnolxShootForce * player.horiLatestInput, diagnolyShootForce);
+                }
+                else
+                {
+                    shootVector = new Vector2(horrizontalShootForce * player.horiLatestInput, 0);
+                }
+                // SHift the hand left or right to not spawn directly on the player
+                Instantiate(hand, player.transform.position + new Vector3(1.2f * player.horiLatestInput, 0, 0), quaternion.identity);
+            }
+        }
+    }
+
+    public void armAnchored(Vector3 anchorPoint)
+    {
+        
+    }
+    #endregion
 }
