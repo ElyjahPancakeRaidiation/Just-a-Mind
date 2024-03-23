@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour
     public GameManager gm;
     [SerializeField]private SpriteRenderer playerSpriteRender;
     [SerializeField]private Sprite[] playerFormSprite;
-    private Animator anim;
+    [SerializeField]private Animator anim;
     public float jumpTime;
     public AudioManagerScript AMS;
 
@@ -66,7 +66,7 @@ public class PlayerController : MonoBehaviour
     private int maxForm;
     [SerializeField] float coefficientOfAirResistence, coefficientOfFriction;
     public bool ignoreResistences = false;
-    isGroundedScript groundedScript;
+    public isGroundedScript groundedScript;
 
     #region Ball movement variables
     [Header("Head")]
