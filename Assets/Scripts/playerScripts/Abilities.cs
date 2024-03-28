@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using Unity.Mathematics;
+using UnityEditor.Callbacks;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Abilities : MonoBehaviour
 {
@@ -38,17 +40,12 @@ public class Abilities : MonoBehaviour
 
     #region Arm variables
     
-    public float speed;
-    public float dashMag;
-    public float shiftTime = 0;
-    public float shiftTimeMax;
     public Transform playerTransform;
-    [SerializeField] private Vector3 COM;
     [Space(10)]
 
     // this variable may not be relevent and may be able to be removed
     public static Vector2 hingeJointAnchorDistance = new Vector2(1.9f, 0);
-    public bool isConnected = false;
+    public bool isGrappling = false;
     [SerializeField] float maxRange;
     [SerializeField] LayerMask vineColliders;
     bool isLeftArmActive = false;
@@ -62,12 +59,13 @@ public class Abilities : MonoBehaviour
     #region Hookshot
 	public float hookshotSpeed; // Sets how fast you're going towards your hookshot
 	public LineRenderer LR;
-    public struct shoulderType
+    public List<GameObject> arms;
+    // not sure this stuff is necessary
+    /*public struct shoulderType
     {
         public GameObject shoulderObject;
         public bool isLeftShoulder;
         public Transform shoulderTransform;
-        public Sprite shoulderSprite;
         public Vector2 shoulderPosition;
         public Vector2 handPosition;
         public HingeJoint2D socketJoint;
@@ -76,11 +74,26 @@ public class Abilities : MonoBehaviour
     shoulderType curShoulder;
     // Left shoulder is the 0 shoulder and right shoulder is the 1 shoulder
     public List<shoulderType> shoulders;
-
+    */
     [SerializeField] float armShootSpeed;
+    GameObject grapplingAnchorPointObject;
+    public float armScale;
+    bool usingLeft;
+    public float grappleForce;
+    const float armUnitsToScale = 1 / 2; // 1 scale per 2 unity units
+    [SerializeField] Vector2 toShoulderDist; // the distance to add to get to the shoulder from center of player
 	#endregion
     #endregion
 
+    #region New Arm Variables
+    bool handShot;
+    [SerializeField] GameObject hand;
+    [SerializeField] int horrizontalShootForce;
+    [SerializeField] int diagnolxShootForce;
+    [SerializeField] int diagnolyShootForce;
+    [HideInInspector] public Vector2 shootVector;
+
+    #endregion
     private void Start() {
         player = GetComponent<PlayerController>();
         dashAmount = maxDashAmount;
@@ -90,6 +103,9 @@ public class Abilities : MonoBehaviour
         groundedScript = GameObject.Find("Ground Ray Object").GetComponent<isGroundedScript>();
         LR = GetComponent<LineRenderer>();
 		LR.enabled = false;
+
+        // grab arms
+
     }
 
 
@@ -106,15 +122,9 @@ public class Abilities : MonoBehaviour
                 Jumping();
                 break;
             case PlayerController.playerForms.Arm:
-                armMovementAbilityInput();
+                armMovement();
                 break;
         }
-    }
-
-    void FixedUpdate() 
-    {
-
-
     }
 
     IEnumerator ignoreResistences()
@@ -125,12 +135,15 @@ public class Abilities : MonoBehaviour
     }
     #region Ball abilites
     private void Dash(){
-        if (Input.GetKeyDown(abilityKey) && !isDashing && player.horiLatestInput != 0)
+        if (!TestManager.transitioned)
         {
-            if (dashAmount > 0 || bonusCharges > 0)
+            if (Input.GetKeyDown(abilityKey) && !isDashing && player.horiLatestInput != 0)
             {
-                StartCoroutine(Dashing(dashingDuration));
-                StartCoroutine(ignoreResistences());
+                if (dashAmount > 0 || bonusCharges > 0)
+                {
+                    StartCoroutine(Dashing(dashingDuration));
+                    StartCoroutine(ignoreResistences());
+                }
             }
         }
     }
@@ -144,10 +157,6 @@ public class Abilities : MonoBehaviour
         // wait then turn off cammera shake
         yield return new WaitForSeconds(duration);
         CameraScript.isCameraShaking = false;
-        if (groundedScript.isGrounded())
-        {
-            yield return new WaitForSeconds(dashDelay);
-        }
         yield return new WaitUntil(() => groundedScript.isGrounded());
         ResetDash();
     }
@@ -179,7 +188,132 @@ public class Abilities : MonoBehaviour
     #endregion
 
     // Not done
-    #region Arm abilities 
+    
+    #region Old Arm abilities 
+    /*
+    void armMovement()
+    {
+        if (Input.GetKeyDown(abilityKey) && !isGrappling)
+        {
+            if (player.horiLatestInput == -1)
+            {
+                usingLeft = true;
+            }
+            else
+            {
+                usingLeft = false;
+            }
+            grapplingAnchorPointObject = findClosestValidVine();
+            if (grapplingAnchorPointObject == null)
+            {
+                return;
+            }
+            StartCoroutine(shootArmOut(grapplingAnchorPointObject));
+        }
+    }
+    public GameObject findClosestValidVine()
+    {
+        // returns an array of the objects with layer vineColliders
+        Collider2D[] vines = Physics2D.OverlapCircleAll(this.gameObject.transform.position, maxRange, vineColliders);
+        // initialize at a 10000 as the game is not that big so shouldnt be an issue
+        float min = maxRange + 1;
+        int place = -1;
+        int iteration = 0;
+        foreach (Collider2D vine in vines)
+        {
+            // If the x position of the vine is less then the players and left arm is active we execute
+            if (player.horiLatestInput == -1 && vine.transform.position.x - playerTransform.position.x < 0)
+            {
+                float dist = Vector2.Distance(vine.transform.position, playerTransform.position)
+                // this adds a bias towards vines that are higher and 
+                 - (yFavor * (vine.transform.position.y - playerTransform.position.y));
+                if (min > dist)
+                {
+                    min = dist;
+                    place = iteration;
+                }
+            }
+            // If its to the right of the player and the right arm active
+            else if (player.horiLatestInput == 1 && playerTransform.position.x > 0 && !isLeftArmActive)
+            {
+                float dist = Vector2.Distance(vine.transform.position, playerTransform.position);
+                if (min > dist)
+                {
+                    min = dist;
+                    place = iteration;
+                }
+            }
+            iteration++;
+        }
+        // If no valid vine was found
+        if (place == -1)
+        {
+            return null;
+        }
+        return vines[place].gameObject;
+    }
+
+    // The arm is two unity units long 
+    IEnumerator shootArmOut(GameObject vinePosObj)
+    {
+        int armNum;
+        if (usingLeft)
+        {
+            armNum = 0;
+            toShoulderDist.x = Mathf.Abs(toShoulderDist.x) * -1;
+        }
+        else
+        {
+            armNum = 1;
+            toShoulderDist.x = Mathf.Abs(toShoulderDist.x);
+        }
+        float renderDist = 0;
+        bool breakLoop = false;
+        do
+        {
+            // Finds the distance
+            armScale += hookshotSpeed * Time.deltaTime;
+            // Gets the angle between the player and the vine
+            float theta = Mathf.Atan((playerTransform.position.y - vinePosObj.transform.position.y) 
+            / (playerTransform.position.x - vinePosObj.transform.position.x)); 
+            
+			
+
+            // grab distance between the two objects
+            float distance = Vector2.Distance(vinePosObj.transform.position, playerTransform.position);
+            if (renderDist >= distance)
+            {
+                renderDist = distance;
+                breakLoop = true;
+                LR.SetPosition(1, vinePosObj.transform.position); // Sets the end of the arm to the anchor point
+            }
+            yield return new WaitForEndOfFrame();
+        }
+        while(!breakLoop);
+        // Shoot the arm out over a time interval
+        // Todo if space is pressed here just cancel
+
+        // Call Connecton
+        StartCoroutine(armsConnected(vinePosObj));
+        yield return null;
+    }
+
+     IEnumerator armsConnected(GameObject anchorObject)
+     {
+        do 
+        {
+            // add a y bias to counteract gravity
+            float theta = Mathf.Atan((playerTransform.position.y - anchorObject.transform.position.y) 
+            / (playerTransform.position.x - anchorObject.transform.position.x)); 
+            player.rb.AddForce(new Vector2(grappleForce * Mathf.Cos(theta), grappleForce * Mathf.Sin(theta)));
+        }
+        while (Vector2.Distance(playerTransform.position, anchorObject.transform.position) < 2);
+        yield return null;
+     }
+    /*void initializeArmValues()
+    {
+
+    }
 
     void armMovement()
     {
@@ -187,6 +321,7 @@ public class Abilities : MonoBehaviour
         {
             if (player.horiLatestInput == 1)
             {
+
                 curShoulder = shoulders[1];
             }
             else
@@ -296,7 +431,33 @@ public class Abilities : MonoBehaviour
         }
         return vines[place].gameObject;
     }
-
+    */
     #endregion
     
+    #region New Arm Abilities
+    void armMovement()
+    {
+        if (Input.GetKeyDown(abilityKey))
+        {
+            if (player.horiLatestInput != 0 && !handShot)
+            {
+                if (Input.GetKey(KeyCode.W) || Input.GetKeyDown(KeyCode.W))
+                {
+                    shootVector = new Vector2(diagnolxShootForce * player.horiLatestInput, diagnolyShootForce);
+                }
+                else
+                {
+                    shootVector = new Vector2(horrizontalShootForce * player.horiLatestInput, 0);
+                }
+                // SHift the hand left or right to not spawn directly on the player
+                Instantiate(hand, player.transform.position + new Vector3(1.2f * player.horiLatestInput, 0, 0), quaternion.identity);
+            }
+        }
+    }
+
+    public void armAnchored(Vector3 anchorPoint)
+    {
+        
+    }
+    #endregion
 }

@@ -6,9 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Working Scenes/Main Menu.unity
+    path: Assets/Scenes/Main Menu.unity
     guid: fb7375b634608a849b70b4bd672a15c2
   - enabled: 1
-    path: Assets/Scenes/Working Scenes/Level1Test.unity
-    guid: 3d32ffe20357cf24996e817dc984620c
+    path: Assets/Scenes/Final Scene.unity
+    guid: 87a81bb51392c73488e8595a6bf927ec
+  - enabled: 1
+    path: Assets/Scenes/obstacleCourse.unity
+    guid: a8850029f9c7bda4b9031f59575f8be1
   m_configObjects: {}
