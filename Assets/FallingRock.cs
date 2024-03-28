@@ -29,10 +29,12 @@ public class FallingRock : MonoBehaviour
         if (isRockFalling)
         {
             rockRb.gravityScale = 1;
+            rockRb.bodyType = RigidbodyType2D.Dynamic;
         }
         else
         {
             rockRb.gravityScale = 0;
+            rockRb.bodyType = RigidbodyType2D.Static;
         }
 
         if (rockCast.collider == null)
