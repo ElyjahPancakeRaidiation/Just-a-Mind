@@ -76,7 +76,6 @@ public class PlayerController : MonoBehaviour
     [Header("Physics")]
     public bool ignoreResistences = false;
     [SerializeField] float coefficientOfAirResistence, coefficientOfFriction;
-    public bool ignoreResistences = false;
     public isGroundedScript groundedScript;
 
     #region Ball movement variables
