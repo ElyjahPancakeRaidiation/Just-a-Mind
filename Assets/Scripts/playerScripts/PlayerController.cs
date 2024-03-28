@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour
     public GameManager gm;
     [SerializeField]private SpriteRenderer playerSpriteRender;
     [SerializeField]private Sprite[] playerFormSprite;
-    private Animator anim;
+    [SerializeField]private Animator anim;
     public float jumpTime;
     public AudioManagerScript AMS;
 
@@ -76,7 +76,8 @@ public class PlayerController : MonoBehaviour
     [Header("Physics")]
     public bool ignoreResistences = false;
     [SerializeField] float coefficientOfAirResistence, coefficientOfFriction;
-    isGroundedScript groundedScript;
+    public bool ignoreResistences = false;
+    public isGroundedScript groundedScript;
 
     #region Ball movement variables
     [Header("Head")]
@@ -264,7 +265,7 @@ public class PlayerController : MonoBehaviour
             if (Input.GetKeyDown(formChangeKey) || Input.GetKeyDown(rightformChangeKey))
             {
                 playerForm++;
-                if ((int)playerForm >= 2)
+                if ((int)playerForm >= 3)
                 {
                     playerForm = 0;
                 }
@@ -292,7 +293,7 @@ public class PlayerController : MonoBehaviour
                     break;
 
                 case playerForms.Pogo:
-                rb.mass = 2.5f;
+                rb.mass = 1f;
                     transform.rotation = quaternion.RotateZ(0);//Puts the character up straight
                     ballCol.enabled = false;//changes the collider from ball to pogo
                     pogoCol.enabled = true;
@@ -305,7 +306,7 @@ public class PlayerController : MonoBehaviour
                     break;
 
                 case playerForms.Arm:
-                rb.mass = 3.5f;
+                rb.mass = 1f;
                     //Where all of the settings for arm goes
                     ballCol.enabled = false;
                     pogoCol.enabled = true;
