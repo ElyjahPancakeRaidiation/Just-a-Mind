@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     [Header("General")]
     Abilities abilityScript;
     public KeyCode formChangeKey;
+    public KeyCode rightformChangeKey;
     [SerializeField]public bool devControl;//Just used to override the locked forms(I got really lazy and I dont want to keep going back and fourth changing the bools)
     public int neareastSpawner;
     public float timer;
@@ -23,7 +24,7 @@ public class PlayerController : MonoBehaviour
     public GameManager gm;
     [SerializeField]private SpriteRenderer playerSpriteRender;
     [SerializeField]private Sprite[] playerFormSprite;
-    private Animator anim;
+    [SerializeField]private Animator anim;
     public float jumpTime;
     public AudioManagerScript AMS;
 
@@ -43,33 +44,43 @@ public class PlayerController : MonoBehaviour
     public IEnumerator thoughtBubbleTime;
 
     IEnumerator playingSound;
-    private bool ILoveCoding;
+    private bool soundIsPlaying;
 
     #region movements
     [Header("Movement")]
     public bool canMove = true;
+    [SerializeField]private bool isMoving;
     public Rigidbody2D rb;
     public float horizontal, vertical;
     public int horiLatestInput = 1, vertLatestInput = 0;
     public float speed,jumpSpeedX,jumpSpeedY;
+    [SerializeField]private float bonusRotationSpeed;
+    [SerializeField]private float rotChangePointMax;//The max amount rb rotation can get to before giving a boost when changing dir
+    [SerializeField]private float rotChangePointMin;//The minimal amount rb rotation can get to before stoping the boost when changing dir
+    private bool canBoostRotSpeed;
+
     [Header("Interaction")]
     private Collider2D interactCol;
     [SerializeField]public float interactRadius;
-    [SerializeField]public LayerMask interactMask, groundMask;//interact mask is for objects you can interact with by pressing E. Ground is for ground.
-
+    [SerializeField]public LayerMask interactMask, groundMask;//interact mask is for objects you can interact with by pressing E. Ground is for ground
+    
+    
+    [Header("Player Forms")]
+    private int maxForm;
     public enum playerForms{Ball, Pogo, Arm}
     public static playerForms playerForm;
     // Change to false false false for game and initialize in gm
     public static bool[] playerPieces = {true, true, true};//bools for the player pieces {0: ball, 1: pogo, 2: arm}
-    private int maxForm;
-    [SerializeField] float coefficientOfAirResistence, coefficientOfFriction;
+
+
+    [Header("Physics")]
     public bool ignoreResistences = false;
-    isGroundedScript groundedScript;
+    [SerializeField] float coefficientOfAirResistence, coefficientOfFriction;
+    public isGroundedScript groundedScript;
 
     #region Ball movement variables
     [Header("Head")]
     [SerializeField]private Collider2D ballCol;
-    public float maxSpeedCopy;
     private const float DECELERATION = 8, ACCELERATION = 4, POINTTOACCELERATE = 2;
     /// <Deceleration acceleration and accelerate explantion> 
     /// Decleration is to increase the turning speed from left to right
@@ -77,6 +88,7 @@ public class PlayerController : MonoBehaviour
     /// pointToAccelerate when it should stop accelerating ex: it will keep acclerating from 0 to 2 and stop
     /// </summary>
     #endregion
+
     #region Pogo movement variables
     [Header("Body")]
     [SerializeField]private Collider2D pogoCol;
@@ -145,6 +157,15 @@ public class PlayerController : MonoBehaviour
                     AirResistance();
                 }
             }
+        }
+
+        if (rb.velocity.x > 1.5f || rb.velocity.x < -1.5)//the game will register if it is moving when its past a certain speed
+        {
+            isMoving = true;
+        }
+        else
+        {
+            isMoving = false;
         }
 
         
@@ -224,7 +245,7 @@ public class PlayerController : MonoBehaviour
                 }
             }
     
-            if (Input.GetKeyDown(formChangeKey))
+            if (Input.GetKeyDown(formChangeKey) || Input.GetKeyDown(rightformChangeKey))
             {
                 
                 if ((int)playerForm >= maxForm)
@@ -240,10 +261,10 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            if (Input.GetKeyDown(formChangeKey))
+            if (Input.GetKeyDown(formChangeKey) || Input.GetKeyDown(rightformChangeKey))
             {
                 playerForm++;
-                if ((int)playerForm >= 2)
+                if ((int)playerForm >= 3)
                 {
                     playerForm = 0;
                 }
@@ -271,7 +292,7 @@ public class PlayerController : MonoBehaviour
                     break;
 
                 case playerForms.Pogo:
-                rb.mass = 2.5f;
+                rb.mass = 1f;
                     transform.rotation = quaternion.RotateZ(0);//Puts the character up straight
                     ballCol.enabled = false;//changes the collider from ball to pogo
                     pogoCol.enabled = true;
@@ -284,7 +305,7 @@ public class PlayerController : MonoBehaviour
                     break;
 
                 case playerForms.Arm:
-                rb.mass = 3.5f;
+                rb.mass = 1f;
                     //Where all of the settings for arm goes
                     ballCol.enabled = false;
                     pogoCol.enabled = true;
@@ -304,6 +325,7 @@ public class PlayerController : MonoBehaviour
 		{
 			case playerForms.Ball:
                 rb.AddForce(new Vector2(horizontal * speed * Time.deltaTime, 0), ForceMode2D.Impulse);//moves the player in the direction the player is pressing
+                RotationSpeed();
                 break;
 			case playerForms.Pogo:
                 if (horizontal != 0 && groundedScript.isGrounded() && canJump)
@@ -321,9 +343,14 @@ public class PlayerController : MonoBehaviour
 		}
 
 	}
-    private void OnDrawGizmos()  
+
+    public IEnumerator Jump() 
     {
-        Gizmos.DrawWireSphere(transform.position, interactRadius);
+        Vector2 jumpForce = new Vector2(horizontal * jumpSpeedX, jumpSpeedY);
+        rb.AddForce(jumpForce, ForceMode2D.Impulse);
+        yield return new WaitForSeconds(.5f);
+		yield return new WaitUntil (() => groundedScript.isGrounded());
+		canJump = true;
     }
 
     void AirResistance()
@@ -368,14 +395,84 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    private IEnumerator PlaySound(float waitAmount){
+    private IEnumerator PlaySound(float waitAmount){//Plays the sound and waits until it is finished + however amount you want to add
         AMS.sfx.clip = AMS.currentSfx;
         AMS.sfx.Play();
         yield return new WaitForSeconds(AMS.sfx.clip.length + waitAmount);
-        ILoveCoding = false;
+        soundIsPlaying = false;
     }
 
-   
+    private void RotationSpeed(){
+
+        bonusRotationSpeed = -(rb.angularVelocity/2);
+        
+        if (!groundedScript.isGrounded())
+        {
+            if(horizontal == 1){
+                if (rb.angularVelocity > 0.02f)
+                {
+                    rb.angularVelocity -= -bonusRotationSpeed * Time.fixedDeltaTime * 10f;
+                    print("Off ground and going right");
+                }
+            }else if(horizontal == -1){
+                if (rb.angularVelocity < -0.02f)
+                {
+                    rb.angularVelocity += bonusRotationSpeed * Time.fixedDeltaTime * 10f;
+                    print("Off ground and going right");
+                }
+            }
+        }
+        
+        
+        switch (horizontal)
+        {
+            case 1:
+
+                if(canBoostRotSpeed){
+                    if (rb.angularVelocity < rotChangePointMin){
+                        rb.angularVelocity -= -bonusRotationSpeed * Time.fixedDeltaTime;
+                    }
+                    else
+                    {
+                        canBoostRotSpeed = false;
+                    }
+                }
+
+                if (rb.angularVelocity < -rotChangePointMax)
+                {
+                    canBoostRotSpeed = true;
+                    print("going Right at negative");
+                }
+                break;
+
+            case -1:
+
+                if (canBoostRotSpeed)
+                {
+                    if(rb.angularVelocity > rotChangePointMin){
+                        rb.angularVelocity += bonusRotationSpeed * Time.fixedDeltaTime;
+                    }
+                    else
+                    {
+                        canBoostRotSpeed = false;
+                    }
+                }
+
+                if (rb.angularVelocity > rotChangePointMax)
+                {
+                    canBoostRotSpeed = true;
+                    print("going Left at positive");
+                }
+                break;
+            
+        }
+    }
+
+
+    private void OnDrawGizmos()  
+    {
+        Gizmos.DrawWireSphere(transform.position, interactRadius);
+    }
 
     private void OnCollisionEnter2D(Collision2D collision)
 	{
@@ -407,23 +504,16 @@ public class PlayerController : MonoBehaviour
 		}
 		if (collision.tag == "sfx")
 		{
-            if (!ILoveCoding && horizontal != 0)
+            if (!soundIsPlaying && isMoving)
             {
                 playingSound = PlaySound(0.6f);
                 StartCoroutine(playingSound);
-                ILoveCoding = true;
+                soundIsPlaying = true;
             }
             
 		}
 	}
-    
-   /* IEnumerator DoTextBox()
-    {
-        Instantiate(thoughtBubble, new Vector2(player.transform.position.x + textOffsetX, player.transform.position.y + textOffsetY), quaternion.identity);
-        yield return new WaitForEndOfFrame();
-        DestroyImmediate(thoughtBubble, true);
 
-    }*/
 	private void OnTriggerExit2D(Collider2D collision)
 	{
         /*Destroy(thoughtBubble);
@@ -437,19 +527,10 @@ public class PlayerController : MonoBehaviour
         if (collision.tag == "sfx")
         {
             StopCoroutine(playingSound);
-            ILoveCoding = false;
+            soundIsPlaying = false;
         }
 
 	}
-
-    public IEnumerator Jump() 
-    {
-        Vector2 jumpForce = new Vector2(horizontal * jumpSpeedX, jumpSpeedY);
-        rb.AddForce(jumpForce, ForceMode2D.Impulse);
-        yield return new WaitForSeconds(.5f);
-		yield return new WaitUntil (() => groundedScript.isGrounded());
-		canJump = true;
-    }
 
 
 }
