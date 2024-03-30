@@ -159,6 +159,7 @@ public class Abilities : MonoBehaviour
         CameraScript.isCameraShaking = false;
         yield return new WaitUntil(() => groundedScript.isGrounded());
         ResetDash();
+        // after we reset the dassh we can then transition to an arm boost which may allow more arier movement
     }
     private void ResetDash(){//Resets all of the variables in dash mechanic
         isDashing = false;
@@ -168,6 +169,7 @@ public class Abilities : MonoBehaviour
     #region Pogo abilities
     void Jumping()
     {
+        // Only allows if the player is grounded which
         if (groundedScript.isGrounded())
         {   if (Input.GetKeyDown(abilityKey))
             {
@@ -358,6 +360,7 @@ public class Abilities : MonoBehaviour
             // Gets the angle between the player and the vine
             float theta = Mathf.Atan((curShoulder.shoulderPosition.y - vinePosObj.transform.position.y) 
             / (curShoulder.shoulderPosition.x - vinePosObj.transform.position.x)); 
+            // When we grab the grapple start position we can then expand the sprite to let the arm fly out
 			LR.SetPosition(0, curShoulder.shoulderPosition); // Starts at grapple tip
 			LR.SetPosition(1, new Vector2(renderDist * Mathf.Cos(theta), renderDist * Mathf.Sin(theta))); // Ends at the target
             if (renderDist >= distance)
