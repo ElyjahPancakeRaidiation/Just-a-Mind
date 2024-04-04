@@ -51,10 +51,6 @@ MonoBehaviour:
   - 0.45
   - 1
   - 1
-  colSize:
-  - {x: 0.77, y: 0.18}
-  - {x: 0, y: 0}
-  - {x: 0, y: 0}
 --- !u!1 &5150928139307579840
 GameObject:
   m_ObjectHideFlags: 0
@@ -115,17 +111,12 @@ MonoBehaviour:
   dashDelay: 1.25
   yDashModifier: 1.3
   jumpForce: 15
-  superJumpForce: 65
+  superJumpForce: 22
   groundPoint: {fileID: 2556725374051482418}
   canSuperJump: 0
   keyHoldDown: 0
-  speed: 15
-  dashMag: 0
-  shiftTime: 0
-  shiftTimeMax: 0
-  playerTransform: {fileID: 0}
-  COM: {x: 0, y: 0, z: 0}
-  isConnected: 0
+  playerTransform: {fileID: 6115588636633299820}
+  isGrappling: 0
   maxRange: 0
   vineColliders:
     serializedVersion: 2
@@ -133,7 +124,16 @@ MonoBehaviour:
   hJ: {fileID: 0}
   hookshotSpeed: 0
   LR: {fileID: 0}
+  arms: []
   armShootSpeed: 10
+  armScale: 0
+  grappleForce: 0
+  toShoulderDist: {x: 0, y: 0}
+  hand: {fileID: 0}
+  horrizontalShootForce: 0
+  diagnolxShootForce: 0
+  diagnolyShootForce: 0
+  shootVector: {x: 0, y: 0}
 --- !u!114 &6156709126799240589
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -147,37 +147,41 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   formChangeKey: 304
-  devControl: 1
+  rightformChangeKey: 303
+  devControl: 0
   neareastSpawner: 0
   timer: 0
-  maxTime: 15
+  maxTime: 7
   textOffsetX: 0
   textOffsetY: 0
   spherePoint: {fileID: 4868531280780533235}
   gm: {fileID: 0}
-  playerSpriteRender: {fileID: 0}
+  playerSpriteRender: {fileID: 8583233941389115788}
   playerFormSprite:
   - {fileID: 21300000, guid: c48159bb276b640a9b80ce9eebed5a59, type: 3}
   - {fileID: 21300000, guid: 91976d33e7ae9704591ceeeebbf2e155, type: 3}
+  anim: {fileID: 7043142263348349944}
   jumpTime: 0.1
-  AMO: {fileID: 0}
   AMS: {fileID: 0}
+  musicHasChanged: 0
   circleCol: {fileID: 0}
   vineCol: {fileID: 0}
   spawner: {fileID: 0}
   player: {fileID: 0}
   grabOn: {fileID: 0}
   guideText: {fileID: 0}
+  thoughtBub: {fileID: 0}
   thoughtBubble: {fileID: 0}
   canMove: 1
-  rb: {fileID: 0}
+  isMoving: 0
+  rb: {fileID: 3374888515853459002}
   horizontal: 0
   vertical: 0
   horiLatestInput: 0
   vertLatestInput: 0
   speed: 15
-  jumpSpeedX: 15
-  jumpSpeedY: 10
+  jumpSpeedX: 12
+  jumpSpeedY: 8
   interactRadius: 2
   interactMask:
     serializedVersion: 2
@@ -188,6 +192,7 @@ MonoBehaviour:
   coefficientOfAirResistence: 0.075
   coefficientOfFriction: 0.3
   ignoreResistences: 0
+  groundedScript: {fileID: 8064381564403545213}
   ballCol: {fileID: 4243366355294756771}
   maxSpeedCopy: 0
   pogoCol: {fileID: 6764691651494828799}
