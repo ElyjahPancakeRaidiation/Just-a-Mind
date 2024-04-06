@@ -3460,6 +3460,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CamBorder
       objectReference: {fileID: 0}
+    - target: {fileID: 2641823194851750168, guid: 9eaab1016a7716b40900fca4e40b0bd1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3477347258913383154, guid: 9eaab1016a7716b40900fca4e40b0bd1, type: 3}
       propertyPath: m_LocalPosition.x
       value: 71.95
@@ -3583,8 +3587,24 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1134108300002456243, guid: 0eebf9695a3cace40a4f744a5d99a8fe, type: 3}
+      propertyPath: hand
+      value: 
+      objectReference: {fileID: 8467201174637717051, guid: 114cb8a95df000d45b9376cb3c711b56, type: 3}
+    - target: {fileID: 1134108300002456243, guid: 0eebf9695a3cace40a4f744a5d99a8fe, type: 3}
       propertyPath: abilityKey
       value: 32
+      objectReference: {fileID: 0}
+    - target: {fileID: 1134108300002456243, guid: 0eebf9695a3cace40a4f744a5d99a8fe, type: 3}
+      propertyPath: diagnolxShootForce
+      value: 400
+      objectReference: {fileID: 0}
+    - target: {fileID: 1134108300002456243, guid: 0eebf9695a3cace40a4f744a5d99a8fe, type: 3}
+      propertyPath: diagnolyShootForce
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 1134108300002456243, guid: 0eebf9695a3cace40a4f744a5d99a8fe, type: 3}
+      propertyPath: horrizontalShootForce
+      value: 400
       objectReference: {fileID: 0}
     - target: {fileID: 5150928139307579840, guid: 0eebf9695a3cace40a4f744a5d99a8fe, type: 3}
       propertyPath: m_Name
