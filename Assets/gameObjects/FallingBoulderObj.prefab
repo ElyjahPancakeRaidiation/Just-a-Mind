@@ -27,12 +27,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3451980193151486791}
   serializedVersion: 2
-  m_LocalRotation: {x: -1, y: 0, z: 0, w: 0}
+  m_LocalRotation: {x: -1, y: -0, z: -0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 2.2562757}
   m_LocalScale: {x: 5.5904, y: 5.5904, z: 5.5904}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8411641059219044134}
+  m_Father: {fileID: 5957317467937036792}
   m_LocalEulerAnglesHint: {x: -180, y: 0, z: 0}
 --- !u!212 &4793535673920554216
 SpriteRenderer:
@@ -189,7 +189,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5280632776806939344}
+  - {fileID: 5957317467937036792}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &7938175169908574464
@@ -249,10 +249,49 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89ea3a3de72117748ac98031d0cf9f80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fallingDelay: 0.5
-  rockObj: {fileID: 3451980193151486791}
-  isRockFalling: 0
-  rockcastDist: 9.13
-  fallingRock:
+  rockObj:
+  - {fileID: 0}
+  rockRb: []
+  rockStartPos: []
+  hasRockFallen: 
+  rockFallDelay: 0
+  respawnTimer: 0
+  rockRespawnTime: 0
+  rockCastDistance: []
+  rockMask:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 0
+  rockAnims: []
+  rockAnimClip: []
+--- !u!1 &8101280472526932194
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5957317467937036792}
+  m_Layer: 0
+  m_Name: RockStartPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5957317467937036792
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8101280472526932194}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5280632776806939344}
+  m_Father: {fileID: 8411641059219044134}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
