@@ -7,12 +7,14 @@ using TMPro;
 using Unity.Mathematics;
 using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class PlayerController : MonoBehaviour
 {
     [Header("General")]
     Abilities abilityScript;
     public KeyCode formChangeKey;
+    public KeyCode rightformChangeKey;
     [SerializeField]public bool devControl;//Just used to override the locked forms(I got really lazy and I dont want to keep going back and fourth changing the bools)
     public int neareastSpawner;
     public float timer;
@@ -23,9 +25,11 @@ public class PlayerController : MonoBehaviour
     public GameManager gm;
     [SerializeField]private SpriteRenderer playerSpriteRender;
     [SerializeField]private Sprite[] playerFormSprite;
-    private Animator anim;
+    [SerializeField]private Animator anim;
     public float jumpTime;
     public AudioManagerScript AMS;
+
+    public bool musicHasChanged = false;
 
     private static bool playerDead;
 
@@ -65,7 +69,7 @@ public class PlayerController : MonoBehaviour
     private int maxForm;
     [SerializeField] float coefficientOfAirResistence, coefficientOfFriction;
     public bool ignoreResistences = false;
-    isGroundedScript groundedScript;
+    public isGroundedScript groundedScript;
 
     #region Ball movement variables
     [Header("Head")]
@@ -234,7 +238,7 @@ public class PlayerController : MonoBehaviour
                 }
             }
     
-            if (Input.GetKeyDown(formChangeKey))
+            if (Input.GetKeyDown(formChangeKey) || Input.GetKeyDown(rightformChangeKey))
             {
                 
                 if ((int)playerForm >= maxForm)
@@ -250,7 +254,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            if (Input.GetKeyDown(formChangeKey))
+            if (Input.GetKeyDown(formChangeKey) || Input.GetKeyDown(rightformChangeKey))
             {
                 playerForm++;
                 if ((int)playerForm >= 3)
@@ -398,6 +402,8 @@ public class PlayerController : MonoBehaviour
                 rb.angularVelocity = 0;
                 playerDead = true;
                 break;
+            
+            
 		}
 	}
 
@@ -425,6 +431,18 @@ public class PlayerController : MonoBehaviour
             }
             
 		}
+        if(collision.tag == "MusicChange" )
+        {
+           AMS.soundTrackSource.Stop();
+           AMS.currentMusic = AMS.soundTrack[1];
+           AMS.soundTrackSource.PlayOneShot(AMS.currentMusic);
+           AMS.soundTrackSource.volume = 0.55f;
+           
+           //musicHasChanged = true;
+
+        }
+               
+                
 	}
     
    /* IEnumerator DoTextBox()
