@@ -17,8 +17,8 @@ public class handScript : MonoBehaviour
         ability = player.GetComponent<Abilities>();
         rb = this.GetComponent<Rigidbody2D>();
         rb.velocity = player.GetComponent<Rigidbody2D>().velocity;
-        print(ability.shootVector);
-        rb.AddForce(ability.shootVector);
+        //print(ability.shootVector);
+        //rb.AddForce(ability.shootVector);
     }
 
     // Update is called once per frame
