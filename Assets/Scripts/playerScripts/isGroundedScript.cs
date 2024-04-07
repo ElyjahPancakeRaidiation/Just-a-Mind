@@ -7,6 +7,7 @@ public class isGroundedScript : MonoBehaviour
     GameObject player;
     [SerializeField] LayerMask groundLayer;
     public List<float> rayScales;
+    public int timer;
     
 
     // Start is called before the first frame update
@@ -39,6 +40,7 @@ public class isGroundedScript : MonoBehaviour
             Debug.DrawRay(transform.position, Vector2.up * rayScales[(int) PlayerController.playerForm], Color.red);
             return false;
         }
+
         
         
     }
