@@ -28,7 +28,6 @@ public class TestManager : MonoBehaviour
 
     private void Update() {
 
-
         if (Input.GetKeyDown(KeyCode.P))
         {
             isPaused = !isPaused;
