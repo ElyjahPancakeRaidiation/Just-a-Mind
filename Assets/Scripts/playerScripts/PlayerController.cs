@@ -523,8 +523,8 @@ public class PlayerController : MonoBehaviour
            AMS.currentMusic = AMS.soundTrack[1];
            AMS.soundTrackSource.PlayOneShot(AMS.currentMusic);
            AMS.soundTrackSource.volume = 0.55f;
+           musicHasChanged = true;
            
-           //musicHasChanged = true;
 
         }
                

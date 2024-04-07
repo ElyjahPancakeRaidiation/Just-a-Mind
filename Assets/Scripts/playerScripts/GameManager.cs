@@ -6,12 +6,14 @@ public class GameManager : MonoBehaviour
 {
     public PlayerController pc;
     public GameObject player;
+    public GameObject musicChanger;
     float speedrunTimer;
 
     void Start()
     {
         player = GameObject.Find("Player");
         pc = player.GetComponent<PlayerController>();
+        musicChanger.SetActive(true);
     }
 
     // Update is called once per frame
@@ -25,6 +27,10 @@ public class GameManager : MonoBehaviour
                 player.transform.position = pc.spawner.transform.position;
             }
         }*/
+
+        
+
+    
 		
     }
 

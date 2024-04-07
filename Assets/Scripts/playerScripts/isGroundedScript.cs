@@ -16,11 +16,15 @@ public class isGroundedScript : MonoBehaviour
     void Start()
     {
         player = GameObject.Find("Player");
+        
 
     }
     
-    private void FixedUpdate() {
+    private void FixedUpdate() 
+    {
         transform.position = player.transform.position + new Vector3(0, -1 * (vecScales[(int) PlayerController.playerForm].y + .2f), 0);
+        Debug.Log("is it grounded " + isGrounded());
+        
     }
 
     public bool isGrounded()
