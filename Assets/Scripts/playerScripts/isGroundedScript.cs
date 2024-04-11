@@ -8,22 +8,23 @@ public class isGroundedScript : MonoBehaviour
     [SerializeField] LayerMask groundLayer;
     public List<float> rayScales;
     public int timer;
+    public Vector2[] vecScales;
+    private float angle;
     
 
     // Start is called before the first frame update
     void Start()
     {
         player = GameObject.Find("Player");
+        
 
     }
-
-    // Update is called once per frame
-    void Update()
+    
+    private void FixedUpdate() 
     {
-
-    }
-    private void FixedUpdate() {
-        transform.position = player.transform.position + new Vector3(0, -1 * (rayScales[(int) PlayerController.playerForm] + .2f), 0);
+        transform.position = player.transform.position + new Vector3(0, -1 * (vecScales[(int) PlayerController.playerForm].y + .2f), 0);
+        Debug.Log("is it grounded " + isGrounded());
+        
     }
 
     public bool isGrounded()
@@ -43,6 +44,9 @@ public class isGroundedScript : MonoBehaviour
 
         
         
+        return Physics2D.OverlapBox(transform.position, vecScales[(int) PlayerController.playerForm], angle, groundLayer);
     }
+
+    void OnDrawGizmos() => Gizmos.DrawWireCube(transform.position, vecScales[(int) PlayerController.playerForm]);
 
 }
