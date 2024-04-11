@@ -11,6 +11,7 @@ using UnityEngine.Rendering;
 
 public class PlayerController : MonoBehaviour
 {
+    #region general
     [Header("General")]
     Abilities abilityScript;
     public KeyCode formChangeKey;
@@ -48,7 +49,7 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator playingSound;
     private bool soundIsPlaying;
-
+    #endregion
     #region movements
     [Header("Movement")]
     public bool canMove = true;
@@ -89,6 +90,8 @@ public class PlayerController : MonoBehaviour
     public bool canJump = true;
 	#endregion
 	#region Arm movement variables
+
+    
 	#endregion
 
 
@@ -257,7 +260,7 @@ public class PlayerController : MonoBehaviour
             if (Input.GetKeyDown(formChangeKey) || Input.GetKeyDown(rightformChangeKey))
             {
                 playerForm++;
-                if ((int)playerForm >= 3)
+                if ((int)playerForm >= 2)
                 {
                     playerForm = 0;
                 }
@@ -291,23 +294,11 @@ public class PlayerController : MonoBehaviour
                     pogoCol.enabled = true;
                     //anim.enabled = true;
                     playerSpriteRender.sprite = playerFormSprite[1];//changes the sprites from ball to pogo man
-                    rb.freezeRotation = true;
                     anim.SetInteger("Horizontal", (int)horizontal);//this is for walking animation 
                     Debug.Log("Head");
                     canJump = true; 
                     break;
 
-                case playerForms.Arm:
-                rb.mass = 1f;
-                    //Where all of the settings for arm goes
-                    ballCol.enabled = false;
-                    pogoCol.enabled = true;
-                    rb.freezeRotation = false;
-                    /*foreach (Abilities.shoulderType shoulder in abilityScript.shoulders)
-                    {
-                        shoulder.shoulderObject.SetActive(true);
-                    }*/
-                    break;
             }
         }
         
