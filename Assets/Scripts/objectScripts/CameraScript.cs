@@ -7,6 +7,7 @@ public class CameraScript : MonoBehaviour
 {
     [Header("----Cam Movement Variables----")]
     public float camDefaultFOV;
+    [SerializeField]private float startingFOV;
 
     private GameObject cameraObj;
     public static GameObject playerObj;
@@ -15,7 +16,8 @@ public class CameraScript : MonoBehaviour
 
     public float cameraSpeed, backSpeed;//Follows player speed and comes back to player speed
     [SerializeField]private float zoomBackSpeed, Distance;//How fast the camera goes back to following the player and how close before switching movements to follow the player
-    public bool isFollowingPlayer, isComingBack, isTransitioning;//Different modes for the camera
+    public bool isFollowingPlayer, isComingBack, isZoom;//Different modes for the camera
+    private bool hasZoomed;
 
     public bool notFollowingX, notFollowingY;
     public static bool isCameraShaking, isCameraZooming;
@@ -31,7 +33,12 @@ public class CameraScript : MonoBehaviour
         cam = GetComponentInChildren<Camera>();
         cameraObj = GameObject.FindGameObjectWithTag("MainCamera");
         //testobj = playerObj;
-        cam.orthographicSize = camDefaultFOV;
+        if (startingFOV == camDefaultFOV || startingFOV == 0)
+        {
+            cam.orthographicSize = camDefaultFOV;
+        }else{
+            cam.orthographicSize = startingFOV;
+        }
         //playerRB = playerObj.GetComponent<Rigidbody2D>();
         //startCamOffset = cameraOffset;
     }
@@ -129,20 +136,34 @@ public class CameraScript : MonoBehaviour
 
     public void ZoomCameraChange(float FOV, float zoomSpeed){//Zooms back and fourth wether it is the player or not. Never make the desired FOV smaller than the defualt FOV which is 5
         
-        if (!isFollowingPlayer)
+        if (Mathf.Abs(cam.orthographicSize - FOV) < 0.1f)
         {
-            if (cam.orthographicSize < FOV)
+            print("WORKING WOKRING");
+            hasZoomed = true;
+        }
+        if (isZoom)
+        {
+            if (!hasZoomed)
             {
-                cam.orthographicSize += Time.deltaTime * zoomSpeed;
-            }else{
+                if (cam.orthographicSize < FOV)
+                {
+                    cam.orthographicSize += Time.deltaTime * zoomSpeed;
+                }else if(cam.orthographicSize > FOV){
+                    cam.orthographicSize -= Time.deltaTime * zoomSpeed;
+                }
+            }else
+            {
                 cam.orthographicSize = FOV;
             }
         }
         else
         {
+            hasZoomed = false;
             if (cam.orthographicSize > camDefaultFOV)
             {
                 cam.orthographicSize -= Time.deltaTime * zoomSpeed;
+            }else if(cam.orthographicSize < camDefaultFOV){
+                cam.orthographicSize += Time.deltaTime * zoomSpeed;
             }else{
                 cam.orthographicSize = camDefaultFOV;
             }

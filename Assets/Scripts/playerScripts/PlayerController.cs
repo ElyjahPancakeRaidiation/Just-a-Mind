@@ -267,7 +267,7 @@ public class PlayerController : MonoBehaviour
             if (Input.GetKeyDown(formChangeKey) || Input.GetKeyDown(rightformChangeKey))
             {
                 playerForm++;
-                if ((int)playerForm >= 3)
+                if ((int)playerForm >= 2)//Had to change for current build
                 {
                     playerForm = 0;
                 }
