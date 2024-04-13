@@ -1526,6 +1526,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6156709126799240589, guid: 0eebf9695a3cace40a4f744a5d99a8fe, type: 3}
+      propertyPath: devControl
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6156709126799240589, guid: 0eebf9695a3cace40a4f744a5d99a8fe, type: 3}
       propertyPath: thoughtBub
       value: 
       objectReference: {fileID: 1369584925}
