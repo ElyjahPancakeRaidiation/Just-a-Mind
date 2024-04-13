@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1489.3334
     height: 897.3334
   m_ShowMode: 4
-  m_Title: Project
+  m_Title: Inspector
   m_RootView: {fileID: 2}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -1881,23 +1881,23 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 
-      m_LastClickedID: 0
-      m_ExpandedIDs: 6e6ffeffe474fefff076feff7a79feffb07afeff1a7cfeff227dfeff6e7efeff5c80feff8c83feff4084feffe88cfeff428efeffb499feffd49dfefff89dfeff429efeffc89efefff89ffeff7aa1feffdea2feff64a3feff38aafeff10b9feff5e6fffff6a6fffffb470ffff467affff027dffff407dffff847effffcc7effff1880ffff7c80ffffae81ffff4a8dffff2e8effff768effff2ac1ffffecc1ffffe8f6fffff4f8ffff9e680000c46e0000c0700000548000007c80000066810000f0820000448300003c8400006686000086870000b2870000fc890000d00f0100f0150100d04201000049010022840200808402008685020094a50200d2cc0200a4d40200d8010300040e0300241d0300ce340300
+      m_SelectedIDs: e4750000
+      m_LastClickedID: 30180
+      m_ExpandedIDs: 16f6ffffc4f8fffffefaffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: CamBorder X Right
-        m_OriginalName: CamBorder X Right
+        m_Name: 
+        m_OriginalName: 
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
           y: 0
           width: 0
           height: 0
-        m_UserData: -82076
+        m_UserData: 0
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
-        m_OriginalEventType: 0
+        m_OriginalEventType: 11
         m_IsRenamingFilename: 0
         m_ClientGUIView: {fileID: 10}
       m_SearchString: 
@@ -1967,9 +1967,9 @@ MonoBehaviour:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: a6670000
-    m_LastClickedID: 26534
-    m_ExpandedIDs: 00000000a4670000a6670000a8670000aa670000ac67000000ca9a3b
+    m_SelectedIDs: ce660000
+    m_LastClickedID: 26318
+    m_ExpandedIDs: 00000000cc660000ce660000d0660000d2660000d466000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1997,7 +1997,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000a4670000a6670000a8670000aa670000ac670000
+    m_ExpandedIDs: 00000000cc660000ce660000d0660000d2660000d4660000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 

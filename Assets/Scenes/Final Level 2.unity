@@ -1026,7 +1026,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   formChangeKey: 304
   rightformChangeKey: 303
-  devControl: 0
+  devControl: 1
   neareastSpawner: 0
   timer: 0
   maxTime: 7
