@@ -31,20 +31,20 @@ public class isGroundedScript : MonoBehaviour
     {
         
         
-        if (Physics2D.Raycast(transform.position, Vector2.up, rayScales[(int) PlayerController.playerForm], groundLayer))
+        if (Physics2D.Raycast(player.transform.position, Vector2.down, rayScales[(int) PlayerController.playerForm], groundLayer))
         {
-            Debug.DrawRay(transform.position, Vector2.up * rayScales[(int) PlayerController.playerForm], Color.red);
+            Debug.DrawRay(player.transform.position, Vector2.down * rayScales[(int) PlayerController.playerForm], Color.red);
             return true;
         }
         else
         {
-            Debug.DrawRay(transform.position, Vector2.up * rayScales[(int) PlayerController.playerForm], Color.red);
+            Debug.DrawRay(player.transform.position, Vector2.down * rayScales[(int) PlayerController.playerForm], Color.red);
             return false;
         }
 
         
         
-        return Physics2D.OverlapBox(transform.position, vecScales[(int) PlayerController.playerForm], angle, groundLayer);
+        //return Physics2D.OverlapBox(transform.position, vecScales[(int) PlayerController.playerForm], angle, groundLayer);
     }
 
     void OnDrawGizmos() => Gizmos.DrawWireCube(transform.position, vecScales[(int) PlayerController.playerForm]);

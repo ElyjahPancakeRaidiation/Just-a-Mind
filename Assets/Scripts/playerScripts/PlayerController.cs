@@ -8,6 +8,7 @@ using Unity.Mathematics;
 using UnityEngine.UI;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -105,7 +106,12 @@ public class PlayerController : MonoBehaviour
 	#endregion
 
 	private void Start(){
-        thoughtBub.enabled = false;
+        if (SceneManager.GetActiveScene().name == "Final Level 1")
+        {
+            print("thought bubble on");
+            thoughtBub.enabled = false;
+        }
+        
         abilityScript = GetComponent<Abilities>();
         if (!devControl)
         {
