@@ -937,7 +937,7 @@ GameObject:
   - component: {fileID: 224383755}
   - component: {fileID: 224383756}
   m_Layer: 0
-  m_Name: Ground
+  m_Name: Ground w/ Col
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1454,8 +1454,24 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1369584925}
     - target: {fileID: 8064381564403545213, guid: 0eebf9695a3cace40a4f744a5d99a8fe, type: 3}
+      propertyPath: rayScales.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8064381564403545213, guid: 0eebf9695a3cace40a4f744a5d99a8fe, type: 3}
       propertyPath: vecScales.Array.size
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8064381564403545213, guid: 0eebf9695a3cace40a4f744a5d99a8fe, type: 3}
+      propertyPath: rayScales.Array.data[0]
+      value: 0.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 8064381564403545213, guid: 0eebf9695a3cace40a4f744a5d99a8fe, type: 3}
+      propertyPath: rayScales.Array.data[1]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8064381564403545213, guid: 0eebf9695a3cace40a4f744a5d99a8fe, type: 3}
+      propertyPath: rayScales.Array.data[2]
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8064381564403545213, guid: 0eebf9695a3cace40a4f744a5d99a8fe, type: 3}
       propertyPath: vecScales.Array.data[0].x
@@ -2440,6 +2456,8 @@ MonoBehaviour:
   zoomCameraSpeed: 5.6
   zoomBackCameraSpeed: 3
   followSpeed: 16.9
+  followPlayer: 0
+  keepChanges: 0
   camVec: {x: 62.1, y: 39}
   playerMask:
     serializedVersion: 2
@@ -8052,6 +8070,8 @@ MonoBehaviour:
   zoomCameraSpeed: 3
   zoomBackCameraSpeed: 3
   followSpeed: 8.4
+  followPlayer: 0
+  keepChanges: 0
   camVec: {x: 17.1, y: 30}
   playerMask:
     serializedVersion: 2

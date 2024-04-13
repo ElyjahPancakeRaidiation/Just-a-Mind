@@ -121,6 +121,11 @@ public class FallingRock : MonoBehaviour
         isRockFalling = false;
     }
 
+    private IEnumerator RestartRocks(float time){
+        yield return new WaitForSeconds(time);
+        StartCoroutine(RockFalling());
+    }
+
     private bool allRocksFallen(){//Checks if all of the rocks have fallen
         for (int i = 0; i < hasRockFallen.Length; i++)
         {
@@ -163,6 +168,15 @@ public class FallingRock : MonoBehaviour
                 //Starts the entire process of a rock falling and respawning
                 StartCoroutine(RockFalling());
             }
+        }
+    }
+
+    void OnTriggerStay2D(Collider2D other)
+    {
+        if (!isRockFalling)
+        {
+            print("Restarting");
+            StartCoroutine(RestartRocks(1.5f));
         }
     }
 
