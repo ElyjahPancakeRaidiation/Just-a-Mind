@@ -7,6 +7,7 @@ using TMPro;
 using Unity.Mathematics;
 using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class PlayerController : MonoBehaviour
 {
@@ -27,6 +28,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]private Animator anim;
     public float jumpTime;
     public AudioManagerScript AMS;
+
+    public bool musicHasChanged = false;
 
     private static bool playerDead;
 
@@ -485,6 +488,8 @@ public class PlayerController : MonoBehaviour
                 rb.angularVelocity = 0;
                 playerDead = true;
                 break;
+            
+            
 		}
 	}
 
@@ -512,6 +517,18 @@ public class PlayerController : MonoBehaviour
             }
             
 		}
+        if(collision.tag == "MusicChange" )
+        {
+           AMS.soundTrackSource.Stop();
+           AMS.currentMusic = AMS.soundTrack[1];
+           AMS.soundTrackSource.PlayOneShot(AMS.currentMusic);
+           AMS.soundTrackSource.volume = 0.55f;
+           musicHasChanged = true;
+           
+
+        }
+               
+                
 	}
 
 	private void OnTriggerExit2D(Collider2D collision)

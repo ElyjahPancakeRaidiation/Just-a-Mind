@@ -6,6 +6,8 @@ public class isGroundedScript : MonoBehaviour
 {
     GameObject player;
     [SerializeField] LayerMask groundLayer;
+    public List<float> rayScales;
+    public int timer;
     public Vector2[] vecScales;
     private float angle;
     
@@ -14,15 +16,34 @@ public class isGroundedScript : MonoBehaviour
     void Start()
     {
         player = GameObject.Find("Player");
+        
 
     }
     
-    private void FixedUpdate() {
+    private void FixedUpdate() 
+    {
         transform.position = player.transform.position + new Vector3(0, -1 * (vecScales[(int) PlayerController.playerForm].y + .2f), 0);
+        Debug.Log("is it grounded " + isGrounded());
+        
     }
 
     public bool isGrounded()
     {
+        
+        
+        if (Physics2D.Raycast(transform.position, Vector2.up, rayScales[(int) PlayerController.playerForm], groundLayer))
+        {
+            Debug.DrawRay(transform.position, Vector2.up * rayScales[(int) PlayerController.playerForm], Color.red);
+            return true;
+        }
+        else
+        {
+            Debug.DrawRay(transform.position, Vector2.up * rayScales[(int) PlayerController.playerForm], Color.red);
+            return false;
+        }
+
+        
+        
         return Physics2D.OverlapBox(transform.position, vecScales[(int) PlayerController.playerForm], angle, groundLayer);
     }
 
