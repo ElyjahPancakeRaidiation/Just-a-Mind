@@ -526,7 +526,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 5, y: 5}
   m_EdgeRadius: 0
 --- !u!1 &86703739
 GameObject:
@@ -3513,6 +3513,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 370208817947201346, guid: 85c78f83bea494df8ad98c46ff935944, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 370208817947201346, guid: 85c78f83bea494df8ad98c46ff935944, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1654301670064686755, guid: 85c78f83bea494df8ad98c46ff935944, type: 3}
       propertyPath: m_Name
       value: Vine
@@ -3558,12 +3566,28 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3186289906541537813, guid: 85c78f83bea494df8ad98c46ff935944, type: 3}
+      propertyPath: m_UseLimits
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3186289906541537813, guid: 85c78f83bea494df8ad98c46ff935944, type: 3}
       propertyPath: m_ConnectedAnchor.x
       value: -14.270723
       objectReference: {fileID: 0}
     - target: {fileID: 3186289906541537813, guid: 85c78f83bea494df8ad98c46ff935944, type: 3}
       propertyPath: m_ConnectedAnchor.y
       value: 5.0996485
+      objectReference: {fileID: 0}
+    - target: {fileID: 4928229608893437536, guid: 85c78f83bea494df8ad98c46ff935944, type: 3}
+      propertyPath: m_Size.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4928229608893437536, guid: 85c78f83bea494df8ad98c46ff935944, type: 3}
+      propertyPath: m_Size.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4928229608893437536, guid: 85c78f83bea494df8ad98c46ff935944, type: 3}
+      propertyPath: m_Offset.y
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8498161893420062487, guid: 85c78f83bea494df8ad98c46ff935944, type: 3}
