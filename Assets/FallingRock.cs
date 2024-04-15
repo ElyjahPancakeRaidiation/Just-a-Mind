@@ -9,6 +9,7 @@ public class FallingRock : MonoBehaviour
     [SerializeField]private Rigidbody2D[] rockRb;
     [SerializeField]private Transform[] rockStartPos;
     [SerializeField]private bool[] hasRockFallen;
+    [SerializeField] private float[] gravityScales;
     private bool isRockFalling;
     [SerializeField]private float rockFallDelay, rockShakingTime, respawnTimer, rockRespawnTime;
     private float secDelay;
@@ -85,7 +86,7 @@ public class FallingRock : MonoBehaviour
             if (!hasRockFallen[i])
             {
                 rockRb[i].bodyType = RigidbodyType2D.Dynamic;
-                rockRb[i].gravityScale = 1;
+                rockRb[i].gravityScale = gravityScales[i];
             }
         }
         secDelay = 0;

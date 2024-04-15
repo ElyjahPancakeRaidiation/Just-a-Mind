@@ -21086,6 +21086,11 @@ MonoBehaviour:
   - {fileID: 1009140585}
   - {fileID: 1693531627}
   hasRockFallen: 00000000
+  gravityScales:
+  - 3
+  - 2.5
+  - 2
+  - 1.5
   rockFallDelay: -2.8
   rockShakingTime: 2
   respawnTimer: 2
