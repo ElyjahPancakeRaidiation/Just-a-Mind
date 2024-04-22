@@ -13911,7 +13911,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 31016127430759313, guid: 0f05eba5504f25344b05a47b3320543e, type: 3}
       propertyPath: camVec.x
-      value: 27.3
+      value: 52.7
       objectReference: {fileID: 0}
     - target: {fileID: 31016127430759313, guid: 0f05eba5504f25344b05a47b3320543e, type: 3}
       propertyPath: camVec.y
@@ -13943,7 +13943,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2184424311885818786, guid: 0f05eba5504f25344b05a47b3320543e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -62.43
+      value: -61.7
       objectReference: {fileID: 0}
     - target: {fileID: 2184424311885818786, guid: 0f05eba5504f25344b05a47b3320543e, type: 3}
       propertyPath: m_LocalPosition.y
