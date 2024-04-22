@@ -9,6 +9,7 @@ public class FallingRock : MonoBehaviour
     [SerializeField]private Rigidbody2D[] rockRb;
     [SerializeField]private Transform[] rockStartPos;
     [SerializeField]private bool[] hasRockFallen;
+    [SerializeField] private float[] gravityScales;
     private bool isRockFalling;
     [SerializeField]private float rockFallDelay, rockShakingTime, respawnTimer, rockRespawnTime;
     private float secDelay;
@@ -85,7 +86,7 @@ public class FallingRock : MonoBehaviour
             if (!hasRockFallen[i])
             {
                 rockRb[i].bodyType = RigidbodyType2D.Dynamic;
-                rockRb[i].gravityScale = 1;
+                rockRb[i].gravityScale = gravityScales[i];
             }
         }
         secDelay = 0;
@@ -119,6 +120,11 @@ public class FallingRock : MonoBehaviour
 
         secDelay = 0;
         isRockFalling = false;
+    }
+
+    private IEnumerator RestartRocks(float time){
+        yield return new WaitForSeconds(time);
+        StartCoroutine(RockFalling());
     }
 
     private bool allRocksFallen(){//Checks if all of the rocks have fallen
@@ -163,6 +169,15 @@ public class FallingRock : MonoBehaviour
                 //Starts the entire process of a rock falling and respawning
                 StartCoroutine(RockFalling());
             }
+        }
+    }
+
+    void OnTriggerStay2D(Collider2D other)
+    {
+        if (!isRockFalling)
+        {
+            print("Restarting");
+            StartCoroutine(RestartRocks(1.5f));
         }
     }
 
