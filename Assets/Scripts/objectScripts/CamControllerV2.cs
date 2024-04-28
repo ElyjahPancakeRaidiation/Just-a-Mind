@@ -2,6 +2,7 @@ using System.Transactions;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor.Build;
 
 public class CamControllerV2 : MonoBehaviour
 {
@@ -20,12 +21,16 @@ public class CamControllerV2 : MonoBehaviour
     #region Targets for camera
     [HideInInspector]public Transform playerTarget;
     public Transform objTarget;
+    private Vector3 target;
     #endregion
 
     public bool isFollowingPlayer, isZoom, isComingBack;
     public bool hasZoomed;
     public bool setBack;
     [HideInInspector]public float setBackSpeed;
+    public static bool isCameraShaking;
+    public float shakeAmount, shakeTime;
+
 
     
 
@@ -48,6 +53,11 @@ public class CamControllerV2 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (isCameraShaking)
+        {
+            StartCoroutine(CameraShake(shakeTime, shakeAmount));
+        }
+
         if (setBack)
         {
             ZoomCameraChange(camDefaultFOV, setBackSpeed);
@@ -80,7 +90,7 @@ public class CamControllerV2 : MonoBehaviour
 
     private void FollowPlayer(float speed){
 
-        Vector3 target = playerTarget.position + offset;
+        target = playerTarget.position + offset;
         transform.position = Vector3.SmoothDamp(transform.position, target, ref vel, speed);
         transform.position = new Vector3
         (
@@ -91,7 +101,7 @@ public class CamControllerV2 : MonoBehaviour
     }
 
     private void FollowObj(float speed){
-        Vector3 target = objTarget.position + offset;
+        target = objTarget.position + offset;
         transform.position = Vector3.SmoothDamp(transform.position, target, ref vel, speed);
         //For borders just do new vector3 for both transform.position and target
     }
@@ -136,6 +146,23 @@ public class CamControllerV2 : MonoBehaviour
             {
                 cam.orthographicSize = camDefaultFOV;
             }
+        }
+        
+    }
+
+    public IEnumerator CameraShake(float shakeTime, float shakeAmount)//Shake camera.
+    {
+    
+        if (isCameraShaking){
+            this.transform.position = (Vector2)target + Random.insideUnitCircle * shakeAmount;
+            transform.position = new Vector3(transform.position.x, transform.position.y, -10f);
+            yield return new WaitForSeconds(shakeTime);
+            isCameraShaking = false;
+        }
+        else
+        {
+            //transform.position = transform.position;
+            //cameraObj.transform.localPosition = new Vector3(cameraObj.transform.localPosition.x, cameraObj.transform.localPosition.y, -10f);
         }
         
     }
