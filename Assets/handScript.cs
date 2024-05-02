@@ -31,6 +31,7 @@ public class handScript : MonoBehaviour
         {
             leftRightID = 1;
         }
+        hj.enabled = false;
     }
 
     // Update is called once per frame
@@ -39,6 +40,18 @@ public class handScript : MonoBehaviour
         if (vineInRange && Input.GetKeyDown(ability.handKeys[leftRightID]))
         {
             hj.enabled = true;
+            ability.isGrappling = true;
+            // Sets it so the joint swings around the bottom of the vine
+            hj.connectedBody = connectedVine.GetComponent<Rigidbody2D>();
+            hj.connectedAnchor = connectedVine.GetComponent<Transform>().position;
+            if (isLeftHand)
+            {
+                ability.usingLeftArm = true;
+            }
+            else
+            {
+                ability.usingLeftArm = false;
+            }
         }
     }
     private void OnCollisionEnter2D(Collision2D other) {
