@@ -277,14 +277,9 @@ public class PlayerController : MonoBehaviour
                     rb.mass = 1;
                     ballCol.enabled = true;
                     pogoCol.enabled = false;
-                    if (pogoCol.enabled == false)
-                    {
-                        print("wait but this is working");
-                    }
                     playerSpriteRender.sprite = playerFormSprite[0];
                     anim.enabled = false;
                     rb.freezeRotation = false;
-                    Debug.Log("ball");
                     break;
 
                 case playerForms.Pogo:
@@ -295,10 +290,10 @@ public class PlayerController : MonoBehaviour
                     //anim.enabled = true;
                     playerSpriteRender.sprite = playerFormSprite[1];//changes the sprites from ball to pogo man
                     anim.SetInteger("Horizontal", (int)horizontal);//this is for walking animation 
-                    Debug.Log("Head");
                     canJump = true; 
                     break;
-
+                // When turning on the arms make sure to initialize isconnected to false and the hingejoint not enabled everytime
+                // make sure when switching to head to disable all hingejoints and arm stuff
             }
         }
         

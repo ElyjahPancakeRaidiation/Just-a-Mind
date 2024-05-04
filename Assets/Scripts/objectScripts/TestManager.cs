@@ -55,7 +55,6 @@ public class TestManager : MonoBehaviour
             restarting = false;
         }
 
-        Debug.Log(isPaused);
 
     }
 

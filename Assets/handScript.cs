@@ -21,9 +21,7 @@ public class handScript : MonoBehaviour
         player = GameObject.Find("Player");
         controller = player.GetComponent<PlayerController>();
         ability = player.GetComponent<Abilities>();
-        rb = this.GetComponent<Rigidbody2D>();
-        rb.velocity = player.GetComponent<Rigidbody2D>().velocity;
-        hj = GetComponent<HingeJoint2D>();
+
         
         //print(ability.shootVector);
         //rb.AddForce(ability.shootVector);
@@ -31,19 +29,13 @@ public class handScript : MonoBehaviour
         {
             leftRightID = 1;
         }
-        hj.enabled = false;
     }
 
     // Update is called once per frame
     void Update()
-    {
+    {    
         if (vineInRange && Input.GetKeyDown(ability.handKeys[leftRightID]))
         {
-            hj.enabled = true;
-            ability.isGrappling = true;
-            // Sets it so the joint swings around the bottom of the vine
-            hj.connectedBody = connectedVine.GetComponent<Rigidbody2D>();
-            hj.connectedAnchor = connectedVine.GetComponent<Transform>().position;
             if (isLeftHand)
             {
                 ability.usingLeftArm = true;
@@ -52,19 +44,22 @@ public class handScript : MonoBehaviour
             {
                 ability.usingLeftArm = false;
             }
+            ability.connectedVine = connectedVine;
+            ability.connectingArms();
         }
     }
-    private void OnCollisionEnter2D(Collision2D other) {
+    private void OnTriggerEnter2D(Collider2D other) {
         if (other.gameObject.tag == "vine")
         {
             vineInRange = true;
             connectedVine = other.gameObject;
         }
     }
-    private void OnCollisionExit2D(Collision2D other) {
+    private void OnTriggerExit2D(Collider2D other) {
         if (other.gameObject.tag == "vine")
         {
             vineInRange = false;
         }
     }
+
 }
