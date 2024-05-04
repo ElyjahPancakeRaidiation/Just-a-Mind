@@ -479,7 +479,7 @@ public class Abilities : MonoBehaviour
     {
         if (isConnected)
         {
-
+            
             player.rb.AddForce(new Vector2(player.horizontal * swingForce * Time.deltaTime, 0), ForceMode2D.Impulse);
             player.rb.angularDrag = 4;
             int indexNum = 1;
@@ -498,13 +498,13 @@ public class Abilities : MonoBehaviour
         }
     }
     // Called when the arms are first connected to something
-    public void connectingArms()
+    public IEnumerator connectingArms()
     {
+        print("arms are being connected");
         hj.enabled = true;
         // Sets it so the joint swings around the bottom of the vine
         hj.connectedBody = connectedVine.GetComponent<Rigidbody2D>();
         hj.connectedAnchor = hingeJointAnchorDistance;
-        isConnected = true;
         player.rb.freezeRotation = false;
         if (usingLeftArm)
         {
@@ -515,10 +515,13 @@ public class Abilities : MonoBehaviour
         {
             hj.anchor = hjanchorPos;
         }
+        yield return new WaitForEndOfFrame();
 
+        isConnected = true;
     }
     public void breakArms()
     {
+        print("break arms is being called");
         hj.enabled = false;
         isConnected = false;
         player.rb.freezeRotation = true;

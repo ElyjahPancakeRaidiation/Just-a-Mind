@@ -11,12 +11,12 @@ public class handScript : MonoBehaviour
     HingeJoint2D hj;
     bool vineInRange;
     public bool isLeftHand;
-    public int leftRightID;
+    public int leftRightID = 0;
     GameObject connectedVine;
     // Start is called before the first frame update
     void Start()
     {
-        player = GameObject.Find("Player");
+        player = GameObject.FindGameObjectWithTag("Player");
         controller = player.GetComponent<PlayerController>();
         ability = player.GetComponent<Abilities>();
 
@@ -43,7 +43,8 @@ public class handScript : MonoBehaviour
                 ability.usingLeftArm = false;
             }
             ability.connectedVine = connectedVine;
-            ability.connectingArms();
+            print("connecting arms is being called");
+            StartCoroutine(ability.connectingArms());
         }
     }
     private void OnTriggerEnter2D(Collider2D other) {
