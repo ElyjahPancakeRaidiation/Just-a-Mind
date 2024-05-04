@@ -39,10 +39,13 @@ public class Abilities : MonoBehaviour
     #endregion
 
     #region Arm variables
-    
 
     // How much we want to favor higher vines in the algorithm
+    public bool isConnected;
     const float yFavor = .5f;
+    // list of keycodes with left being the 0 right being 1
+    public List<KeyCode> handKeys;
+    public bool usingLeftArm;
    /* const float armExtendSpeed = 5;
     #region Hookshot
 	public float hookshotSpeed; // Sets how fast you're going towards your hookshot
@@ -465,9 +468,9 @@ public class Abilities : MonoBehaviour
     #region New Arm Abilities
    void armMovement()
     {
-        if (Input.GetKeyDown(abilityKey) && !isGrappling)
+        if (Input.GetKeyDown(abilityKey) && isGrappling)
         {
-
+            
 
         }
     }
