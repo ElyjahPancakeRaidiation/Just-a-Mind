@@ -108,6 +108,7 @@ public class PlayerController : MonoBehaviour
 
 	private void Start(){
         cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CamControllerV2>();
+        groundedScript = GameObject.FindGameObjectWithTag("GroundRay").GetComponent<isGroundedScript>();
         if (thoughtBubble != null)
         {
             thoughtBub.enabled = false;
@@ -123,7 +124,6 @@ public class PlayerController : MonoBehaviour
         }
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
-        groundedScript = GameObject.Find("Ground Ray Object").GetComponent<isGroundedScript>();
         playerSpriteRender = GetComponent<SpriteRenderer>();
         //gm = GameObject.Find("Game Manager").GetComponent<GameManager>();
         player = GameObject.Find("Player");
