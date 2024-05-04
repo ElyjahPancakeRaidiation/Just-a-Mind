@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
-using UnityEditor.Callbacks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -154,13 +153,22 @@ public class Abilities : MonoBehaviour
     
     private IEnumerator Dashing(float duration){//Will push the player forward for a certain amount of time at a certain amount of speed
         // Starts camera shaking
-        CameraScript.isCameraShaking = true;
+        player.cam.shakeTime = 0.2f;
+        player.cam.shakeAmount = 0.12f;
+        CamControllerV2.isCameraShaking = true;
+        if (player.horizontal == 1)
+        {
+            player.rb.angularVelocity += 300 * player.horizontal;
+        }
+        else if(player.horizontal == -1)
+        {
+            player.rb.angularVelocity -= 300 * player.horizontal;
+        }
         // We then add the dash force
         player.rb.AddForce(new Vector2(player.horiLatestInput * DASHPOWER, yDashModifier * DASHPOWER), ForceMode2D.Impulse);//dash in any direction boom kachow
         isDashing = true;        
         // wait then turn off cammera shake
         yield return new WaitForSeconds(duration);
-        CameraScript.isCameraShaking = false;
         yield return new WaitUntil(() => groundedScript.isGrounded());
         ResetDash();
         // after we reset the dassh we can then transition to an arm boost which may allow more arier movement

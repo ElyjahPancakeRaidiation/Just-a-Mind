@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Data.Common;
-using UnityEditor.Callbacks;
 using UnityEngine;
 
 public class handScript : MonoBehaviour
