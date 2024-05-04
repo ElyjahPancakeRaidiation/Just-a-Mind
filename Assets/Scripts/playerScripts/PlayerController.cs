@@ -49,6 +49,8 @@ public class PlayerController : MonoBehaviour
     IEnumerator playingSound;
     private bool soundIsPlaying;
 
+    [SerializeField]public CamControllerV2 cam;
+
     #region movements
     [Header("Movement")]
     public bool canMove = true;
@@ -73,7 +75,7 @@ public class PlayerController : MonoBehaviour
     public enum playerForms{Ball, Pogo, Arm}
     public static playerForms playerForm;
     // Change to false false false for game and initialize in gm
-    public static bool[] playerPieces = {true, true, true};//bools for the player pieces {0: ball, 1: pogo, 2: arm}
+    public static bool[] playerPieces = {true, false, false};//bools for the player pieces {0: ball, 1: pogo, 2: arm}
 
 
     [Header("Physics")]
@@ -105,7 +107,14 @@ public class PlayerController : MonoBehaviour
 	#endregion
 
 	private void Start(){
-        thoughtBub.enabled = false;
+        cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CamControllerV2>();
+        groundedScript = GameObject.FindGameObjectWithTag("GroundRay").GetComponent<isGroundedScript>();
+        if (thoughtBubble != null)
+        {
+            thoughtBub.enabled = false;
+        }else{
+            return;
+        }
         abilityScript = GetComponent<Abilities>();
         if (!devControl)
         {
@@ -115,7 +124,6 @@ public class PlayerController : MonoBehaviour
         }
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
-        groundedScript = GameObject.Find("Ground Ray Object").GetComponent<isGroundedScript>();
         playerSpriteRender = GetComponent<SpriteRenderer>();
         //gm = GameObject.Find("Game Manager").GetComponent<GameManager>();
         player = GameObject.Find("Player");
