@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
-using UnityEditor.Callbacks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -41,11 +40,6 @@ public class Abilities : MonoBehaviour
     #region Arm variables
 
     // How much we want to favor higher vines in the algorithm
-    public bool isConnected;
-    const float yFavor = .5f;
-    // list of keycodes with left being the 0 right being 1
-    public List<KeyCode> handKeys;
-    public bool usingLeftArm;
    /* const float armExtendSpeed = 5;
     #region Hookshot
 	public float hookshotSpeed; // Sets how fast you're going towards your hookshot
@@ -84,11 +78,17 @@ public class Abilities : MonoBehaviour
     
 
     #region New Arm Variables
+    
+    public bool isConnected;
+    Vector2 hjanchorPos = new Vector2(1.15f, 1.15f);
+    // list of keycodes with left being the 0 right being 1
+    public List<KeyCode> handKeys;
+    public bool usingLeftArm;
     public Transform playerTransform;
     [Space(10)]
 
     // this variable may not be relevent and may be able to be removed
-    public static Vector2 hingeJointAnchorDistance = new Vector2(1.9f, 0);
+    public static Vector2 hingeJointAnchorDistance = new Vector2(0, -.5f);
     public bool isGrappling = false;
     [SerializeField] float maxRange;
     [SerializeField] LayerMask vineColliders;
@@ -97,6 +97,9 @@ public class Abilities : MonoBehaviour
     // Multiply to turn a singular unit into the scale of the object
     GameObject curArm;
     int curSide; // Left is side 0 right is side one
+    public GameObject connectedVine;
+    public HingeJoint2D hj;
+    [SerializeField] float swingForce;
     #endregion
     private void Start() {
         player = GetComponent<PlayerController>();
@@ -105,8 +108,8 @@ public class Abilities : MonoBehaviour
         hJ = this.GetComponent<HingeJoint2D>();
         playerTransform = GetComponent<Transform>();
         groundedScript = GameObject.Find("Ground Ray Object").GetComponent<isGroundedScript>();
-
-
+        hj = GetComponent<HingeJoint2D>();
+        hj.enabled = false;
         // grab arms
 
     }
@@ -122,9 +125,6 @@ public class Abilities : MonoBehaviour
                 break;
             case PlayerController.playerForms.Pogo:
                 //Have the functions for pogos abilities
-                Jumping();
-                break;
-            case PlayerController.playerForms.Arm:
                 armMovement();
                 break;
         }
@@ -153,13 +153,22 @@ public class Abilities : MonoBehaviour
     
     private IEnumerator Dashing(float duration){//Will push the player forward for a certain amount of time at a certain amount of speed
         // Starts camera shaking
-        CameraScript.isCameraShaking = true;
+        player.cam.shakeTime = 0.2f;
+        player.cam.shakeAmount = 0.12f;
+        CamControllerV2.isCameraShaking = true;
+        if (player.horizontal == 1)
+        {
+            player.rb.angularVelocity += 300 * player.horizontal;
+        }
+        else if(player.horizontal == -1)
+        {
+            player.rb.angularVelocity -= 300 * player.horizontal;
+        }
         // We then add the dash force
         player.rb.AddForce(new Vector2(player.horiLatestInput * DASHPOWER, yDashModifier * DASHPOWER), ForceMode2D.Impulse);//dash in any direction boom kachow
         isDashing = true;        
         // wait then turn off cammera shake
         yield return new WaitForSeconds(duration);
-        CameraScript.isCameraShaking = false;
         yield return new WaitUntil(() => groundedScript.isGrounded());
         ResetDash();
         // after we reset the dassh we can then transition to an arm boost which may allow more arier movement
@@ -468,12 +477,63 @@ public class Abilities : MonoBehaviour
     #region New Arm Abilities
    void armMovement()
     {
-        if (Input.GetKeyDown(abilityKey) && isGrappling)
+        if (isConnected)
         {
             
-
+            player.rb.AddForce(new Vector2(player.horizontal * swingForce * Time.deltaTime, 0), ForceMode2D.Impulse);
+            player.rb.angularDrag = 4;
+            int indexNum = 1;
+            if (usingLeftArm)
+            {
+                indexNum = 0;
+            }
+            if (Input.GetKeyDown(abilityKey) || Input.GetKeyDown(handKeys[indexNum]))
+            {
+                breakArms();
+            }
+        }
+        else
+        {
+            Jumping();
         }
     }
-    
+    // Called when the arms are first connected to something
+    public IEnumerator connectingArms()
+    {
+        print("arms are being connected");
+        hj.enabled = true;
+        // Sets it so the joint swings around the bottom of the vine
+        hj.connectedBody = connectedVine.GetComponent<Rigidbody2D>();
+        hj.connectedAnchor = hingeJointAnchorDistance;
+        player.rb.freezeRotation = false;
+        if (usingLeftArm)
+        {
+            // moves the hinge joint to the left position
+            hj.anchor = hjanchorPos - new Vector2(2 * hjanchorPos.x, 0);
+        }
+        else
+        {
+            hj.anchor = hjanchorPos;
+        }
+        yield return new WaitForEndOfFrame();
+
+        isConnected = true;
+    }
+    public void breakArms()
+    {
+        print("break arms is being called");
+        hj.enabled = false;
+        isConnected = false;
+        player.rb.freezeRotation = true;
+        player.transform.rotation = quaternion.RotateZ(0);//Puts the character up straight
+
+        StartCoroutine(reduceGravity());
+    }
+    IEnumerator reduceGravity()
+    {
+        player.rb.gravityScale = 1;
+        yield return new WaitUntil(() => groundedScript.isGrounded());
+        player.rb.gravityScale = 2.5f;
+    }
     #endregion
 }
