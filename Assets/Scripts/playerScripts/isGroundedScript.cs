@@ -18,7 +18,7 @@ public class isGroundedScript : MonoBehaviour
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-        
+        //transform.position = player.transform.position + new Vector3(0, -1 * (vecScales[(int) PlayerController.playerForm].y + .2f), 0);
 
     }
     
@@ -50,9 +50,9 @@ public class isGroundedScript : MonoBehaviour
             return false;
         }
         */
+        
 
-
-        return groundCol = Physics2D.OverlapBox(transform.position, vecScales[(int) PlayerController.playerForm], angle, groundLayer);
+        return Physics2D.OverlapBox(transform.position, vecScales[(int) PlayerController.playerForm], angle, groundLayer);
     }
 
     void OnDrawGizmos() => Gizmos.DrawWireCube(transform.position, vecScales[(int) PlayerController.playerForm]);

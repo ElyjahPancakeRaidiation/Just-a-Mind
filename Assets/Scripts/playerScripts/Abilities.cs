@@ -153,9 +153,9 @@ public class Abilities : MonoBehaviour
     
     private IEnumerator Dashing(float duration){//Will push the player forward for a certain amount of time at a certain amount of speed
         // Starts camera shaking
-        player.cam.shakeTime = 0.2f;
-        player.cam.shakeAmount = 0.12f;
-        CamControllerV2.isCameraShaking = true;
+        //player.cam.shakeTime = 0.2f;
+        //player.cam.shakeAmount = 0.2f;
+        //CamControllerV2.isCameraShaking = true;
         if (player.horizontal == 1)
         {
             player.rb.angularVelocity += 300 * player.horizontal;
