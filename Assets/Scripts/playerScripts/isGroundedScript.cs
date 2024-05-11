@@ -26,12 +26,6 @@ public class isGroundedScript : MonoBehaviour
     {
         transform.position = player.transform.position + new Vector3(0, -1 * (vecScales[(int) PlayerController.playerForm].y + .2f), 0);
         //groundCol = Physics2D.OverlapBox(transform.position, vecScales[(int) PlayerController.playerForm], angle, groundLayer);
-        Debug.Log("is it grounded " + isGrounded());
-
-        if (isGrounded())
-        {
-            Debug.Log("Fionally");
-        }
         
     }
 
