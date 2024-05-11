@@ -66,12 +66,7 @@ public class TestManager : MonoBehaviour
             restarting = false;
         }
 
-
-        if (pc.musicHasChanged)
-        {
-            musicChanger.SetActive(false);
-        }
-
+        Debug.Log(isPaused);
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
