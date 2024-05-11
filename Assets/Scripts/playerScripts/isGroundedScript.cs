@@ -15,8 +15,8 @@ public class isGroundedScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        player = GameObject.Find("Player");
-        
+        player = GameObject.FindGameObjectWithTag("Player");
+        //transform.position = player.transform.position + new Vector3(0, -1 * (vecScales[(int) PlayerController.playerForm].y + .2f), 0);
 
     }
     
@@ -30,7 +30,7 @@ public class isGroundedScript : MonoBehaviour
     public bool isGrounded()
     {
         
-        
+        /*
         if (Physics2D.Raycast(transform.position, Vector2.up, rayScales[(int) PlayerController.playerForm], groundLayer))
         {
             Debug.DrawRay(transform.position, Vector2.up * rayScales[(int) PlayerController.playerForm], Color.red);
@@ -41,9 +41,9 @@ public class isGroundedScript : MonoBehaviour
             Debug.DrawRay(transform.position, Vector2.up * rayScales[(int) PlayerController.playerForm], Color.red);
             return false;
         }
+        */
+        
 
-        
-        
         return Physics2D.OverlapBox(transform.position, vecScales[(int) PlayerController.playerForm], angle, groundLayer);
     }
 
