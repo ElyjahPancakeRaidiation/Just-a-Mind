@@ -5,6 +5,7 @@ using UnityEngine;
 public class CamSet : MonoBehaviour
 {
     private CamControllerV2 cam;
+    [SerializeField]private Transform camPos;
 
     #region Collider
     private float camRadius;
@@ -23,6 +24,13 @@ public class CamSet : MonoBehaviour
     {
         cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CamControllerV2>();
         activeController = false;
+        if (camPos == null)
+        {
+            camPos = this.transform;
+        }
+        else{
+            return;
+        }
     }
 
     // Update is called once per frame
@@ -40,7 +48,7 @@ public class CamSet : MonoBehaviour
                     cam.isFollowingPlayer = false;
                     cam.objSpeed = followSpeed;
                     cam.comingBackSpeed = comingBackSpeed;
-                    cam.objTarget = this.transform;
+                    cam.objTarget = camPos;
                     cam.isComingBack = true;
                 }
                 cam.isZoom = true;
