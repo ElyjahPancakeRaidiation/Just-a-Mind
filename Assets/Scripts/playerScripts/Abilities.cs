@@ -12,6 +12,7 @@ public class Abilities : MonoBehaviour
    
     private int bonusCharges;//bonus charges for the abilities 
     isGroundedScript groundedScript;
+
     #region Dashing variables
     [Header("Dash Variables")]
     
@@ -24,7 +25,9 @@ public class Abilities : MonoBehaviour
     [SerializeField]float dashDelay;
 
     [SerializeField]float yDashModifier;
-    
+    [SerializeField] float dashInputForgivenessTime;
+    bool tryingToDash;
+    float attemptingToDashTimer;
     #endregion
     [Header("Pogo Variables")]
 
@@ -140,7 +143,20 @@ public class Abilities : MonoBehaviour
     private void Dash(){
         if (!TestManager.transitioned)
         {
-            if (Input.GetKeyDown(abilityKey) && !isDashing && player.horiLatestInput != 0)
+            if (Input.GetKeyDown(abilityKey))
+            {
+                tryingToDash = true;
+                attemptingToDashTimer = 0;
+            }
+            if (tryingToDash)
+            {
+                attemptingToDashTimer += Time.deltaTime;
+                if (attemptingToDashTimer > dashInputForgivenessTime)
+                {
+                    tryingToDash = false;
+                }
+            }
+            if (tryingToDash && !isDashing && player.horiLatestInput != 0)
             {
                 if (dashAmount > 0 || bonusCharges > 0)
                 {
@@ -156,6 +172,10 @@ public class Abilities : MonoBehaviour
         //player.cam.shakeTime = 0.2f;
         //player.cam.shakeAmount = 0.2f;
         //CamControllerV2.isCameraShaking = true;
+        if (groundedScript.isGrounded())
+        {
+            player.rb.velocity = new Vector2(player.rb.velocity.x, 0);
+        }
         if (player.horizontal == 1)
         {
             player.rb.angularVelocity += 300 * player.horizontal;
