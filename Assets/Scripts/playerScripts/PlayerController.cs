@@ -179,7 +179,6 @@ public class PlayerController : MonoBehaviour
         }
 
         LatestInput((int)horizontal, (int)vertical);
-        Debug.Log(thoughtBub.enabled);
         
     }
 

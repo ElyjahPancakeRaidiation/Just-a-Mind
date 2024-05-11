@@ -571,6 +571,17 @@ Rigidbody2D:
   m_CorrespondingSourceObject: {fileID: 4068050948255520695, guid: 13ae4106fa6223540b44271468a6d58a, type: 3}
   m_PrefabInstance: {fileID: 19437868}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &19437874 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 169524387229717002, guid: 13ae4106fa6223540b44271468a6d58a, type: 3}
+  m_PrefabInstance: {fileID: 19437868}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 19437870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8043c3458f894924da850286d9e59e0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &21777704
 GameObject:
   m_ObjectHideFlags: 0
@@ -908,7 +919,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   formChangeKey: 304
   rightformChangeKey: 303
-  devControl: 0
+  devControl: 1
   neareastSpawner: 0
   timer: 0
   maxTime: 7
@@ -1160,6 +1171,7 @@ MonoBehaviour:
   maxDashAmount: 1
   dashDelay: 1.25
   yDashModifier: 1.3
+  dashInputForgivenessTime: 0.5
   jumpForce: 15
   superJumpForce: 22
   groundPoint: {fileID: 1725933652}
@@ -1167,6 +1179,9 @@ MonoBehaviour:
   keyHoldDown: 0
   coyoteTimeVar: 0.2
   coyotoeTimer: 0
+  isConnected: 0
+  handKeys: 
+  usingLeftArm: 0
   playerTransform: {fileID: 28500288}
   isGrappling: 0
   maxRange: 0
@@ -1174,18 +1189,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   hJ: {fileID: 0}
-  hookshotSpeed: 0
-  LR: {fileID: 28500296}
-  arms: []
-  armShootSpeed: 10
-  armScale: 0
-  grappleForce: 0
-  toShoulderDist: {x: 0, y: 0}
-  hand: {fileID: 0}
-  horrizontalShootForce: 0
-  diagnolxShootForce: 0
-  diagnolyShootForce: 0
-  shootVector: {x: 0, y: 0}
+  connectedVine: {fileID: 0}
+  hj: {fileID: 0}
+  swingForce: 0
 --- !u!120 &28500296
 LineRenderer:
   serializedVersion: 2
@@ -4031,7 +4037,7 @@ Transform:
   m_GameObject: {fileID: 143397684}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0.057551533, w: 0.9983425}
-  m_LocalPosition: {x: 1.5, y: 7.7, z: 9.857324}
+  m_LocalPosition: {x: 1.6, y: 8.5, z: 9.857324}
   m_LocalScale: {x: 0.75, y: 0.75, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6896,7 +6902,7 @@ GameObject:
   m_Component:
   - component: {fileID: 261948868}
   - component: {fileID: 261948869}
-  m_Layer: 6
+  m_Layer: 10
   m_Name: PillarGroundCol
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -10179,26 +10185,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &359949279
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 359949274}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8043c3458f894924da850286d9e59e0f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startPos: {fileID: 1784780181}
-  respawnDelayTimer: 1
-  fallingRockScript: {fileID: 800268842}
-  hasRockFallen: 0
-  rockFallDelay: 1
-  gravityScale: 1.5
-  bodyCol: {fileID: 1120482876}
-  groundCol: {fileID: 1702725984}
 --- !u!1 &369958328
 GameObject:
   m_ObjectHideFlags: 0
@@ -10345,9 +10331,10 @@ GameObject:
   - component: {fileID: 371827610}
   - component: {fileID: 371827609}
   - component: {fileID: 371827608}
-  m_Layer: 0
-  m_Name: Pilllar1
-  m_TagString: Untagged
+  - component: {fileID: 371827611}
+  m_Layer: 6
+  m_Name: Pilllar3
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10469,6 +10456,26 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &371827611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 371827606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8043c3458f894924da850286d9e59e0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startPos: {fileID: 0}
+  respawnDelayTimer: 1
+  fallingRockScript: {fileID: 0}
+  hasRockFallen: 0
+  rockFallDelay: 0.1
+  gravityScale: 2
+  bodyCol: {fileID: 0}
+  groundCol: {fileID: 0}
 --- !u!1 &375167779
 GameObject:
   m_ObjectHideFlags: 0
@@ -12899,7 +12906,7 @@ Transform:
   m_GameObject: {fileID: 426279427}
   serializedVersion: 2
   m_LocalRotation: {x: 0.99999964, y: -0.00084573036, z: -0, w: 0}
-  m_LocalPosition: {x: 854.03687, y: 227.35173, z: 0}
+  m_LocalPosition: {x: -46.41, y: -65.5, z: 0}
   m_LocalScale: {x: 6.227006, y: 24.048103, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -15272,8 +15279,8 @@ Transform:
   m_GameObject: {fileID: 524042546}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.04, y: 14, z: 9.857324}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_LocalPosition: {x: -3.31, y: 14, z: 9.857324}
+  m_LocalScale: {x: 0.60738593, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 691428676}
@@ -18188,9 +18195,10 @@ GameObject:
   - component: {fileID: 650206929}
   - component: {fileID: 650206928}
   - component: {fileID: 650206927}
-  m_Layer: 0
-  m_Name: Pilllar1
-  m_TagString: Untagged
+  - component: {fileID: 650206930}
+  m_Layer: 6
+  m_Name: Pilllar2
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -18312,6 +18320,26 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &650206930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 650206925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8043c3458f894924da850286d9e59e0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startPos: {fileID: 0}
+  respawnDelayTimer: 1
+  fallingRockScript: {fileID: 0}
+  hasRockFallen: 0
+  rockFallDelay: 0.1
+  gravityScale: 2.5
+  bodyCol: {fileID: 0}
+  groundCol: {fileID: 0}
 --- !u!1 &652046720
 GameObject:
   m_ObjectHideFlags: 0
@@ -18339,8 +18367,8 @@ Transform:
   m_GameObject: {fileID: 652046720}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.9, y: 14, z: 9.857324}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_LocalPosition: {x: 2.39, y: 14, z: 9.857324}
+  m_LocalScale: {x: 0.81105006, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 691428676}
@@ -18833,7 +18861,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 660304328}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: PillarHolder (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19618,7 +19646,6 @@ Transform:
   - {fileID: 652046721}
   - {fileID: 2115598268}
   - {fileID: 1405743797}
-  - {fileID: 1534874774}
   - {fileID: 1140030958}
   - {fileID: 1734951573}
   - {fileID: 1933537359}
@@ -23531,7 +23558,7 @@ GameObject:
   m_Component:
   - component: {fileID: 824895076}
   - component: {fileID: 824895077}
-  m_Layer: 6
+  m_Layer: 10
   m_Name: PillarGroundCol
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -40458,147 +40485,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &1534874773
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1534874774}
-  - component: {fileID: 1534874776}
-  - component: {fileID: 1534874775}
-  m_Layer: 0
-  m_Name: CeilingTile2 (41)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1534874774
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1534874773}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 1.04, y: 21.8, z: 9.857324}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 691428676}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
---- !u!60 &1534874775
-PolygonCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1534874773}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 70.166626, y: 49.61}
-    newSize: {x: 70.166626, y: 49.61}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: -3.1177554, y: 2.5353174}
-      - {x: -3.1177554, y: 5.653073}
-      - {x: -3.2205386, y: 5.755856}
-      - {x: -12.813632, y: 5.755856}
-      - {x: -12.882154, y: 5.687334}
-      - {x: -12.882154, y: 2.5353174}
-      - {x: -12.813632, y: 2.4667954}
-      - {x: -11.477451, y: 2.4667954}
-      - {x: -7.126298, y: 2.7408838}
-      - {x: -3.8372374, y: 2.4667954}
-      - {x: -3.1862774, y: 2.4667954}
-  m_UseDelaunayMesh: 0
---- !u!212 &1534874776
-SpriteRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1534874773}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 0
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: e494a9004da7a9142b9809d78f344661, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 70.166626, y: 49.61}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
 --- !u!1 &1542171791
 GameObject:
   m_ObjectHideFlags: 0
@@ -40787,7 +40673,7 @@ Transform:
   m_GameObject: {fileID: 1548524027}
   serializedVersion: 2
   m_LocalRotation: {x: 0.99999964, y: -0.00084573036, z: -0, w: 0}
-  m_LocalPosition: {x: 854.1489, y: 234.73914, z: 0}
+  m_LocalPosition: {x: -46.41, y: -58.5, z: 0}
   m_LocalScale: {x: 5.651687, y: 4.0502067, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -41945,9 +41831,10 @@ GameObject:
   - component: {fileID: 1584986816}
   - component: {fileID: 1584986815}
   - component: {fileID: 1584986814}
-  m_Layer: 0
-  m_Name: Pilllar1
-  m_TagString: Untagged
+  - component: {fileID: 1584986817}
+  m_Layer: 6
+  m_Name: Pilllar4
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -42069,6 +41956,26 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1584986817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1584986812}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8043c3458f894924da850286d9e59e0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startPos: {fileID: 0}
+  respawnDelayTimer: 1
+  fallingRockScript: {fileID: 0}
+  hasRockFallen: 0
+  rockFallDelay: 0.1
+  gravityScale: 2
+  bodyCol: {fileID: 0}
+  groundCol: {fileID: 0}
 --- !u!1 &1589343198
 GameObject:
   m_ObjectHideFlags: 0
@@ -45239,7 +45146,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1672996859}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: PillarHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46064,7 +45971,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1687990515}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: PillarHolder 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46421,7 +46328,11 @@ MonoBehaviour:
   - {fileID: 660304328}
   - {fileID: 1687990515}
   - {fileID: 1907392232}
-  hasRockFallen: 00000000
+  rockScript:
+  - {fileID: 19437874}
+  - {fileID: 650206930}
+  - {fileID: 371827611}
+  - {fileID: 1584986817}
   gravityScales:
   - 3
   - 2.5
@@ -53025,7 +52936,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1907392232}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: PillarHolder 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -57953,7 +57864,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2100262894}
   - component: {fileID: 2100262895}
-  m_Layer: 6
+  m_Layer: 10
   m_Name: PillarGroundCol
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -59515,3 +59426,4 @@ SceneRoots:
   - {fileID: 410955569}
   - {fileID: 411321213}
   - {fileID: 358369668}
+  - {fileID: 712641935}
