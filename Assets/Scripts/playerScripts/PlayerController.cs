@@ -11,6 +11,7 @@ using UnityEngine.Rendering;
 
 public class PlayerController : MonoBehaviour
 {
+    #region general
     [Header("General")]
     Abilities abilityScript;
     public KeyCode formChangeKey;
@@ -48,9 +49,8 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator playingSound;
     private bool soundIsPlaying;
-
     [SerializeField]public CamControllerV2 cam;
-
+    #endregion
     #region movements
     [Header("Movement")]
     public bool canMove = true;
@@ -71,7 +71,8 @@ public class PlayerController : MonoBehaviour
     
     
     [Header("Player Forms")]
-    private int maxForm;
+    public int maxForm;
+    public int curForm;
     public enum playerForms{Ball, Pogo, Arm}
     public static playerForms playerForm;
     // Change to false false false for game and initialize in gm
@@ -101,6 +102,8 @@ public class PlayerController : MonoBehaviour
     public bool canJump = true;
 	#endregion
 	#region Arm movement variables
+
+    
 	#endregion
 
 
@@ -137,15 +140,42 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        ChangeForm();//Controlls the changing of the players form
-        InteractFunc();//The player interacts through this function
+        //InteractFunc();//The player interacts through this function
         //ChangeVel();//The velocity for the ball my brain rots from this
         RespawnParse();
 
-        if (canMove) {
+        if (canMove) 
+        {
             horizontal = Input.GetAxisRaw("Horizontal");
             vertical = Input.GetAxisRaw("Vertical");
             Movements();
+        }
+
+        if (Input.GetKeyDown(formChangeKey) || Input.GetKeyDown(rightformChangeKey))
+        {
+            if (!devControl)
+            {
+               
+                if (curForm >= maxForm)
+                {
+                    curForm = 0;
+                }
+                else
+                {
+                    curForm++;
+                }
+                ChangeForm(curForm);//Controlls the changing of the players form
+            }
+            else
+            {
+                curForm++;
+                if (curForm >= 2)//Had to change for current build
+                {
+                    curForm = 0;
+                }
+                ChangeForm(curForm);//Controlls the changing of the players form
+            }
+            print(curForm);
         }
 
         LatestInput((int)horizontal, (int)vertical);
@@ -240,49 +270,10 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void ChangeForm()
+    public void ChangeForm(int playerFormNum)
     {
-        
-        if (!devControl)
-        {
-            maxForm = 0;
-            // Start at one because ball always true and its playerform zero so dont increase max form for that
-            for (int i = 1; i < playerPieces.Length; i++)//runs through the bools and see what form is not active yet
-            {
-                if (playerPieces[i])
-                {
-                    maxForm++;
-                    print(maxForm);
-                    break;
-                }
-            }
-    
-            if (Input.GetKeyDown(formChangeKey) || Input.GetKeyDown(rightformChangeKey))
-            {
-                
-                if ((int)playerForm >= maxForm)
-                {
-                    playerForm = 0;
-                }
-                else
-                {
-                    playerForm++;
-                }
-                FormSettings();//main change
-            }
-        }
-        else
-        {
-            if (Input.GetKeyDown(formChangeKey) || Input.GetKeyDown(rightformChangeKey))
-            {
-                playerForm++;
-                if ((int)playerForm >= 2)//Had to change for current build
-                {
-                    playerForm = 0;
-                }
-                FormSettings();//main change
-            }
-        }
+        playerForm = (playerForms)playerFormNum;
+        FormSettings();
 
     }
     void FormSettings(){//defualt settings for each form(mainly for the sprites of each form)
@@ -290,34 +281,31 @@ public class PlayerController : MonoBehaviour
             {
                 case playerForms.Ball:
                     //Sets the balls sprite, unfreezes rotation, and changes the animation
+                    curForm = 0;
                     rb.mass = 1;
                     ballCol.enabled = true;
                     pogoCol.enabled = false;
-                    if (pogoCol.enabled == false)
-                    {
-                        print("wait but this is working");
-                    }
                     playerSpriteRender.sprite = playerFormSprite[0];
                     anim.enabled = false;
                     rb.freezeRotation = false;
-                    Debug.Log("ball");
                     break;
 
                 case playerForms.Pogo:
-                rb.mass = 1f;
+                    curForm = 1;
+                    rb.mass = 1f;
+                    rb.freezeRotation = true;
                     transform.rotation = quaternion.RotateZ(0);//Puts the character up straight
                     ballCol.enabled = false;//changes the collider from ball to pogo
                     pogoCol.enabled = true;
                     //anim.enabled = true;
                     playerSpriteRender.sprite = playerFormSprite[1];//changes the sprites from ball to pogo man
-                    rb.freezeRotation = true;
                     anim.SetInteger("Horizontal", (int)horizontal);//this is for walking animation 
-                    Debug.Log("Head");
                     canJump = true; 
                     break;
 
                 case playerForms.Arm:
-                rb.mass = 1f;
+                    curForm = 1;
+                    rb.mass = 1f;
                     //Where all of the settings for arm goes
                     ballCol.enabled = false;
                     pogoCol.enabled = true;
@@ -340,12 +328,21 @@ public class PlayerController : MonoBehaviour
                 RotationSpeed();
                 break;
 			case playerForms.Pogo:
-                if (horizontal != 0 && groundedScript.isGrounded() && canJump)
+                if (horizontal != 0)
                 {
-                    canJump = false;
-                    print("being called");
-                    jumping = Jump();
-                    StartCoroutine(jumping);
+                    if (groundedScript.isGrounded())
+                    {
+                        if (canJump)
+                        {
+                            canJump = false;
+                            print("being called");
+                            jumping = Jump();
+                            StartCoroutine(jumping);
+                        }
+                    }
+                    else{
+                        rb.AddForce(new Vector2(horizontal * speed * Time.deltaTime, 0), ForceMode2D.Impulse);
+                    }
                 }
                 break;
 			case playerForms.Arm:

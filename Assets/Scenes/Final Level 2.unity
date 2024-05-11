@@ -908,7 +908,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   formChangeKey: 304
   rightformChangeKey: 303
-  devControl: 1
+  devControl: 0
   neareastSpawner: 0
   timer: 0
   maxTime: 7
@@ -953,6 +953,8 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 64
+  maxForm: 0
+  curForm: 0
   ignoreResistences: 0
   coefficientOfAirResistence: 0.075
   coefficientOfFriction: 0.3
@@ -10177,6 +10179,26 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &359949279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 359949274}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8043c3458f894924da850286d9e59e0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startPos: {fileID: 1784780181}
+  respawnDelayTimer: 1
+  fallingRockScript: {fileID: 800268842}
+  hasRockFallen: 0
+  rockFallDelay: 1
+  gravityScale: 1.5
+  bodyCol: {fileID: 1120482876}
+  groundCol: {fileID: 1702725984}
 --- !u!1 &369958328
 GameObject:
   m_ObjectHideFlags: 0
@@ -16531,11 +16553,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 31016127430759313, guid: 0f05eba5504f25344b05a47b3320543e, type: 3}
       propertyPath: camVec.x
-      value: 52.7
+      value: 83.6
       objectReference: {fileID: 0}
     - target: {fileID: 31016127430759313, guid: 0f05eba5504f25344b05a47b3320543e, type: 3}
       propertyPath: camVec.y
-      value: 12.1
+      value: 22.8
       objectReference: {fileID: 0}
     - target: {fileID: 31016127430759313, guid: 0f05eba5504f25344b05a47b3320543e, type: 3}
       propertyPath: keepChanges
@@ -20656,7 +20678,7 @@ Transform:
   m_GameObject: {fileID: 724288416}
   serializedVersion: 2
   m_LocalRotation: {x: 0.99999964, y: -0.00084573036, z: -0, w: 0}
-  m_LocalPosition: {x: 854.1526, y: 236.84526, z: 0}
+  m_LocalPosition: {x: -46.46, y: -55.9, z: 0}
   m_LocalScale: {x: 6.2270064, y: 4.0502067, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -20702,7 +20724,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
   m_Color: {r: 0.6981132, g: 0.6981132, b: 0.6981132, a: 1}
   m_FlipX: 0
@@ -36195,7 +36217,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 31016127430759313, guid: 0f05eba5504f25344b05a47b3320543e, type: 3}
       propertyPath: camVec.x
-      value: 45.7
+      value: 31.2
       objectReference: {fileID: 0}
     - target: {fileID: 31016127430759313, guid: 0f05eba5504f25344b05a47b3320543e, type: 3}
       propertyPath: camVec.y
@@ -36215,15 +36237,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 31016127430759313, guid: 0f05eba5504f25344b05a47b3320543e, type: 3}
       propertyPath: zoomCameraAmount
-      value: 2.7
+      value: 3.58
       objectReference: {fileID: 0}
     - target: {fileID: 31016127430759313, guid: 0f05eba5504f25344b05a47b3320543e, type: 3}
       propertyPath: zoomBackCameraSpeed
-      value: 2.5
+      value: 3.27
       objectReference: {fileID: 0}
     - target: {fileID: 2184424311885818786, guid: 0f05eba5504f25344b05a47b3320543e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 104.6
+      value: 99.08
       objectReference: {fileID: 0}
     - target: {fileID: 2184424311885818786, guid: 0f05eba5504f25344b05a47b3320543e, type: 3}
       propertyPath: m_LocalPosition.y
@@ -47339,8 +47361,8 @@ MonoBehaviour:
   - -1
   timer: 0
   vecScales:
-  - {x: 0.55, y: 0.27}
-  - {x: 0.75, y: 0.51}
+  - {x: 0.15, y: 0.3}
+  - {x: 0.12, y: 0.98}
   - {x: 0, y: 0}
   groundCol: {fileID: 0}
 --- !u!1 &1727136834
@@ -59478,11 +59500,11 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 999659515}
+  - {fileID: 28500288}
   - {fileID: 1951710320}
   - {fileID: 735807257}
   - {fileID: 246846824}
   - {fileID: 743505483}
-  - {fileID: 28500288}
   - {fileID: 434119431}
   - {fileID: 1542171793}
   - {fileID: 1654918574}
@@ -59490,7 +59512,6 @@ SceneRoots:
   - {fileID: 1683743557}
   - {fileID: 479252749}
   - {fileID: 1152976575}
-  - {fileID: 712641935}
   - {fileID: 410955569}
   - {fileID: 411321213}
   - {fileID: 358369668}
