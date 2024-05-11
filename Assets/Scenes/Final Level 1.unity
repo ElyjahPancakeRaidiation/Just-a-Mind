@@ -1192,6 +1192,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2072206699769497718, guid: 0eebf9695a3cace40a4f744a5d99a8fe, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2072206699769497718, guid: 0eebf9695a3cace40a4f744a5d99a8fe, type: 3}
+      propertyPath: m_TagString
+      value: GroundRay
+      objectReference: {fileID: 0}
     - target: {fileID: 3374888515853459002, guid: 0eebf9695a3cace40a4f744a5d99a8fe, type: 3}
       propertyPath: m_Interpolate
       value: 1
@@ -1264,6 +1272,10 @@ PrefabInstance:
       propertyPath: thoughtBub
       value: 
       objectReference: {fileID: 545570204}
+    - target: {fileID: 6156709126799240589, guid: 0eebf9695a3cace40a4f744a5d99a8fe, type: 3}
+      propertyPath: groundedScript
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 8064381564403545213, guid: 0eebf9695a3cace40a4f744a5d99a8fe, type: 3}
       propertyPath: rayScales.Array.size
       value: 3
@@ -1279,6 +1291,22 @@ PrefabInstance:
     - target: {fileID: 8064381564403545213, guid: 0eebf9695a3cace40a4f744a5d99a8fe, type: 3}
       propertyPath: rayScales.Array.data[2]
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8064381564403545213, guid: 0eebf9695a3cace40a4f744a5d99a8fe, type: 3}
+      propertyPath: vecScales.Array.data[0].x
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8064381564403545213, guid: 0eebf9695a3cace40a4f744a5d99a8fe, type: 3}
+      propertyPath: vecScales.Array.data[0].y
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8064381564403545213, guid: 0eebf9695a3cace40a4f744a5d99a8fe, type: 3}
+      propertyPath: vecScales.Array.data[1].x
+      value: 0.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 8064381564403545213, guid: 0eebf9695a3cace40a4f744a5d99a8fe, type: 3}
+      propertyPath: vecScales.Array.data[1].y
+      value: 0.51
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8926,6 +8954,10 @@ PrefabInstance:
     - target: {fileID: 31016127430759313, guid: 0f05eba5504f25344b05a47b3320543e, type: 3}
       propertyPath: camVec.y
       value: 40.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 31016127430759313, guid: 0f05eba5504f25344b05a47b3320543e, type: 3}
+      propertyPath: keepChanges
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 31016127430759313, guid: 0f05eba5504f25344b05a47b3320543e, type: 3}
       propertyPath: comingBackSpeed

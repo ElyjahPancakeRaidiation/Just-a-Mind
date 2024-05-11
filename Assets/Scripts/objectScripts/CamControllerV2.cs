@@ -153,15 +153,10 @@ public class CamControllerV2 : MonoBehaviour
     {
     
         if (isCameraShaking){
-            this.transform.position = (Vector2)target + Random.insideUnitCircle * shakeAmount;
+            transform.position = (Vector2)transform.position + Random.insideUnitCircle * shakeAmount;
             transform.position = new Vector3(transform.position.x, transform.position.y, -10f);
             yield return new WaitForSeconds(shakeTime);
             isCameraShaking = false;
-        }
-        else
-        {
-            //transform.position = transform.position;
-            //cameraObj.transform.localPosition = new Vector3(cameraObj.transform.localPosition.x, cameraObj.transform.localPosition.y, -10f);
         }
         
     }
