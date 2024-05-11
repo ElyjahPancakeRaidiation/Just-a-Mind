@@ -38,27 +38,13 @@ public class Abilities : MonoBehaviour
     #endregion
 
     #region Arm variables
-    
-    public Transform playerTransform;
-    [Space(10)]
 
-    // this variable may not be relevent and may be able to be removed
-    public static Vector2 hingeJointAnchorDistance = new Vector2(1.9f, 0);
-    public bool isGrappling = false;
-    [SerializeField] float maxRange;
-    [SerializeField] LayerMask vineColliders;
-    bool isLeftArmActive = false;
-    public HingeJoint2D hJ;
-    // Multiply to turn a singular unit into the scale of the object
-    const float unitsToScale = 1 / 1.3f;
-    GameObject curArm;
     // How much we want to favor higher vines in the algorithm
-    const float yFavor = .5f;
-    const float armExtendSpeed = 5;
+   /* const float armExtendSpeed = 5;
     #region Hookshot
 	public float hookshotSpeed; // Sets how fast you're going towards your hookshot
-	public LineRenderer LR;
-    public List<GameObject> arms;
+	//public LineRenderer LR;
+    //public List<GameObject> arms;
     // not sure this stuff is necessary
     /*public struct shoulderType
     {
@@ -73,7 +59,7 @@ public class Abilities : MonoBehaviour
     shoulderType curShoulder;
     // Left shoulder is the 0 shoulder and right shoulder is the 1 shoulder
     public List<shoulderType> shoulders;
-    */
+    
     [SerializeField] float armShootSpeed;
     GameObject grapplingAnchorPointObject;
     public float armScale;
@@ -81,17 +67,39 @@ public class Abilities : MonoBehaviour
     public float grappleForce;
     const float armUnitsToScale = 1 / 2; // 1 scale per 2 unity units
     [SerializeField] Vector2 toShoulderDist; // the distance to add to get to the shoulder from center of player
-	#endregion
-    #endregion
-
-    #region New Arm Variables
-    bool handShot;
+        bool handShot;
     [SerializeField] GameObject hand;
     [SerializeField] int horrizontalShootForce;
     [SerializeField] int diagnolxShootForce;
     [SerializeField] int diagnolyShootForce;
     [HideInInspector] public Vector2 shootVector;
+    */
+	#endregion
+    
 
+    #region New Arm Variables
+    
+    public bool isConnected;
+    Vector2 hjanchorPos = new Vector2(1.15f, 1.15f);
+    // list of keycodes with left being the 0 right being 1
+    public List<KeyCode> handKeys;
+    public bool usingLeftArm;
+    public Transform playerTransform;
+    [Space(10)]
+
+    // this variable may not be relevent and may be able to be removed
+    public static Vector2 hingeJointAnchorDistance = new Vector2(0, -.5f);
+    public bool isGrappling = false;
+    [SerializeField] float maxRange;
+    [SerializeField] LayerMask vineColliders;
+    bool isLeftArmActive = false;
+    public HingeJoint2D hJ;
+    // Multiply to turn a singular unit into the scale of the object
+    GameObject curArm;
+    int curSide; // Left is side 0 right is side one
+    public GameObject connectedVine;
+    public HingeJoint2D hj;
+    [SerializeField] float swingForce;
     #endregion
     private void Start() {
         player = GetComponent<PlayerController>();
@@ -100,9 +108,8 @@ public class Abilities : MonoBehaviour
         hJ = this.GetComponent<HingeJoint2D>();
         playerTransform = GetComponent<Transform>();
         groundedScript = GameObject.Find("Ground Ray Object").GetComponent<isGroundedScript>();
-        LR = GetComponent<LineRenderer>();
-		LR.enabled = false;
-
+        hj = GetComponent<HingeJoint2D>();
+        hj.enabled = false;
         // grab arms
 
     }
@@ -118,9 +125,6 @@ public class Abilities : MonoBehaviour
                 break;
             case PlayerController.playerForms.Pogo:
                 //Have the functions for pogos abilities
-                Jumping();
-                break;
-            case PlayerController.playerForms.Arm:
                 armMovement();
                 break;
         }
@@ -442,11 +446,8 @@ public class Abilities : MonoBehaviour
         }
         return vines[place].gameObject;
     }
-    */
-    #endregion
-    
-    #region New Arm Abilities
-    void armMovement()
+
+        void armMovement()
     {
         if (Input.GetKeyDown(abilityKey))
         {
@@ -469,6 +470,70 @@ public class Abilities : MonoBehaviour
     public void armAnchored(Vector3 anchorPoint)
     {
         
+    }
+    */
+    #endregion
+    
+    #region New Arm Abilities
+   void armMovement()
+    {
+        if (isConnected)
+        {
+            
+            player.rb.AddForce(new Vector2(player.horizontal * swingForce * Time.deltaTime, 0), ForceMode2D.Impulse);
+            player.rb.angularDrag = 4;
+            int indexNum = 1;
+            if (usingLeftArm)
+            {
+                indexNum = 0;
+            }
+            if (Input.GetKeyDown(abilityKey) || Input.GetKeyDown(handKeys[indexNum]))
+            {
+                breakArms();
+            }
+        }
+        else
+        {
+            Jumping();
+        }
+    }
+    // Called when the arms are first connected to something
+    public IEnumerator connectingArms()
+    {
+        print("arms are being connected");
+        hj.enabled = true;
+        // Sets it so the joint swings around the bottom of the vine
+        hj.connectedBody = connectedVine.GetComponent<Rigidbody2D>();
+        hj.connectedAnchor = hingeJointAnchorDistance;
+        player.rb.freezeRotation = false;
+        if (usingLeftArm)
+        {
+            // moves the hinge joint to the left position
+            hj.anchor = hjanchorPos - new Vector2(2 * hjanchorPos.x, 0);
+        }
+        else
+        {
+            hj.anchor = hjanchorPos;
+        }
+        yield return new WaitForEndOfFrame();
+
+        isConnected = true;
+    }
+    public void breakArms()
+    {
+        print("break arms is being called");
+        hj.enabled = false;
+        isConnected = false;
+        player.rb.freezeRotation = true;
+        player.transform.rotation = quaternion.RotateZ(0);//Puts the character up straight
+
+        StartCoroutine(reduceGravity());
+    }
+    IEnumerator reduceGravity()
+    {
+        player.rb.gravityScale = 1;
+        yield return new WaitUntil(() => groundedScript.isGrounded());
+        player.rb.gravityScale = 2.5f;
     }
     #endregion
 }

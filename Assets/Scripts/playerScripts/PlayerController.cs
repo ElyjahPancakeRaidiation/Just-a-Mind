@@ -11,6 +11,7 @@ using UnityEngine.Rendering;
 
 public class PlayerController : MonoBehaviour
 {
+    #region general
     [Header("General")]
     Abilities abilityScript;
     public KeyCode formChangeKey;
@@ -48,9 +49,8 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator playingSound;
     private bool soundIsPlaying;
-
     [SerializeField]public CamControllerV2 cam;
-
+    #endregion
     #region movements
     [Header("Movement")]
     public bool canMove = true;
@@ -102,6 +102,8 @@ public class PlayerController : MonoBehaviour
     public bool canJump = true;
 	#endregion
 	#region Arm movement variables
+
+    
 	#endregion
 
 
@@ -282,14 +284,9 @@ public class PlayerController : MonoBehaviour
                     rb.mass = 1;
                     ballCol.enabled = true;
                     pogoCol.enabled = false;
-                    if (pogoCol.enabled == false)
-                    {
-                        print("wait but this is working");
-                    }
                     playerSpriteRender.sprite = playerFormSprite[0];
                     anim.enabled = false;
                     rb.freezeRotation = false;
-                    Debug.Log("ball");
                     break;
 
                 case playerForms.Pogo:
@@ -300,9 +297,7 @@ public class PlayerController : MonoBehaviour
                     pogoCol.enabled = true;
                     //anim.enabled = true;
                     playerSpriteRender.sprite = playerFormSprite[1];//changes the sprites from ball to pogo man
-                    rb.freezeRotation = true;
                     anim.SetInteger("Horizontal", (int)horizontal);//this is for walking animation 
-                    Debug.Log("Head");
                     canJump = true; 
                     break;
 
