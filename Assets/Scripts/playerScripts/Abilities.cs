@@ -34,6 +34,8 @@ public class Abilities : MonoBehaviour
     public Transform groundPoint;
     public bool canSuperJump = false;
     public float keyHoldDown;//Amount the jump is held down
+    public float coyoteTimeVar = 0.2f;
+    public float coyotoeTimer;
 
     #endregion
 
@@ -110,6 +112,7 @@ public class Abilities : MonoBehaviour
 
     void Update()
     {
+
         // We must call in update because input breaks if we dont
         switch (PlayerController.playerForm)
         {
@@ -179,12 +182,21 @@ public class Abilities : MonoBehaviour
     {
         // Only allows if the player is grounded which
         if (groundedScript.isGrounded())
-        {   if (Input.GetKeyDown(abilityKey))
-            {
-                StartCoroutine(ignoreResistences());
-                player.rb.AddForce(new Vector2(0, superJumpForce), ForceMode2D.Impulse);
-            }
+        {
+            coyotoeTimer = coyoteTimeVar;
         }
+		else
+		{
+            coyotoeTimer -= Time.deltaTime; 
+		}
+
+        if (coyotoeTimer > 0f && Input.GetKeyDown(abilityKey))
+        {
+            StartCoroutine(ignoreResistences());
+            player.rb.AddForce(new Vector2(0, superJumpForce), ForceMode2D.Impulse);
+            coyotoeTimer = 0f;
+        }
+
         /*IEnumerator debugger()
         {
             for(int i = 0; i < 100; i++)
