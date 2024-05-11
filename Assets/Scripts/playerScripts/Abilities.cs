@@ -479,7 +479,7 @@ public class Abilities : MonoBehaviour
     {
         if (isConnected)
         {
-            
+            // remove this stuff for automatic swinging
             player.rb.AddForce(new Vector2(player.horizontal * swingForce * Time.deltaTime, 0), ForceMode2D.Impulse);
             player.rb.angularDrag = 4;
             int indexNum = 1;
@@ -500,9 +500,9 @@ public class Abilities : MonoBehaviour
     // Called when the arms are first connected to something
     public IEnumerator connectingArms()
     {
-        print("arms are being connected");
         hj.enabled = true;
         // Sets it so the joint swings around the bottom of the vine
+        // this is broken
         hj.connectedBody = connectedVine.GetComponent<Rigidbody2D>();
         hj.connectedAnchor = hingeJointAnchorDistance;
         player.rb.freezeRotation = false;
