@@ -13,6 +13,8 @@ public class TestScript : MonoBehaviour
 
     [SerializeField]private SpringJoint2D spring;
 
+    public Transform hittransform;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,6 +32,7 @@ public class TestScript : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.K))
             {
                 spring.connectedBody = hit.GetComponent<Rigidbody2D>();
+                //spring.connectedAnchor = hittransform.localPosition;
                 isConnected = true;
             }
         }

@@ -292,6 +292,7 @@ public class PlayerController : MonoBehaviour
                 case playerForms.Pogo:
                     curForm = 1;
                     rb.mass = 1f;
+                    rb.freezeRotation = true;
                     transform.rotation = quaternion.RotateZ(0);//Puts the character up straight
                     ballCol.enabled = false;//changes the collider from ball to pogo
                     pogoCol.enabled = true;
