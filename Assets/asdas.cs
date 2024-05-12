@@ -40,18 +40,21 @@ public class asdas : MonoBehaviour
                 side = leftSide;
             }
 
-            if (Input.GetKeyDown(KeyCode.K))
+            if (!isConnected)
             {
-                spring.enabled = true;
-                spring.autoConfigureConnectedAnchor = false;
-                spring.useLimits = true;
-                Vector2 vec = hit.GetComponent<vinetest>().transformTest.localPosition;
-                spring.connectedBody = hit.GetComponent<Rigidbody2D>();
-                spring.anchor = side;
-                spring.connectedAnchor = vec;
-
-                hit.GetComponent<vinetest>().onVine = true;
-                isConnected = true;
+                if (Input.GetKeyDown(KeyCode.K))
+                {
+                    spring.enabled = true;
+                    spring.autoConfigureConnectedAnchor = false;
+                    spring.useLimits = true;
+                    Vector2 vec = hit.GetComponent<vinetest>().transformTest.localPosition;
+                    spring.connectedBody = hit.GetComponent<Rigidbody2D>();
+                    spring.anchor = side;
+                    spring.connectedAnchor = vec;
+    
+                    hit.GetComponent<vinetest>().onVine = true;
+                    isConnected = true;
+                }
             }
         }
 
@@ -85,17 +88,6 @@ public class asdas : MonoBehaviour
         }
 
         return false;
-    }
-
-    private void GoBackToRotated(){
-        if (player.gameObject.transform.rotation.z < 0)//Go right
-        {
-            player.gameObject.transform.Rotate(0, 0, player.gameObject.transform.rotation.z * Time.deltaTime * -3f);
-        }
-        else if(player.gameObject.transform.rotation.z > 0)//Go left
-        {
-            player.gameObject.transform.Rotate(0, 0, player.gameObject.transform.rotation.z * Time.deltaTime * 3f);
-        }
     }
 
     void FixedUpdate() {
