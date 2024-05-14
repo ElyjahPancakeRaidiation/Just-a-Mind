@@ -253,8 +253,17 @@ public class PlayerController : MonoBehaviour
                     playerSpriteRender.sprite = playerFormSprite[0];
                     anim.enabled = false;
                     rb.freezeRotation = false;
-                    leftArm.SetActive(false);
-                    rightArm.SetActive(false);
+                    try
+                    {
+                        leftArm.SetActive(false);
+                        rightArm.SetActive(false);
+                    }
+                    catch (System.Exception)
+                    {
+                        
+                        Debug.LogError("Left Arm and Right arm are not assigned. If not using them do not mind this message");
+                        return;
+                    }
                     break;
 
                 case playerForms.Pogo:
@@ -270,8 +279,16 @@ public class PlayerController : MonoBehaviour
                     canJump = true;
                     if (hasArms)
                     {
-                        leftArm.SetActive(true);
-                        rightArm.SetActive(true);
+                        try
+                        {
+                            leftArm.SetActive(true);
+                            rightArm.SetActive(true);
+                        }
+                        catch (System.Exception)
+                        {
+                            Debug.LogError("It seems as though you are trying to use arms however YOU DO NOT HAVE THE ARMS IN THE VARIABLE GAMEOBECT CALLED LEFT ARM AND RIGHT ARM - Elyjah Justice Logan");
+                            return;
+                        }
                     }
                     break;
             }
