@@ -43,7 +43,6 @@ public class handScript : MonoBehaviour
                 ability.usingLeftArm = false;
             }
             ability.connectedVine = connectedVine;
-            print("connecting arms is being called");
             StartCoroutine(ability.connectingArms());
         }
     }

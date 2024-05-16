@@ -12,11 +12,12 @@ public class FallingRock : MonoBehaviour
     [SerializeField]private RockObjScript[] rockScript;
     [SerializeField] private float[] gravityScales;
     private bool isRockFalling;
-    [SerializeField]private float rockFallDelay, rockShakingTime, respawnTimer, rockRespawnTime;
+    private bool initialRockFall;
+    public float rockFallDelay, rockShakingTime, respawnTimer, rockRespawnTime;
     private float secDelay;
 
     //Raycast settings
-    [SerializeField]private RaycastHit2D[] rockCast;
+    public RaycastHit2D[] rockCast;
     [SerializeField]private float[] rockCastDistance;
     [SerializeField]private LayerMask rockMask;
 
@@ -43,17 +44,20 @@ public class FallingRock : MonoBehaviour
     private void Update()
     {
 
-        for (int i = 0; i < rockObj.Length; i++)//Constantly changes it's status wether it has fallen or not
+        if (!initialRockFall)
         {
-            if (!isRockFalling)
+            for (int i = 0; i < rockObj.Length; i++)//Constantly changes it's status wether it has fallen or not
             {
-                rockRb[i].bodyType = RigidbodyType2D.Static;
-                rockAnims[i].SetBool("Idle", true);
-                //rockAnims[i].enabled = false;
-            }else{
-                //rockAnims[i].enabled = true;
+                if (!isRockFalling)
+                {
+                    rockRb[i].bodyType = RigidbodyType2D.Static;
+                    rockAnims[i].SetBool("Idle", true);
+                }
             }
+        }
 
+        for (int i = 0; i < rockObj.Length; i++)
+        {
             if (rockCast[i].collider == null)
             {
                 rockRb[i].bodyType = RigidbodyType2D.Static;
@@ -64,7 +68,7 @@ public class FallingRock : MonoBehaviour
         }
     }
 
-    private IEnumerator RockFalling(){
+    private IEnumerator InitialRockFalling(){
         
         isRockFalling = true;
 
@@ -95,13 +99,11 @@ public class FallingRock : MonoBehaviour
                 rockRb[i].gravityScale = gravityScales[i];
             }
         }
+
+        yield return new WaitUntil(() => allRocksFallen());
+        initialRockFall = true;
     }
-    /*
-    private IEnumerator RestartRocks(float time){
-        yield return new WaitForSeconds(time);
-        StartCoroutine(RockFalling());
-    }
-    */
+    
 
     private bool allRocksFallen(){//Checks if all of the rocks have fallen
         for (int i = 0; i < rockScript.Length; i++)
@@ -140,21 +142,11 @@ public class FallingRock : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            if (!isRockFalling && !allRocksFallen())
+            if (!initialRockFall)
             {
                 //Starts the entire process of a rock falling and respawning
-                StartCoroutine(RockFalling());
+                StartCoroutine(InitialRockFalling());
             }
-        }
-    }
-
-    void OnTriggerStay2D(Collider2D other)
-    {
-        if (!allRocksFallen())
-        {
-            print("Restarting");
-            //StartCoroutine(RestartRocks(1.5f));
-            StartCoroutine(RockFalling());
         }
     }
 
