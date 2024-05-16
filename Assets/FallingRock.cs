@@ -25,6 +25,8 @@ public class FallingRock : MonoBehaviour
     [SerializeField]private Animator[] rockAnims;
     public AnimationClip[] rockAnimClip;//Shaking, Disassemble, Respawn {0, 1, 2}
 
+    [SerializeField]private Animation[] lights;
+
 
 
     private void Start() {
@@ -101,6 +103,13 @@ public class FallingRock : MonoBehaviour
         }
 
         yield return new WaitUntil(() => allRocksFallen());
+        for (int i = 0; i < rockScript.Length; i++)
+        {
+            yield return new WaitForSeconds(1f);
+            lights[i].Play();
+            yield return new WaitForSeconds(0.3f);
+        }
+        
         initialRockFall = true;
     }
     

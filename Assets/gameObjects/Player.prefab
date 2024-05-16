@@ -47,10 +47,7 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
-  rayScales:
-  - 0.45
-  - 1
-  - 1
+  rayScales: []
   timer: 0
   vecScales:
   - {x: 0.55, y: 0.27}
@@ -121,25 +118,18 @@ MonoBehaviour:
   groundPoint: {fileID: 2556725374051482418}
   canSuperJump: 0
   keyHoldDown: 0
-  playerTransform: {fileID: 0}
-  isGrappling: 0
-  maxRange: 0
-  vineColliders:
+  hinge: {fileID: 0}
+  vineLayer:
     serializedVersion: 2
-    m_Bits: 128
-  hJ: {fileID: 0}
-  hookshotSpeed: 0
-  LR: {fileID: 0}
-  arms: []
-  armShootSpeed: 10
-  armScale: 0
-  grappleForce: 0
-  toShoulderDist: {x: 0, y: 0}
-  hand: {fileID: 0}
-  horrizontalShootForce: 0
-  diagnolxShootForce: 0
-  diagnolyShootForce: 0
-  shootVector: {x: 0, y: 0}
+    m_Bits: 0
+  armColRadius: 0
+  isConnected: 0
+  boostX: 0
+  boostY: 0
+  grabBoostX: 0
+  grabboostY: 0
+  rightSide: {x: 0, y: 0}
+  leftSide: {x: 0, y: 0}
 --- !u!114 &6156709126799240589
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -199,13 +189,18 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 64
+  maxForm: 0
+  curForm: 0
   ignoreResistences: 0
   coefficientOfAirResistence: 0.075
   coefficientOfFriction: 0.3
-  groundedScript: {fileID: 0}
+  groundedScript: {fileID: 8064381564403545213}
   ballCol: {fileID: 4243366355294756771}
   pogoCol: {fileID: 6764691651494828799}
   canJump: 1
+  leftArm: {fileID: 0}
+  rightArm: {fileID: 0}
+  hasArms: 0
 --- !u!50 &3374888515853459002
 Rigidbody2D:
   serializedVersion: 4
@@ -333,7 +328,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
