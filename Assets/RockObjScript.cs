@@ -17,6 +17,8 @@ public class RockObjScript : MonoBehaviour
 
     [SerializeField]private Collider2D bodyCol, groundCol;//Ignore the grounds collider
 
+    [SerializeField]private GameObject lightObj;
+
 
     private void Start() {
         anim = GetComponent<Animator>();
@@ -30,6 +32,7 @@ public class RockObjScript : MonoBehaviour
         anim.SetBool("Idle", false);
         anim.SetTrigger("Disassemble");
         yield return new WaitForSeconds(fallingRockScript.rockAnimClip[1].length);
+        lightObj.SetActive(false);
         transform.position = startPos.position;
         hasRockFallen = false;
 
