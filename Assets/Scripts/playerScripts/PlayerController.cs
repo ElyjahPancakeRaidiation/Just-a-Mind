@@ -144,6 +144,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         RespawnParse();
+        PlayerStopMoving();
 
         if (canMove) 
         {
@@ -180,7 +181,6 @@ public class PlayerController : MonoBehaviour
         }
 
         LatestInput((int)horizontal, (int)vertical);
-        Debug.Log(thoughtBub.enabled);
         
     }
 
@@ -461,9 +461,9 @@ public class PlayerController : MonoBehaviour
             case "Spike":
                 Debug.Log("dead");
                 this.transform.position = spawner.transform.position;
+                StartCoroutine(PlayDead());
                 rb.velocity = Vector3.zero;
                 rb.angularVelocity = 0;
-                playerDead = true;
                 break;
             
             
@@ -523,6 +523,26 @@ public class PlayerController : MonoBehaviour
         }
 
 	}
+
+    private void PlayerStopMoving() 
+    {
+		if (playerDead)
+		{
+            canMove = false;
+		}
+		if (!playerDead)
+		{
+            canMove = true;
+		}
+    }
+
+    public IEnumerator PlayDead() 
+    {
+        playerDead = true;
+        yield return new WaitUntil(() => groundedScript.isGrounded());
+        playerDead = false;
+
+    }
 
 
 }
