@@ -934,7 +934,8 @@ MonoBehaviour:
   anim: {fileID: 28500293}
   jumpTime: 0.1
   AMS: {fileID: 1654918573}
-  musicHasChanged: 0
+  musicHasChangedOne: 0
+  musicHasChangedTwo: 0
   circleCol: {fileID: 0}
   vineCol: {fileID: 0}
   spawner: {fileID: 0}
@@ -1182,19 +1183,18 @@ MonoBehaviour:
   keyHoldDown: 0
   coyoteTimeVar: 0.2
   coyotoeTimer: 0
-  isConnected: 0
-  handKeys: 
-  usingLeftArm: 0
-  playerTransform: {fileID: 28500288}
-  isGrappling: 0
-  maxRange: 0
-  vineColliders:
+  hinge: {fileID: 0}
+  vineLayer:
     serializedVersion: 2
-    m_Bits: 128
-  hJ: {fileID: 0}
-  connectedVine: {fileID: 0}
-  hj: {fileID: 0}
-  swingForce: 0
+    m_Bits: 0
+  armColRadius: 0
+  isConnected: 0
+  boostX: 0
+  boostY: 0
+  grabBoostX: 0
+  grabboostY: 0
+  rightSide: {x: 0, y: 0}
+  leftSide: {x: 0, y: 0}
 --- !u!120 &28500296
 LineRenderer:
   serializedVersion: 2
@@ -10479,6 +10479,7 @@ MonoBehaviour:
   gravityScale: 2
   bodyCol: {fileID: 0}
   groundCol: {fileID: 0}
+  lightObj: {fileID: 0}
 --- !u!1 &375167779
 GameObject:
   m_ObjectHideFlags: 0
@@ -18343,6 +18344,7 @@ MonoBehaviour:
   gravityScale: 2.5
   bodyCol: {fileID: 0}
   groundCol: {fileID: 0}
+  lightObj: {fileID: 0}
 --- !u!1 &652046720
 GameObject:
   m_ObjectHideFlags: 0
@@ -30980,13 +30982,13 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 269361033}
     - target: {fileID: 6685255869890429165, guid: 8c749ac1d1cce244d864273879515c20, type: 3}
-      propertyPath: sceneNum
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 6685255869890429165, guid: 8c749ac1d1cce244d864273879515c20, type: 3}
       propertyPath: pauseMenu
       value: 
       objectReference: {fileID: 743505482}
+    - target: {fileID: 6685255869890429165, guid: 8c749ac1d1cce244d864273879515c20, type: 3}
+      propertyPath: musicChanger
+      value: 
+      objectReference: {fileID: 1542171791}
     - target: {fileID: 6685255869890429165, guid: 8c749ac1d1cce244d864273879515c20, type: 3}
       propertyPath: transitionAnim
       value: 
@@ -41979,6 +41981,7 @@ MonoBehaviour:
   gravityScale: 2
   bodyCol: {fileID: 0}
   groundCol: {fileID: 0}
+  lightObj: {fileID: 0}
 --- !u!1 &1589343198
 GameObject:
   m_ObjectHideFlags: 0
