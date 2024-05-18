@@ -77,7 +77,7 @@ public class Abilities : MonoBehaviour
 
     void Update()
     {
-
+        coyotoeTimer -= Time.deltaTime; 
         // We must call in update because input breaks if we dont
         switch (PlayerController.playerForm)
         {
@@ -189,13 +189,9 @@ public class Abilities : MonoBehaviour
         {
             coyotoeTimer = coyoteTimeVar;
         }
-		else
-		{
-            coyotoeTimer -= Time.deltaTime; 
-		}
-
         if (coyotoeTimer > 0f && Input.GetKeyDown(abilityKey))
         {
+            coyotoeTimer = -1;
             StartCoroutine(ignoreResistences());
             player.rb.AddForce(new Vector2(0, superJumpForce), ForceMode2D.Impulse);
             afterJumpTimer = 0;
@@ -273,11 +269,18 @@ public class Abilities : MonoBehaviour
 
             hinge.connectedBody = null;
             hinge.enabled = false;
-            player.rb.AddForce(new Vector2(player.horizontal * boostX, boostY), ForceMode2D.Impulse);
+            int tempDir = 1;
+            if (player.rb.velocity.x < 0)
+            {
+                tempDir = -1;
+            }
+            player.rb.AddForce(new Vector2(tempDir * boostX, boostY), ForceMode2D.Impulse);
             player.gameObject.transform.rotation = new Quaternion(0, 0, 0, 0);
             armCol.GetComponent<vinetest>().onVine = false;
             isConnected = !isConnected;
             StopCoroutine(Swinging());
+            StopCoroutine(Dashing(dashingDuration));
+            ResetDash();
         }
     }
 
@@ -291,11 +294,11 @@ public class Abilities : MonoBehaviour
     }
 
     void FixedUpdate() {
-        armCol = Physics2D.OverlapCircle(transform.position + new Vector3(0, 1, 0), armColRadius, vineLayer);
+        armCol = Physics2D.OverlapCircle(transform.position + new Vector3(0, 0.6f, 0), armColRadius, vineLayer);
     }
 
     private void OnDrawGizmos() {
-        Gizmos.DrawWireSphere(transform.position + new Vector3(0, 1, 0), armColRadius);
+        Gizmos.DrawWireSphere(transform.position + new Vector3(0, 0.6f, 0), armColRadius);
     }
 
 
