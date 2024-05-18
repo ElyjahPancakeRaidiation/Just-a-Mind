@@ -51,6 +51,8 @@ MonoBehaviour:
   - 0.45
   - 1.6
   - 1
+  timer: 0
+  vecScales: []
 --- !u!1 &5150928139307579840
 GameObject:
   m_ObjectHideFlags: 0
@@ -114,21 +116,18 @@ MonoBehaviour:
   groundPoint: {fileID: 2556725374051482418}
   canSuperJump: 0
   keyHoldDown: 0
-  speed: 7
-  dashMag: 0
-  shiftTime: 0
-  shiftTimeMax: 0
-  playerTransform: {fileID: 0}
-  COM: {x: 0, y: 0, z: 0}
-  isConnected: 0
-  maxRange: 0
-  vineColliders:
+  hinge: {fileID: 0}
+  vineLayer:
     serializedVersion: 2
     m_Bits: 0
-  hJ: {fileID: 0}
-  hookshotSpeed: 0
-  LR: {fileID: 0}
-  armShootSpeed: 0
+  armColRadius: 0
+  isConnected: 0
+  boostX: 0
+  boostY: 0
+  grabBoostX: 0
+  grabboostY: 0
+  rightSide: {x: 0, y: 0}
+  leftSide: {x: 0, y: 0}
 --- !u!114 &6156709126799240589
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -142,6 +141,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   formChangeKey: 304
+  rightformChangeKey: 0
   devControl: 1
   neareastSpawner: 0
   timer: 0
@@ -154,19 +154,32 @@ MonoBehaviour:
   playerFormSprite:
   - {fileID: 21300000, guid: c48159bb276b640a9b80ce9eebed5a59, type: 3}
   - {fileID: 21300000, guid: 91976d33e7ae9704591ceeeebbf2e155, type: 3}
+  anim: {fileID: 0}
+  jumpTime: 0
+  AMS: {fileID: 0}
+  musicHasChanged: 0
   circleCol: {fileID: 0}
   vineCol: {fileID: 0}
   spawner: {fileID: 0}
   player: {fileID: 0}
   grabOn: {fileID: 0}
   guideText: {fileID: 0}
+  thoughtBub: {fileID: 0}
+  thoughtBubble: {fileID: 0}
+  cam: {fileID: 0}
   canMove: 1
+  isMoving: 0
   rb: {fileID: 0}
   horizontal: 0
   vertical: 0
   horiLatestInput: 0
   vertLatestInput: 0
   speed: 15
+  jumpSpeedX: 0
+  jumpSpeedY: 0
+  bonusRotationSpeed: 0
+  rotChangePointMax: 0
+  rotChangePointMin: 0
   interactRadius: 0.4
   interactMask:
     serializedVersion: 2
@@ -174,12 +187,18 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 64
+  maxForm: 0
+  curForm: 0
+  ignoreResistences: 0
   coefficientOfAirResistence: 0.075
   coefficientOfFriction: 0.3
-  ignoreResistences: 0
+  groundedScript: {fileID: 0}
   ballCol: {fileID: 4243366355294756771}
-  maxSpeedCopy: 0
   pogoCol: {fileID: 6764691651494828799}
+  canJump: 1
+  leftArm: {fileID: 0}
+  rightArm: {fileID: 0}
+  hasArms: 0
 --- !u!50 &3374888515853459002
 Rigidbody2D:
   serializedVersion: 4
@@ -307,7 +326,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

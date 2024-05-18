@@ -16,7 +16,7 @@ public class vinetest : MonoBehaviour
     private void Update() {
         if (onVine)
         {
-            rb.gravityScale = 0;
+            //rb.gravityScale = 0;
         }
         else
         {

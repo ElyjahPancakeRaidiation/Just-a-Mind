@@ -10,7 +10,7 @@ public class isGroundedScript : MonoBehaviour
     public List<float> rayScales;
     public int timer;
     public Vector2[] vecScales;
-    public Collider2D groundCol;
+    //public Collider2D groundCol;
     private float angle;
     
 
