@@ -27,7 +27,7 @@ public class Abilities : MonoBehaviour
     [SerializeField]float dashDelay;
 
     [SerializeField]float yDashModifier;
-    [SerializeField] float dashInputForgivenessTime;
+    [SerializeField] float dashInputForgivenessTime = 0.2f;
     bool tryingToDash;
     float attemptingToDashTimer;
     #endregion
