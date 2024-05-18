@@ -27,7 +27,9 @@ public class Abilities : MonoBehaviour
     [SerializeField]float dashDelay;
 
     [SerializeField]float yDashModifier;
-    
+    [SerializeField] float dashInputForgivenessTime;
+    bool tryingToDash;
+    float attemptingToDashTimer;
     #endregion
 
 
@@ -39,6 +41,8 @@ public class Abilities : MonoBehaviour
     public Transform groundPoint;
     public bool canSuperJump = false;
     public float keyHoldDown;//Amount the jump is held down
+    public float coyoteTimeVar = 0.2f;
+    public float coyotoeTimer;
 
     #endregion
     
@@ -72,6 +76,7 @@ public class Abilities : MonoBehaviour
 
     void Update()
     {
+
         // We must call in update because input breaks if we dont
         switch (PlayerController.playerForm)
         {
@@ -108,7 +113,20 @@ public class Abilities : MonoBehaviour
     private void Dash(){
         if (!TestManager.transitioned)
         {
-            if (Input.GetKeyDown(abilityKey) && !isDashing && player.horiLatestInput != 0)
+            if (Input.GetKeyDown(abilityKey))
+            {
+                tryingToDash = true;
+                attemptingToDashTimer = 0;
+            }
+            if (tryingToDash)
+            {
+                attemptingToDashTimer += Time.deltaTime;
+                if (attemptingToDashTimer > dashInputForgivenessTime)
+                {
+                    tryingToDash = false;
+                }
+            }
+            if (tryingToDash && !isDashing && player.horiLatestInput != 0)
             {
                 if (dashAmount > 0 || bonusCharges > 0)
                 {
@@ -124,6 +142,10 @@ public class Abilities : MonoBehaviour
         //player.cam.shakeTime = 0.2f;
         //player.cam.shakeAmount = 0.2f;
         //CamControllerV2.isCameraShaking = true;
+        if (groundedScript.isGrounded())
+        {
+            player.rb.velocity = new Vector2(player.rb.velocity.x, 0);
+        }
         if (player.horizontal == 1)
         {
             player.rb.angularVelocity += 300 * player.horizontal;
@@ -151,11 +173,19 @@ public class Abilities : MonoBehaviour
     {
         // Only allows if the player is grounded which
         if (groundedScript.isGrounded())
-        {   if (Input.GetKeyDown(abilityKey))
-            {
-                StartCoroutine(ignoreResistences());
-                player.rb.AddForce(new Vector2(0, superJumpForce), ForceMode2D.Impulse);
-            }
+        {
+            coyotoeTimer = coyoteTimeVar;
+        }
+		else
+		{
+            coyotoeTimer -= Time.deltaTime; 
+		}
+
+        if (coyotoeTimer > 0f && Input.GetKeyDown(abilityKey))
+        {
+            StartCoroutine(ignoreResistences());
+            player.rb.AddForce(new Vector2(0, superJumpForce), ForceMode2D.Impulse);
+            coyotoeTimer = 0f;
         }
 
         /*IEnumerator debugger()

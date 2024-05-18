@@ -180,6 +180,7 @@ public class PlayerController : MonoBehaviour
         }
 
         LatestInput((int)horizontal, (int)vertical);
+        Debug.Log(thoughtBub.enabled);
         
     }
 
@@ -358,24 +359,20 @@ public class PlayerController : MonoBehaviour
 
     void RespawnParse()
     {
-        circleCol = Physics2D.OverlapCircle(spherePoint.transform.position, interactRadius, interactMask); //set circleCol to Overlap Cirlce
-		if (circleCol != null)
+        Collider2D[] circleCols = Physics2D.OverlapCircleAll(spherePoint.transform.position, interactRadius, interactMask);
+		for (int i = 0; i < circleCols.Length; i++)
 		{
+            Collider2D circleCol = circleCols[i];
+			if (circleCol == spawner || circleCol == null)
+			{
+                continue; ;
+			}
 
-        }
+            spawner = circleCol.gameObject;
+            break;
+		}
 
-
-        if (circleCol == spawner || circleCol == null) //if cirlce collider is equal or if circle collider is equal to null return
-        {
-            return; //ensure that that there's never a null in the spawner
-        } 
-        
-        else if (circleCol != spawner && circleCol != null)
-		{
-            spawner = circleCol.gameObject; 
-        }
-
-
+        Debug.Log("The spawner current avalible is" + spawner);
     }
 
     private IEnumerator PlaySound(float waitAmount){//Plays the sound and waits until it is finished + however amount you want to add
@@ -512,8 +509,6 @@ public class PlayerController : MonoBehaviour
 
 	private void OnTriggerExit2D(Collider2D collision)
 	{
-        /*Destroy(thoughtBubble);
-		guideText.text = "";*/
         if (collision.tag == "Guide")
         {
             thoughtBub.enabled = false;
