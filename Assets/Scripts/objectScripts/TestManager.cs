@@ -23,6 +23,7 @@ public class TestManager : MonoBehaviour
 
     [Header("Audio")]
     public GameObject musicChanger;
+    public GameObject musicChanger2;
 
 
     
@@ -36,6 +37,7 @@ public class TestManager : MonoBehaviour
         player = GameObject.Find("Player");
         pc = player.GetComponent<PlayerController>();
         musicChanger.SetActive(true);
+        musicChanger2.SetActive(true);
     }
 
     private void Update() {
@@ -68,11 +70,14 @@ public class TestManager : MonoBehaviour
 
         Debug.Log(isPaused);
 
-        if (pc.musicHasChanged)
-        {
+		if (pc.musicHasChangedOne)
+		{
             musicChanger.SetActive(false);
-        }
-
+		}
+		if (pc.musicHasChangedTwo)
+		{
+            musicChanger2.SetActive(false);
+		}
     }
 
     private void OnTriggerEnter2D(Collider2D other) {

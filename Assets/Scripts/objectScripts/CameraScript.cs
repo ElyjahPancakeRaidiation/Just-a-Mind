@@ -1,3 +1,4 @@
+using System.Transactions;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -28,6 +29,11 @@ public class CameraScript : MonoBehaviour
     [SerializeField]private float rayDistance;
     [SerializeField]private RaycastHit2D findPlayer;
 
+    
+    Vector2 curPos;
+    Vector2 lastPos;
+
+
     private void Start() {
         playerObj = GameObject.FindGameObjectWithTag("Player");
         cam = GetComponentInChildren<Camera>();
@@ -49,7 +55,22 @@ public class CameraScript : MonoBehaviour
     }
 
     private void Update(){
+        curPos = transform.position;
+        Vector2 vel = curPos - lastPos;
+        lastPos = transform.position;
+
         
+        if (isZoom)
+        {
+
+            playerObj.GetComponent<Rigidbody2D>().interpolation = RigidbodyInterpolation2D.Interpolate;
+
+        }else if(!isZoom && !isComingBack){
+
+            playerObj.GetComponent<Rigidbody2D>().interpolation = RigidbodyInterpolation2D.None;
+
+        }
+
         if (isComingBack)
         {
             if (findPlayer.transform.tag == "Player")

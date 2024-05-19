@@ -11,6 +11,7 @@ using UnityEngine.Rendering;
 
 public class PlayerController : MonoBehaviour
 {
+    #region General
     [Header("General")]
     Abilities abilityScript;
     public KeyCode formChangeKey;
@@ -29,7 +30,8 @@ public class PlayerController : MonoBehaviour
     public float jumpTime;
     public AudioManagerScript AMS;
 
-    public bool musicHasChanged = false;
+    public bool musicHasChangedOne = false;
+    public bool musicHasChangedTwo= false;
 
     private static bool playerDead;
 
@@ -48,7 +50,8 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator playingSound;
     private bool soundIsPlaying;
-
+    [SerializeField]public CamControllerV2 cam;
+    #endregion
     #region movements
     [Header("Movement")]
     public bool canMove = true;
@@ -69,12 +72,12 @@ public class PlayerController : MonoBehaviour
     
     
     [Header("Player Forms")]
-    private int maxForm;
-    public enum playerForms{Ball, Pogo, Arm}
+    public int maxForm;
+    public int curForm;
+    public enum playerForms{Ball, Pogo}
     public static playerForms playerForm;
     // Change to false false false for game and initialize in gm
-    public static bool[] playerPieces = {true, true, true};//bools for the player pieces {0: ball, 1: pogo, 2: arm}
-
+    public static bool[] playerPieces = {true, false};//bools for the player pieces {0: ball, 1: pogo, 2: arm}
 
     [Header("Physics")]
     public bool ignoreResistences = false;
@@ -82,62 +85,100 @@ public class PlayerController : MonoBehaviour
     public isGroundedScript groundedScript;
 
     #region Ball movement variables
+
     [Header("Head")]
     [SerializeField]private Collider2D ballCol;
-    private const float DECELERATION = 8, ACCELERATION = 4, POINTTOACCELERATE = 2;
-    /// <Deceleration acceleration and accelerate explantion> 
-    /// Decleration is to increase the turning speed from left to right
-    /// Acceleration is to increase the speed when going from still to moving
-    /// pointToAccelerate when it should stop accelerating ex: it will keep acclerating from 0 to 2 and stop
-    /// </summary>
+
     #endregion
 
     #region Pogo movement variables
+
     [Header("Body")]
     [SerializeField]private Collider2D pogoCol;
     public IEnumerator jumping;
     public bool canJump = true;
+    
 	#endregion
+
 	#region Arm movement variables
+
+    [Header("Arm")]
+    [SerializeField]private GameObject leftArm;
+    [SerializeField]private GameObject rightArm;
+    public bool hasArms;
+
 	#endregion
 
 
 	#endregion
 
 	private void Start(){
-        thoughtBub.enabled = false;
+        cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CamControllerV2>();
+        groundedScript = GameObject.FindGameObjectWithTag("GroundRay").GetComponent<isGroundedScript>();
+        playerSpriteRender = GetComponent<SpriteRenderer>();
+        player = GameObject.FindGameObjectWithTag("Player");
         abilityScript = GetComponent<Abilities>();
+        anim = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody2D>();
+        playerForm = playerForms.Ball;
+        FormSettings();
+        AMS = GameObject.Find("AudioManager").GetComponent<AudioManagerScript>();
+        if (thoughtBubble != null)
+        {
+            thoughtBub.enabled = false;
+        }else{
+            return;
+        }
+
         if (!devControl)
         {
             playerPieces[0] = true;
             playerPieces[1] = false;
-            playerPieces[2] = false;
         }
-        anim = GetComponent<Animator>();
-        rb = GetComponent<Rigidbody2D>();
-        groundedScript = GameObject.Find("Ground Ray Object").GetComponent<isGroundedScript>();
-        playerSpriteRender = GetComponent<SpriteRenderer>();
+
         //gm = GameObject.Find("Game Manager").GetComponent<GameManager>();
-        player = GameObject.Find("Player");
-        playerForm = playerForms.Ball;
         //guideText.text = "";
-        FormSettings();
-        AMS = GameObject.Find("AudioManager").GetComponent<AudioManagerScript>();
         
     }
         
     // Update is called once per frame
     void Update()
     {
-        ChangeForm();//Controlls the changing of the players form
-        InteractFunc();//The player interacts through this function
-        //ChangeVel();//The velocity for the ball my brain rots from this
         RespawnParse();
+        PlayerStopMoving();
 
-        if (canMove) {
+        if (canMove) 
+        {
             horizontal = Input.GetAxisRaw("Horizontal");
             vertical = Input.GetAxisRaw("Vertical");
             Movements();
+        }
+
+        if (Input.GetKeyDown(formChangeKey) || Input.GetKeyDown(rightformChangeKey))
+        {
+            if (!devControl)
+            {
+               
+                if (curForm >= maxForm)
+                {
+                    curForm = 0;
+                }
+                else
+                {
+                    curForm++;
+                }
+                ChangeForm(curForm);//Controlls the changing of the players form
+            }
+            else
+            {
+                curForm++;
+                if (curForm >= 2)//Had to change for current build
+                {
+                    curForm = 0;
+                }
+                ChangeForm(curForm);//Controlls the changing of the players form
+            }
+            print(curForm);
         }
 
         LatestInput((int)horizontal, (int)vertical);
@@ -196,84 +237,10 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    /*private void ChangeVel(){//This is for the ball movement
-        if (horizontal == -1)
-        {
-            if (rb.velocity.x > 0)//if the player is going right decelerate towards the left
-            {
-                rb.velocity = new Vector2(rb.velocity.x - DECELERATION * Time.deltaTime, rb.velocity.y);
-            }
-            else if(rb.velocity.x <= 0 && rb.velocity.x > -POINTTOACCELERATE)//when the player is moving from 0 it will boost the player in order to get it moving at top speed(towards left)
-            {
-                rb.velocity = new Vector2(rb.velocity.x - ACCELERATION * Time.deltaTime, rb.velocity.y);
-            }
-        }
-        else if(horizontal == 1)
-        {
-            if (rb.velocity.x < 0)//if the player is going left decelerate towards the right
-            {
-                rb.velocity = new Vector2(rb.velocity.x + DECELERATION * Time.deltaTime, rb.velocity.y);
-            }
-            else if(rb.velocity.x >= 0 && rb.velocity.x < POINTTOACCELERATE)//when the player is moving from 0 it will boost the player in order to get it moving at top speed(towards right)
-            {
-                rb.velocity = new Vector2(rb.velocity.x + ACCELERATION * Time.deltaTime, rb.velocity.y);
-            }
-        }
-    }*/
-    
-    private void InteractFunc()
-    {//To interact with objects in the world
-        if (interactCol != null){
-            if (Input.GetKeyDown(KeyCode.E))
-            {                    
-                interactCol.GetComponent<IInteractable>().Interact();
-            }
-        }
-    }
-
-    private void ChangeForm()
+    public void ChangeForm(int playerFormNum)
     {
-        
-        if (!devControl)
-        {
-            maxForm = 0;
-            // Start at one because ball always true and its playerform zero so dont increase max form for that
-            for (int i = 1; i < playerPieces.Length; i++)//runs through the bools and see what form is not active yet
-            {
-                if (playerPieces[i])
-                {
-                    maxForm++;
-                    print(maxForm);
-                    break;
-                }
-            }
-    
-            if (Input.GetKeyDown(formChangeKey) || Input.GetKeyDown(rightformChangeKey))
-            {
-                
-                if ((int)playerForm >= maxForm)
-                {
-                    playerForm = 0;
-                }
-                else
-                {
-                    playerForm++;
-                }
-                FormSettings();//main change
-            }
-        }
-        else
-        {
-            if (Input.GetKeyDown(formChangeKey) || Input.GetKeyDown(rightformChangeKey))
-            {
-                playerForm++;
-                if ((int)playerForm >= 2)//Had to change for current build
-                {
-                    playerForm = 0;
-                }
-                FormSettings();//main change
-            }
-        }
+        playerForm = (playerForms)playerFormNum;
+        FormSettings();
 
     }
     void FormSettings(){//defualt settings for each form(mainly for the sprites of each form)
@@ -281,42 +248,50 @@ public class PlayerController : MonoBehaviour
             {
                 case playerForms.Ball:
                     //Sets the balls sprite, unfreezes rotation, and changes the animation
+                    curForm = 0;
                     rb.mass = 1;
                     ballCol.enabled = true;
                     pogoCol.enabled = false;
-                    if (pogoCol.enabled == false)
-                    {
-                        print("wait but this is working");
-                    }
                     playerSpriteRender.sprite = playerFormSprite[0];
                     anim.enabled = false;
                     rb.freezeRotation = false;
-                    Debug.Log("ball");
+                    try
+                    {
+                        leftArm.SetActive(false);
+                        rightArm.SetActive(false);
+                    }
+                    catch (System.Exception)
+                    {
+                        
+                        Debug.LogError("Left Arm and Right arm are not assigned. If not using them do not mind this message");
+                        return;
+                    }
                     break;
 
                 case playerForms.Pogo:
-                rb.mass = 1f;
+                    curForm = 1;
+                    rb.mass = 1f;
+                    rb.freezeRotation = true;
                     transform.rotation = quaternion.RotateZ(0);//Puts the character up straight
                     ballCol.enabled = false;//changes the collider from ball to pogo
                     pogoCol.enabled = true;
                     //anim.enabled = true;
                     playerSpriteRender.sprite = playerFormSprite[1];//changes the sprites from ball to pogo man
-                    rb.freezeRotation = true;
                     anim.SetInteger("Horizontal", (int)horizontal);//this is for walking animation 
-                    Debug.Log("Head");
-                    canJump = true; 
-                    break;
-
-                case playerForms.Arm:
-                rb.mass = 1f;
-                    //Where all of the settings for arm goes
-                    ballCol.enabled = false;
-                    pogoCol.enabled = true;
-                    rb.freezeRotation = false;
-                    /*foreach (Abilities.shoulderType shoulder in abilityScript.shoulders)
+                    canJump = true;
+                    if (hasArms)
                     {
-                        shoulder.shoulderObject.SetActive(true);
-                    }*/
+                        try
+                        {
+                            leftArm.SetActive(true);
+                            rightArm.SetActive(true);
+                        }
+                        catch (System.Exception)
+                        {
+                            Debug.LogError("It seems as though you are trying to use arms however YOU DO NOT HAVE THE ARMS IN THE VARIABLE GAMEOBECT CALLED LEFT ARM AND RIGHT ARM - Elyjah Justice Logan");
+                            return;
+                        }
+                    }
                     break;
             }
         }
@@ -331,16 +306,23 @@ public class PlayerController : MonoBehaviour
                 RotationSpeed();
                 break;
 			case playerForms.Pogo:
-                if (horizontal != 0 && groundedScript.isGrounded() && canJump)
+                if (horizontal != 0)
                 {
-                    canJump = false;
-                    print("being called");
-                    jumping = Jump();
-                    StartCoroutine(jumping);
+                    if (groundedScript.isGrounded())
+                    {
+                        if (canJump)
+                        {
+                            canJump = false;
+                            print("being called");
+                            jumping = Jump();
+                            StartCoroutine(jumping);
+                        }
+                    }
+                    else{
+                        rb.AddForce(new Vector2(horizontal * speed * Time.deltaTime, 0), ForceMode2D.Impulse);
+                    }
                 }
                 break;
-			case playerForms.Arm:
-				break;
 			default:
 				break;
 		}
@@ -378,24 +360,20 @@ public class PlayerController : MonoBehaviour
 
     void RespawnParse()
     {
-        circleCol = Physics2D.OverlapCircle(spherePoint.transform.position, interactRadius, interactMask); //set circleCol to Overlap Cirlce
-		if (circleCol != null)
+        Collider2D[] circleCols = Physics2D.OverlapCircleAll(spherePoint.transform.position, interactRadius, interactMask);
+		for (int i = 0; i < circleCols.Length; i++)
 		{
+            Collider2D circleCol = circleCols[i];
+			if (circleCol == spawner || circleCol == null)
+			{
+                continue; ;
+			}
 
-        }
+            spawner = circleCol.gameObject;
+            break;
+		}
 
-
-        if (circleCol == spawner || circleCol == null) //if cirlce collider is equal or if circle collider is equal to null return
-        {
-            return; //ensure that that there's never a null in the spawner
-        } 
-        
-        else if (circleCol != spawner && circleCol != null)
-		{
-            spawner = circleCol.gameObject; 
-        }
-
-
+        Debug.Log("The spawner current avalible is" + spawner);
     }
 
     private IEnumerator PlaySound(float waitAmount){//Plays the sound and waits until it is finished + however amount you want to add
@@ -471,7 +449,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-
     private void OnDrawGizmos()  
     {
         Gizmos.DrawWireSphere(transform.position, interactRadius);
@@ -484,9 +461,9 @@ public class PlayerController : MonoBehaviour
             case "Spike":
                 Debug.Log("dead");
                 this.transform.position = spawner.transform.position;
+                StartCoroutine(PlayDead());
                 rb.velocity = Vector3.zero;
                 rb.angularVelocity = 0;
-                playerDead = true;
                 break;
             
             
@@ -523,18 +500,27 @@ public class PlayerController : MonoBehaviour
            AMS.currentMusic = AMS.soundTrack[1];
            AMS.soundTrackSource.PlayOneShot(AMS.currentMusic);
            AMS.soundTrackSource.volume = 0.55f;
-           musicHasChanged = true;
+           musicHasChangedOne = true;
            
 
         }
-               
-                
-	}
+
+        if (collision.tag == "MusicChange2")
+        {
+            AMS.soundTrackSource.Stop();
+            AMS.currentMusic = AMS.soundTrack[2];
+            AMS.soundTrackSource.PlayOneShot(AMS.currentMusic);
+            AMS.soundTrackSource.volume = 0.55f;
+            musicHasChangedTwo = true;
+
+
+        }
+
+
+    }
 
 	private void OnTriggerExit2D(Collider2D collision)
 	{
-        /*Destroy(thoughtBubble);
-		guideText.text = "";*/
         if (collision.tag == "Guide")
         {
             thoughtBub.enabled = false;
@@ -548,6 +534,26 @@ public class PlayerController : MonoBehaviour
         }
 
 	}
+
+    private void PlayerStopMoving() 
+    {
+		if (playerDead)
+		{
+            canMove = false;
+		}
+		if (!playerDead)
+		{
+            canMove = true;
+		}
+    }
+
+    public IEnumerator PlayDead() 
+    {
+        playerDead = true;
+        yield return new WaitUntil(() => groundedScript.isGrounded());
+        playerDead = false;
+
+    }
 
 
 }
