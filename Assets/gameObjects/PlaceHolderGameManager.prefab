@@ -45,13 +45,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b84ff2d5e20b7674c9052470626d616e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonCotainer: {fileID: 0}
   transitionAnim: {fileID: 0}
   start: {fileID: 7400000, guid: d69baf01c83bd994d8289fe73bdbcdaf, type: 2}
   end: {fileID: 7400000, guid: 44b9703669fd1de42ab7523c018b8ad3, type: 2}
-  sceneNum: 2
+  sceneNum: 4
   pauseMenu: {fileID: 0}
   exitBall: {fileID: 0}
   mainMenuTransition: {fileID: 7400000, guid: 7a03ffd0a1264d64897b492cc969147d, type: 2}
+  pc: {fileID: 0}
+  player: {fileID: 0}
+  musicChanger: {fileID: 0}
+  musicChanger2: {fileID: 0}
 --- !u!61 &5331471733569150213
 BoxCollider2D:
   m_ObjectHideFlags: 0

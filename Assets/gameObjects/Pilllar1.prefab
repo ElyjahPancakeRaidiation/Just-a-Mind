@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 1095542999176532560}
   - component: {fileID: 4068050948255520695}
   - component: {fileID: 2078498272260065587}
-  m_Layer: 0
+  - component: {fileID: 169524387229717002}
+  m_Layer: 6
   m_Name: Pilllar1
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -27,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 882143832213478742}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -7.6, z: 0}
   m_LocalScale: {x: 1, y: 1.65, z: 1}
   m_ConstrainProportionsScale: 0
@@ -136,6 +137,26 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &169524387229717002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 882143832213478742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8043c3458f894924da850286d9e59e0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startPos: {fileID: 4072608100773740279}
+  respawnDelayTimer: 1
+  fallingRockScript: {fileID: 0}
+  hasRockFallen: 0
+  rockFallDelay: 0.1
+  gravityScale: 3
+  bodyCol: {fileID: 0}
+  groundCol: {fileID: 0}
 --- !u!1 &886442969086075582
 GameObject:
   m_ObjectHideFlags: 0
@@ -146,7 +167,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5835289951640067318}
   - component: {fileID: 4538464020465817800}
-  m_Layer: 6
+  m_Layer: 10
   m_Name: PillarGroundCol
   m_TagString: Ground
   m_Icon: {fileID: 0}

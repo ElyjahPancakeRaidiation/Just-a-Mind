@@ -30,7 +30,8 @@ public class PlayerController : MonoBehaviour
     public float jumpTime;
     public AudioManagerScript AMS;
 
-    public bool musicHasChanged = false;
+    public bool musicHasChangedOne = false;
+    public bool musicHasChangedTwo= false;
 
     private static bool playerDead;
 
@@ -144,6 +145,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         RespawnParse();
+        PlayerStopMoving();
 
         if (canMove) 
         {
@@ -180,7 +182,6 @@ public class PlayerController : MonoBehaviour
         }
 
         LatestInput((int)horizontal, (int)vertical);
-        Debug.Log(thoughtBub.enabled);
         
     }
 
@@ -460,9 +461,9 @@ public class PlayerController : MonoBehaviour
             case "Spike":
                 Debug.Log("dead");
                 this.transform.position = spawner.transform.position;
+                StartCoroutine(PlayDead());
                 rb.velocity = Vector3.zero;
                 rb.angularVelocity = 0;
-                playerDead = true;
                 break;
             
             
@@ -499,13 +500,24 @@ public class PlayerController : MonoBehaviour
            AMS.currentMusic = AMS.soundTrack[1];
            AMS.soundTrackSource.PlayOneShot(AMS.currentMusic);
            AMS.soundTrackSource.volume = 0.55f;
-           musicHasChanged = true;
+           musicHasChangedOne = true;
            
 
         }
-               
-                
-	}
+
+        if (collision.tag == "MusicChange2")
+        {
+            AMS.soundTrackSource.Stop();
+            AMS.currentMusic = AMS.soundTrack[2];
+            AMS.soundTrackSource.PlayOneShot(AMS.currentMusic);
+            AMS.soundTrackSource.volume = 0.55f;
+            musicHasChangedTwo = true;
+
+
+        }
+
+
+    }
 
 	private void OnTriggerExit2D(Collider2D collision)
 	{
@@ -522,6 +534,26 @@ public class PlayerController : MonoBehaviour
         }
 
 	}
+
+    private void PlayerStopMoving() 
+    {
+		if (playerDead)
+		{
+            canMove = false;
+		}
+		if (!playerDead)
+		{
+            canMove = true;
+		}
+    }
+
+    public IEnumerator PlayDead() 
+    {
+        playerDead = true;
+        yield return new WaitUntil(() => groundedScript.isGrounded());
+        playerDead = false;
+
+    }
 
 
 }
