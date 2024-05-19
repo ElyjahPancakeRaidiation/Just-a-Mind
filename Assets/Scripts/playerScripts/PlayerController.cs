@@ -123,10 +123,12 @@ public class PlayerController : MonoBehaviour
         playerForm = playerForms.Ball;
         FormSettings();
         AMS = GameObject.Find("AudioManager").GetComponent<AudioManagerScript>();
-        if (thoughtBubble != null)
+        thoughtBub = GameObject.FindGameObjectWithTag("ThoughtBubble").GetComponent<Image>();
+        if (thoughtBub != null)
         {
             thoughtBub.enabled = false;
         }else{
+            Debug.LogError("Thought bubble variable is empty.");
             return;
         }
 
