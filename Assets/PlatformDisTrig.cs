@@ -8,12 +8,7 @@ public class PlatformDisTrig : MonoBehaviour
     public float breakTimer;
 	public bool isPlayer;
     // Start is called before the first frame update
-    void Start()
-    {
-        platform.SetActive(true);
-    }
-
-	private void Update()
+  	private void Update()
 	{
 		Debug.Log(isPlayer);
 	}
