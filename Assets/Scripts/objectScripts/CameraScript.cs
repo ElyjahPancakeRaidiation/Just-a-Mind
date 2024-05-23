@@ -1,3 +1,4 @@
+using System.Transactions;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -7,6 +8,7 @@ public class CameraScript : MonoBehaviour
 {
     [Header("----Cam Movement Variables----")]
     public float camDefaultFOV;
+    [SerializeField]private float startingFOV;
 
     private GameObject cameraObj;
     public static GameObject playerObj;
@@ -15,7 +17,8 @@ public class CameraScript : MonoBehaviour
 
     public float cameraSpeed, backSpeed;//Follows player speed and comes back to player speed
     [SerializeField]private float zoomBackSpeed, Distance;//How fast the camera goes back to following the player and how close before switching movements to follow the player
-    public bool isFollowingPlayer, isComingBack, isTransitioning;//Different modes for the camera
+    public bool isFollowingPlayer, isComingBack, isZoom;//Different modes for the camera
+    private bool hasZoomed;
 
     public bool notFollowingX, notFollowingY;
     public static bool isCameraShaking, isCameraZooming;
@@ -26,12 +29,22 @@ public class CameraScript : MonoBehaviour
     [SerializeField]private float rayDistance;
     [SerializeField]private RaycastHit2D findPlayer;
 
+    
+    Vector2 curPos;
+    Vector2 lastPos;
+
+
     private void Start() {
         playerObj = GameObject.FindGameObjectWithTag("Player");
         cam = GetComponentInChildren<Camera>();
         cameraObj = GameObject.FindGameObjectWithTag("MainCamera");
         //testobj = playerObj;
-        cam.orthographicSize = camDefaultFOV;
+        if (startingFOV == camDefaultFOV || startingFOV == 0)
+        {
+            cam.orthographicSize = camDefaultFOV;
+        }else{
+            cam.orthographicSize = startingFOV;
+        }
         //playerRB = playerObj.GetComponent<Rigidbody2D>();
         //startCamOffset = cameraOffset;
     }
@@ -42,7 +55,22 @@ public class CameraScript : MonoBehaviour
     }
 
     private void Update(){
+        curPos = transform.position;
+        Vector2 vel = curPos - lastPos;
+        lastPos = transform.position;
+
         
+        if (isZoom)
+        {
+
+            playerObj.GetComponent<Rigidbody2D>().interpolation = RigidbodyInterpolation2D.Interpolate;
+
+        }else if(!isZoom && !isComingBack){
+
+            playerObj.GetComponent<Rigidbody2D>().interpolation = RigidbodyInterpolation2D.None;
+
+        }
+
         if (isComingBack)
         {
             if (findPlayer.transform.tag == "Player")
@@ -129,20 +157,34 @@ public class CameraScript : MonoBehaviour
 
     public void ZoomCameraChange(float FOV, float zoomSpeed){//Zooms back and fourth wether it is the player or not. Never make the desired FOV smaller than the defualt FOV which is 5
         
-        if (!isFollowingPlayer)
+        if (Mathf.Abs(cam.orthographicSize - FOV) < 0.1f)
         {
-            if (cam.orthographicSize < FOV)
+            print("WORKING WOKRING");
+            hasZoomed = true;
+        }
+        if (isZoom)
+        {
+            if (!hasZoomed)
             {
-                cam.orthographicSize += Time.deltaTime * zoomSpeed;
-            }else{
+                if (cam.orthographicSize < FOV)
+                {
+                    cam.orthographicSize += Time.deltaTime * zoomSpeed;
+                }else if(cam.orthographicSize > FOV){
+                    cam.orthographicSize -= Time.deltaTime * zoomSpeed;
+                }
+            }else
+            {
                 cam.orthographicSize = FOV;
             }
         }
         else
         {
+            hasZoomed = false;
             if (cam.orthographicSize > camDefaultFOV)
             {
                 cam.orthographicSize -= Time.deltaTime * zoomSpeed;
+            }else if(cam.orthographicSize < camDefaultFOV){
+                cam.orthographicSize += Time.deltaTime * zoomSpeed;
             }else{
                 cam.orthographicSize = camDefaultFOV;
             }

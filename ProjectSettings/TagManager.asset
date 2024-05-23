@@ -13,6 +13,9 @@ TagManager:
   - Spikes
   - Guide
   - sfx
+  - MusicChange
+  - GroundRay
+  - MusicChange2
   layers:
   - Default
   - TransparentFX

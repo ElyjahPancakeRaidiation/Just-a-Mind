@@ -62,6 +62,7 @@ public class AudioManagerScript : MonoBehaviour
       //PlayAudioClip();  
     }
 
+
     /*
     public void PlayAudioClip()
     {
@@ -111,6 +112,18 @@ public class AudioManagerScript : MonoBehaviour
 
 		
     }*/
+
+    /* private void OnCollisionEnter2D(Collision2D collision)
+	{
+		switch (collision.gameObject.tag)
+		{
+            case "MusicChange":
+                currentMusic = soundTrack[1];
+                soundTrackSource.Play();
+                break;
+		}
+	}
+    */
 
 
 

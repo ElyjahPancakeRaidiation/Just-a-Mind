@@ -16,6 +16,16 @@ public class TestManager : MonoBehaviour
     [SerializeField]private GameObject pauseMenu, exitBall;
     private bool isPaused, exit, restarting, buttonConfig;
     [SerializeField]private AnimationClip mainMenuTransition;
+
+    [Header("Player")]
+    public PlayerController pc;
+    public GameObject player;
+
+    [Header("Audio")]
+    public GameObject musicChanger;
+    public GameObject musicChanger2;
+
+
     
     // Start is called before the first frame update
     
@@ -24,6 +34,10 @@ public class TestManager : MonoBehaviour
         exitBall.SetActive(false);
         buttonCotainer.SetActive(false);
         buttonConfig = false;
+        player = GameObject.Find("Player");
+        pc = player.GetComponent<PlayerController>();
+        musicChanger.SetActive(true);
+        musicChanger2.SetActive(true);
     }
 
     private void Update() {
@@ -56,6 +70,14 @@ public class TestManager : MonoBehaviour
 
         Debug.Log(isPaused);
 
+		if (pc.musicHasChangedOne)
+		{
+            musicChanger.SetActive(false);
+		}
+		if (pc.musicHasChangedTwo)
+		{
+            musicChanger2.SetActive(false);
+		}
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
