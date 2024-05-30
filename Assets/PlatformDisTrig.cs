@@ -4,26 +4,28 @@ using UnityEngine;
 
 public class PlatformDisTrig : MonoBehaviour
 {
-    public GameObject platform;
-    public float breakTimer;
-	public bool isPlayer;
-    // Start is called before the first frame update
-  	private void Update()
-	{
-		Debug.Log(isPlayer);
-	}
+	public GameObject platform;
+	public float breakTimer;
+	public AudioManagerScript ams;
 
-	private void OnCollisionEnter2D(Collision2D collision)
+	private void Start()
+	{
+		ams = GameObject.Find("AudioManager").GetComponent<AudioManagerScript>();
+	}
+	private void OnTriggerStay2D(Collider2D collision)
 	{
 		if (collision.gameObject.tag == "Player")
 		{
 			breakTimer -= Time.deltaTime;
-			isPlayer = true;
+			ams.currentSfx = ams.soundFX[0];
+			ams.sfx.Play();
 		}
 
-		/*if (breakTimer <= 0)
+		if (breakTimer <= 0)
 		{
-			platform.SetActive(false);
-		}*/
+			Destroy(platform);
+		}
+
+		
 	}
 }
