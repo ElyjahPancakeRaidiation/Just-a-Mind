@@ -366,7 +366,7 @@ public class PlayerController : MonoBehaviour
             Collider2D circleCol = circleCols[i];
 			if (circleCol == spawner || circleCol == null)
 			{
-                continue; ;
+                continue; 
 			}
 
             spawner = circleCol.gameObject;
