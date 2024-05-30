@@ -31,7 +31,7 @@ public class PlayerController : MonoBehaviour
     public AudioManagerScript AMS;
 
     public bool musicHasChangedOne = false;
-    public bool musicHasChangedTwo= false;
+    public bool musicHasChangedTwo = false;
 
     private static bool playerDead;
 
