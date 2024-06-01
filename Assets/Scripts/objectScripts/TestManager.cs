@@ -25,11 +25,16 @@ public class TestManager : MonoBehaviour
     public GameObject musicChanger;
     public GameObject musicChangerTwo;
 
+    [Header("Level 3 Respawn")]
+    [SerializeField]private Animator respawnAnim;
+    [SerializeField]private AnimationClip respawnStart, respawnEnd;
+
 
     
     // Start is called before the first frame update
     
     private void Start() {
+        respawnAnim.gameObject.SetActive(false);
         buttonCotainer = GameObject.Find("ContentArea");
         exitBall.SetActive(false);
         buttonCotainer.SetActive(false);
@@ -91,6 +96,16 @@ public class TestManager : MonoBehaviour
         yield return new WaitForSeconds(start.length);
         SceneManager.LoadScene(scene);
         transitioned = false;
+    }
+
+    public IEnumerator RespawnLevel3(){
+        respawnAnim.gameObject.SetActive(true);
+        yield return new WaitForSeconds(respawnStart.length);
+        respawnAnim.SetTrigger("RespawnEnd");
+        yield return new WaitForSeconds(respawnEnd.length);
+        respawnAnim.ResetTrigger("RespawnStart");
+        respawnAnim.gameObject.SetActive(false);
+
     }
 
     private IEnumerator ExitTransition(){

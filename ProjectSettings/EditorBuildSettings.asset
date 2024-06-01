@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: Assets/Scenes/FInal Scenes/Main Menu.unity
     guid: fb7375b634608a849b70b4bd672a15c2
   - enabled: 1
-    path: Assets/Scenes/Final Level 1.unity
+    path: Assets/Scenes/FInal Scenes/Final Level 1.unity
     guid: 87a81bb51392c73488e8595a6bf927ec
   - enabled: 1
     path: Assets/Scenes/CutsceneLevel 2.unity
