@@ -23,7 +23,7 @@ public class TestManager : MonoBehaviour
 
     [Header("Audio")]
     public GameObject musicChanger;
-    public GameObject musicChanger2;
+    public GameObject musicChangerTwo;
 
     [Header("Level 3 Respawn")]
     [SerializeField]private Animator respawnAnim;
@@ -41,8 +41,9 @@ public class TestManager : MonoBehaviour
         buttonConfig = false;
         player = GameObject.Find("Player");
         pc = player.GetComponent<PlayerController>();
+
         musicChanger.SetActive(true);
-        musicChanger2.SetActive(true);
+        musicChangerTwo.SetActive(true);
     }
 
     private void Update() {
@@ -75,14 +76,7 @@ public class TestManager : MonoBehaviour
 
         Debug.Log(isPaused);
 
-		if (pc.musicHasChangedOne)
-		{
-            musicChanger.SetActive(false);
-		}
-		if (pc.musicHasChangedTwo)
-		{
-            musicChanger2.SetActive(false);
-		}
+		MusicTriggerEnd();
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
@@ -147,6 +141,17 @@ public class TestManager : MonoBehaviour
 		}
     }
 
+    public void MusicTriggerEnd()
+    {
+        if (pc.musicHasChangedOne)
+		{
+            musicChanger.SetActive(false);
+		}
+		if (pc.musicHasChangedTwo)
+		{
+           Destroy(musicChangerTwo);
+		}
+    }
    /* public void ButtonExit() 
     {
         buttonConfig = true;
