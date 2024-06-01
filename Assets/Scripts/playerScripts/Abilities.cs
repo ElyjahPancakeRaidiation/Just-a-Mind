@@ -201,7 +201,7 @@ public class Abilities : MonoBehaviour
     #endregion
 
 
-    #region New Arm Ability Elyjah
+    #region Arm Ability
 
     private void Grab(){
 
