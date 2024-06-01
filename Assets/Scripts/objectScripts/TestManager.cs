@@ -34,13 +34,13 @@ public class TestManager : MonoBehaviour
     // Start is called before the first frame update
     
     private void Start() {
+        player = GameObject.Find("Player");
+        pc = player.GetComponent<PlayerController>();
         respawnAnim.gameObject.SetActive(false);
         buttonCotainer = GameObject.Find("ContentArea");
         exitBall.SetActive(false);
         buttonCotainer.SetActive(false);
         buttonConfig = false;
-        player = GameObject.Find("Player");
-        pc = player.GetComponent<PlayerController>();
 
         musicChanger.SetActive(true);
         musicChangerTwo.SetActive(true);
