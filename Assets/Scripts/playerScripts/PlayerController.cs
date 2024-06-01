@@ -11,6 +11,7 @@ using UnityEngine.Rendering;
 
 public class PlayerController : MonoBehaviour
 {
+
     #region General
     [Header("General")]
     Abilities abilityScript;
@@ -23,7 +24,7 @@ public class PlayerController : MonoBehaviour
     public float textOffsetX;
     public float textOffsetY;
     public Transform spherePoint;
-    public GameManager gm;
+    public TestManager gm;
     [SerializeField]private SpriteRenderer playerSpriteRender;
     [SerializeField]private Sprite[] playerFormSprite;
     [SerializeField]private Animator anim;
@@ -136,6 +137,11 @@ public class PlayerController : MonoBehaviour
         {
             playerPieces[0] = true;
             playerPieces[1] = false;
+        }
+        gm = GameObject.FindGameObjectWithTag("GM").GetComponent<TestManager>();
+        if (gm == null)
+        {
+            return;
         }
 
         //gm = GameObject.Find("Game Manager").GetComponent<GameManager>();
@@ -368,7 +374,7 @@ public class PlayerController : MonoBehaviour
             Collider2D circleCol = circleCols[i];
 			if (circleCol == spawner || circleCol == null)
 			{
-                continue; ;
+                continue;
 			}
 
             spawner = circleCol.gameObject;
@@ -552,6 +558,7 @@ public class PlayerController : MonoBehaviour
     public IEnumerator PlayDead() 
     {
         playerDead = true;
+        StartCoroutine(gm.RespawnLevel3());
         yield return new WaitUntil(() => groundedScript.isGrounded());
         playerDead = false;
 

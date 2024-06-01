@@ -17,6 +17,7 @@ TagManager:
   - GroundRay
   - MusicChange2
   - ThoughtBubble
+  - GM
   layers:
   - Default
   - TransparentFX
