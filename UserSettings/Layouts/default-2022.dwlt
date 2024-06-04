@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1536
     height: 772.8
   m_ShowMode: 4
-  m_Title: Scene
+  m_Title: Game
   m_RootView: {fileID: 2}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -120,7 +120,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 100}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 17429
+  controlID: 9702
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -145,7 +145,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 100}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 17321
+  controlID: 9679
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -224,7 +224,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 100}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 17345
+  controlID: 9703
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -798,9 +798,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 221.4559, y: -47.008003, z: -0.6573936}
+    m_Target: {x: 13.536133, y: -2.6023724, z: -11.816795}
     speed: 2
-    m_Value: {x: 206.03032, y: -43.458183, z: -0.5470264}
+    m_Value: {x: 1.7740602, y: -2.4071512, z: -11.733337}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -850,9 +850,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 256.2971
+    m_Target: 193.80576
     speed: 2
-    m_Value: 245.26038
+    m_Value: 185.46005
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -1752,7 +1752,7 @@ MonoBehaviour:
     m_OverlaysVisible: 1
   m_LockTracker:
     m_IsLocked: 0
-  m_LastSelectedObjectID: 30290
+  m_LastSelectedObjectID: 84396
 --- !u!114 &17
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -1789,10 +1789,10 @@ MonoBehaviour:
     m_OverlaysVisible: 1
   m_SceneHierarchy:
     m_TreeViewState:
-      scrollPos: {x: 0, y: 0}
+      scrollPos: {x: 0, y: 98}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: e0f8ffff167200007274000048760000
+      m_ExpandedIDs: 4485ffffe685ffff1089ffffa28affffd4abffff72adfffff4b2ffffc6b3ffff9cb4ffff58b5fffff4b6ffff98b7ffff9eb8ffff02dbffffd8e2ffff72e4ffff8ce5ffff24e7ffffd2e7fffffefaffffa8fb0000d045010088490100
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -1836,10 +1836,10 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 1208
-    y: 707
-    width: 776
-    height: 644
+    x: 740
+    y: 433.6
+    width: 449.19995
+    height: 341.8
   m_SerializedDataModeController:
     m_DataMode: 0
     m_PreferredDataMode: 0
@@ -1885,7 +1885,7 @@ MonoBehaviour:
     m_SaveData: []
     m_OverlaysVisible: 1
   m_SearchFilter:
-    m_NameFilter: 
+    m_NameFilter: evil
     m_ClassNames: []
     m_AssetLabels: []
     m_AssetBundleNames: []
@@ -1895,24 +1895,24 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Sprites/Tree Stuff
+    - Assets
     m_Globs: []
-    m_OriginalText: 
+    m_OriginalText: evil
     m_ImportLogFlags: 0
     m_FilterByTypeIntersection: 0
   m_ViewMode: 1
   m_StartGridSize: 57
   m_LastFolders:
-  - Assets/Sprites/Tree Stuff
+  - Assets
   m_LastFoldersGridSize: -1
   m_LastProjectPath: C:\Users\nycsu\Desktop\Game Development\Unity\Unity Projects\Just-a-mind\Just-A-Mind\Just-A-Mind
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 190.20001}
-    m_SelectedIDs: 8e7a0000
-    m_LastClickedID: 31374
-    m_ExpandedIDs: 0000000060780000f479000000ca9a3bffffff7f
+    scrollPos: {x: 0, y: 94.20001}
+    m_SelectedIDs: 7e770000
+    m_LastClickedID: 30590
+    m_ExpandedIDs: 000000007e77000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1940,7 +1940,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000006078000000ca9a3bffffff7f
+    m_ExpandedIDs: 000000007e77000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1968,7 +1968,7 @@ MonoBehaviour:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
     m_HadKeyboardFocusLastEvent: 0
-    m_ExpandedInstanceIDs: 3a760000
+    m_ExpandedInstanceIDs: 3a7600000c680100
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1992,7 +1992,7 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
     m_NewAssetIndexInList: -1
-    m_ScrollPosition: {x: 0, y: 320.2}
+    m_ScrollPosition: {x: 0, y: 0}
     m_GridSize: 57
   m_SkipHiddenPackages: 0
   m_DirectoriesAreaWidth: 122.6666
