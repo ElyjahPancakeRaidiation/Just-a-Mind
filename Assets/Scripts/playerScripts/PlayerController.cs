@@ -468,7 +468,6 @@ public class PlayerController : MonoBehaviour
 		{
             case "Spike":
                 Debug.Log("dead");
-                this.transform.position = spawner.transform.position;
                 StartCoroutine(PlayDead());
                 rb.velocity = Vector3.zero;
                 rb.angularVelocity = 0;
@@ -477,6 +476,18 @@ public class PlayerController : MonoBehaviour
             
 		}
 	}
+
+    private void OnTriggerEnter2D(Collider2D other) {//For level 3 death valley
+        switch (other.gameObject.tag)
+		{
+            case "Spike":
+                Debug.Log("dead");
+                StartCoroutine(PlayDead());
+                //rb.velocity = Vector3.zero;
+                rb.angularVelocity = 0;
+                break;
+		}
+    }
 
 	private void OnTriggerStay2D(Collider2D collision)
 	{
