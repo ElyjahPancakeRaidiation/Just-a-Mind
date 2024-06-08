@@ -83,7 +83,7 @@ public class TestManager : MonoBehaviour
 
         Debug.Log(isPaused);
 
-		MusicTriggerEnd();
+		
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
@@ -151,7 +151,7 @@ public class TestManager : MonoBehaviour
 		}
     }
 
-    public void MusicTriggerEnd()
+   /* public void MusicTriggerEnd()
     {
         if (pc.musicHasChangedOne)
 		{
@@ -161,7 +161,7 @@ public class TestManager : MonoBehaviour
 		{
            Destroy(musicChangerTwo);
 		}
-    }
+    }*/
    /* public void ButtonExit() 
     {
         buttonConfig = true;
