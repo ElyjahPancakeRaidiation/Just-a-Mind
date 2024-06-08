@@ -31,8 +31,10 @@ public class PlayerController : MonoBehaviour
     public float jumpTime;
     public AudioManagerScript AMS;
 
-    public bool musicHasChangedOne = false;
-    public bool musicHasChangedTwo = false;
+/*    public bool musicHasChangedOne = false;
+    public bool musicHasChangedTwo = false;*/
+    public GameObject soundTrigger;
+    public GameObject soundTriggerTwo;
 
     private static bool playerDead;
 
@@ -146,7 +148,9 @@ public class PlayerController : MonoBehaviour
 
         //gm = GameObject.Find("Game Manager").GetComponent<GameManager>();
         //guideText.text = "";
-        
+
+        soundTrigger = GameObject.FindGameObjectWithTag("MusicChange");
+
     }
         
     // Update is called once per frame
@@ -519,7 +523,7 @@ public class PlayerController : MonoBehaviour
            AMS.currentMusic = AMS.soundTrack[1];
            AMS.soundTrackSource.PlayOneShot(AMS.currentMusic);
            AMS.soundTrackSource.volume = 0.55f;
-           musicHasChangedOne = true;
+           soundTrigger.SetActive(false);
            
 
         }
@@ -530,7 +534,7 @@ public class PlayerController : MonoBehaviour
             AMS.currentMusic = AMS.soundTrack[2];
             AMS.soundTrackSource.PlayOneShot(AMS.currentMusic);
             AMS.soundTrackSource.volume = 0.55f;
-            musicHasChangedTwo = true;
+            soundTriggerTwo.SetActive(false);
 
 
         }

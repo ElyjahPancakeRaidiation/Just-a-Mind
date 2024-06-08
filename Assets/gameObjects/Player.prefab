@@ -167,7 +167,8 @@ MonoBehaviour:
   anim: {fileID: 3241892106689099501}
   jumpTime: 0.1
   AMS: {fileID: 0}
-  musicHasChanged: 0
+  soundTrigger: {fileID: 0}
+  soundTriggerTwo: {fileID: 1664737729990255945, guid: 321b11483a2184b4fb4ea4ff047824da, type: 3}
   circleCol: {fileID: 0}
   vineCol: {fileID: 0}
   spawner: {fileID: 0}
@@ -208,7 +209,7 @@ MonoBehaviour:
   canJump: 1
   leftArm: {fileID: 6593232511100398089}
   rightArm: {fileID: 501638591612465399}
-  hasArms: 1
+  hasArms: 0
 --- !u!50 &3337410901015035955
 Rigidbody2D:
   serializedVersion: 4
