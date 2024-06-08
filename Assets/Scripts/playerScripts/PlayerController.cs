@@ -124,7 +124,14 @@ public class PlayerController : MonoBehaviour
         playerForm = playerForms.Ball;
         FormSettings();
         AMS = GameObject.Find("AudioManager").GetComponent<AudioManagerScript>();
-        thoughtBub = GameObject.FindGameObjectWithTag("ThoughtBubble").GetComponent<Image>();
+        try
+        {
+            thoughtBub = GameObject.FindGameObjectWithTag("ThoughtBubble").GetComponent<Image>();
+        }
+        catch (System.Exception)
+        {
+            return;
+        }
         if (thoughtBub != null)
         {
             thoughtBub.enabled = false;
@@ -381,7 +388,6 @@ public class PlayerController : MonoBehaviour
             break;
 		}
 
-        Debug.Log("The spawner current avalible is" + spawner);
     }
 
     private IEnumerator PlaySound(float waitAmount){//Plays the sound and waits until it is finished + however amount you want to add
@@ -401,13 +407,11 @@ public class PlayerController : MonoBehaviour
                 if (rb.angularVelocity > 0.02f)
                 {
                     rb.angularVelocity -= -bonusRotationSpeed * Time.fixedDeltaTime * 10f;
-                    print("Off ground and going right");
                 }
             }else if(horizontal == -1){
                 if (rb.angularVelocity < -0.02f)
                 {
                     rb.angularVelocity += bonusRotationSpeed * Time.fixedDeltaTime * 10f;
-                    print("Off ground and going right");
                 }
             }
         }
@@ -430,7 +434,6 @@ public class PlayerController : MonoBehaviour
                 if (rb.angularVelocity < -rotChangePointMax)
                 {
                     canBoostRotSpeed = true;
-                    print("going Right at negative");
                 }
                 break;
 
@@ -450,7 +453,6 @@ public class PlayerController : MonoBehaviour
                 if (rb.angularVelocity > rotChangePointMax)
                 {
                     canBoostRotSpeed = true;
-                    print("going Left at positive");
                 }
                 break;
             
@@ -571,6 +573,7 @@ public class PlayerController : MonoBehaviour
         playerDead = true;
         StartCoroutine(gm.RespawnLevel3());
         yield return new WaitUntil(() => groundedScript.isGrounded());
+        canMove = true;
         playerDead = false;
 
     }
