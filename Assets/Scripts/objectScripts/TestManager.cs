@@ -101,6 +101,8 @@ public class TestManager : MonoBehaviour
     public IEnumerator RespawnLevel3(){
         respawnAnim.gameObject.SetActive(true);
         yield return new WaitForSeconds(respawnStart.length);
+        player.transform.position = pc.spawner.transform.position;
+        yield return new WaitForSeconds(0.6f);
         respawnAnim.SetTrigger("RespawnEnd");
         yield return new WaitForSeconds(respawnEnd.length);
         respawnAnim.ResetTrigger("RespawnStart");
