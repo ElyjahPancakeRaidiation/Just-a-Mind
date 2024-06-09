@@ -149,7 +149,8 @@ public class PlayerController : MonoBehaviour
         //gm = GameObject.Find("Game Manager").GetComponent<GameManager>();
         //guideText.text = "";
 
-        soundTrigger = GameObject.FindGameObjectWithTag("MusicChange");
+        soundTrigger.SetActive(true);
+        soundTriggerTwo.SetActive(true);
 
     }
         
