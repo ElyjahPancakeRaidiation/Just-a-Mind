@@ -6466,10 +6466,10 @@ PrefabInstance:
       propertyPath: gm
       value: 
       objectReference: {fileID: 1195473912}
-    - target: {fileID: 2357058203806974699, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
-      propertyPath: canSwing
-      value: 1
-      objectReference: {fileID: 0}
+    - target: {fileID: 1484820306327863335, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
+      propertyPath: soundTriggerTwo
+      value: 
+      objectReference: {fileID: 6189557272125729095}
     - target: {fileID: 7834041589481651562, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
       propertyPath: m_LocalPosition.x
       value: -60.1
@@ -11144,8 +11144,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: 50.97895, y: -79.58605, z: 0}
-    m_Extent: {x: 87.25605, y: 66.01475, z: 0}
+    m_Center: {x: 50.9799, y: -79.59065, z: 0}
+    m_Extent: {x: 87.2625, y: 66.025345, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -11916,8 +11916,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: 44.30985, y: -73.315796, z: 0}
-    m_Extent: {x: 47.47855, y: 76.4879, z: 0}
+    m_Center: {x: 44.30405, y: -73.31205, z: 0}
+    m_Extent: {x: 47.47855, y: 76.48835, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -12235,8 +12235,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: 110.34621, y: -92.3127, z: 0}
-    m_Extent: {x: 146.6212, y: 97.326706, z: 0}
+    m_Center: {x: 110.357506, y: -92.3191, z: 0}
+    m_Extent: {x: 146.6243, y: 97.3236, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -13554,8 +13554,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: 26.2171, y: -82.7547, z: 0}
-    m_Extent: {x: 29.3887, y: 85.921295, z: 0}
+    m_Center: {x: 26.231699, y: -82.759, z: 0}
+    m_Extent: {x: 29.3916, y: 85.9207, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
