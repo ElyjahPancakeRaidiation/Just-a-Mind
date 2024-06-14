@@ -66,8 +66,9 @@ public class Abilities : MonoBehaviour
     private void Start() {
         player = GetComponent<PlayerController>();
         dashAmount = maxDashAmount;
+        isDashing = false;
         //player.rb.centerOfMass = COM;
-        groundedScript = GameObject.Find("Ground Ray Object").GetComponent<isGroundedScript>();
+        groundedScript = GameObject.FindGameObjectWithTag("GroundRay").GetComponent<isGroundedScript>();
         hinge = GetComponent<HingeJoint2D>();
         // grab arms
 

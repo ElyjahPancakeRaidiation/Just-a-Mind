@@ -21,6 +21,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Working Scenes/Level3Test.unity
     guid: c63270e898f43f94bbcb1c8e17aa34af
   - enabled: 1
+    path: Assets/Scenes/FInal Scenes/EndScreen.unity
+    guid: 011006450a773744691c79a3fbc62aa9
+  - enabled: 1
     path: Assets/Scenes/FInal Scenes/obstacleCourse.unity
     guid: a8850029f9c7bda4b9031f59575f8be1
   m_configObjects: {}

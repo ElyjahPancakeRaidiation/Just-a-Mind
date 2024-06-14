@@ -29232,6 +29232,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1484820306327863335, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
+      propertyPath: devControl
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1484820306327863335, guid: 120906ebbc28ce3419b092160032fe37, type: 3}
       propertyPath: soundTrigger
       value: 
       objectReference: {fileID: 1877515696}
