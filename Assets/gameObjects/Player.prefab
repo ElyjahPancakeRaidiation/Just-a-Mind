@@ -130,7 +130,7 @@ MonoBehaviour:
   vineLayer:
     serializedVersion: 2
     m_Bits: 128
-  armColRadius: 1.09
+  armColRadius: 2
   isConnected: 0
   boostX: 10
   boostY: 6
