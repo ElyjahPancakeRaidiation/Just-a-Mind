@@ -11,6 +11,7 @@ using UnityEngine.Rendering;
 
 public class PlayerController : MonoBehaviour
 {
+
     #region General
     [Header("General")]
     Abilities abilityScript;
@@ -23,15 +24,17 @@ public class PlayerController : MonoBehaviour
     public float textOffsetX;
     public float textOffsetY;
     public Transform spherePoint;
-    public GameManager gm;
+    public TestManager gm;
     [SerializeField]private SpriteRenderer playerSpriteRender;
     [SerializeField]private Sprite[] playerFormSprite;
     [SerializeField]private Animator anim;
     public float jumpTime;
     public AudioManagerScript AMS;
 
-    public bool musicHasChangedOne = false;
-    public bool musicHasChangedTwo = false;
+/*    public bool musicHasChangedOne = false;
+    public bool musicHasChangedTwo = false;*/
+    public GameObject soundTrigger;
+    public GameObject soundTriggerTwo;
 
     private static bool playerDead;
 
@@ -123,10 +126,19 @@ public class PlayerController : MonoBehaviour
         playerForm = playerForms.Ball;
         FormSettings();
         AMS = GameObject.Find("AudioManager").GetComponent<AudioManagerScript>();
-        if (thoughtBubble != null)
+        try
+        {
+            thoughtBub = GameObject.FindGameObjectWithTag("ThoughtBubble").GetComponent<Image>();
+        }
+        catch (System.Exception)
+        {
+            return;
+        }
+        if (thoughtBub != null)
         {
             thoughtBub.enabled = false;
         }else{
+            Debug.LogError("Thought bubble variable is empty.");
             return;
         }
 
@@ -135,10 +147,18 @@ public class PlayerController : MonoBehaviour
             playerPieces[0] = true;
             playerPieces[1] = false;
         }
+        gm = GameObject.FindGameObjectWithTag("GM").GetComponent<TestManager>();
+        if (gm == null)
+        {
+            return;
+        }
 
         //gm = GameObject.Find("Game Manager").GetComponent<GameManager>();
         //guideText.text = "";
-        
+
+        soundTrigger.SetActive(true);
+        soundTriggerTwo.SetActive(true);
+
     }
         
     // Update is called once per frame
@@ -366,14 +386,13 @@ public class PlayerController : MonoBehaviour
             Collider2D circleCol = circleCols[i];
 			if (circleCol == spawner || circleCol == null)
 			{
-                continue; ;
+                continue; 
 			}
 
             spawner = circleCol.gameObject;
             break;
 		}
 
-        Debug.Log("The spawner current avalible is" + spawner);
     }
 
     private IEnumerator PlaySound(float waitAmount){//Plays the sound and waits until it is finished + however amount you want to add
@@ -393,13 +412,11 @@ public class PlayerController : MonoBehaviour
                 if (rb.angularVelocity > 0.02f)
                 {
                     rb.angularVelocity -= -bonusRotationSpeed * Time.fixedDeltaTime * 10f;
-                    print("Off ground and going right");
                 }
             }else if(horizontal == -1){
                 if (rb.angularVelocity < -0.02f)
                 {
                     rb.angularVelocity += bonusRotationSpeed * Time.fixedDeltaTime * 10f;
-                    print("Off ground and going right");
                 }
             }
         }
@@ -422,7 +439,6 @@ public class PlayerController : MonoBehaviour
                 if (rb.angularVelocity < -rotChangePointMax)
                 {
                     canBoostRotSpeed = true;
-                    print("going Right at negative");
                 }
                 break;
 
@@ -442,7 +458,6 @@ public class PlayerController : MonoBehaviour
                 if (rb.angularVelocity > rotChangePointMax)
                 {
                     canBoostRotSpeed = true;
-                    print("going Left at positive");
                 }
                 break;
             
@@ -460,7 +475,6 @@ public class PlayerController : MonoBehaviour
 		{
             case "Spike":
                 Debug.Log("dead");
-                this.transform.position = spawner.transform.position;
                 StartCoroutine(PlayDead());
                 rb.velocity = Vector3.zero;
                 rb.angularVelocity = 0;
@@ -469,6 +483,18 @@ public class PlayerController : MonoBehaviour
             
 		}
 	}
+
+    private void OnTriggerEnter2D(Collider2D other) {//For level 3 death valley
+        switch (other.gameObject.tag)
+		{
+            case "Spike":
+                Debug.Log("dead");
+                StartCoroutine(PlayDead());
+                //rb.velocity = Vector3.zero;
+                rb.angularVelocity = 0;
+                break;
+		}
+    }
 
 	private void OnTriggerStay2D(Collider2D collision)
 	{
@@ -500,7 +526,7 @@ public class PlayerController : MonoBehaviour
            AMS.currentMusic = AMS.soundTrack[1];
            AMS.soundTrackSource.PlayOneShot(AMS.currentMusic);
            AMS.soundTrackSource.volume = 0.55f;
-           musicHasChangedOne = true;
+           soundTrigger.SetActive(false);
            
 
         }
@@ -511,7 +537,7 @@ public class PlayerController : MonoBehaviour
             AMS.currentMusic = AMS.soundTrack[2];
             AMS.soundTrackSource.PlayOneShot(AMS.currentMusic);
             AMS.soundTrackSource.volume = 0.55f;
-            musicHasChangedTwo = true;
+            soundTriggerTwo.SetActive(false);
 
 
         }
@@ -550,7 +576,9 @@ public class PlayerController : MonoBehaviour
     public IEnumerator PlayDead() 
     {
         playerDead = true;
+        StartCoroutine(gm.RespawnLevel3());
         yield return new WaitUntil(() => groundedScript.isGrounded());
+        canMove = true;
         playerDead = false;
 
     }

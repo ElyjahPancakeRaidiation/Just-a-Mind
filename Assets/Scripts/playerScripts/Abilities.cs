@@ -66,8 +66,9 @@ public class Abilities : MonoBehaviour
     private void Start() {
         player = GetComponent<PlayerController>();
         dashAmount = maxDashAmount;
+        isDashing = false;
         //player.rb.centerOfMass = COM;
-        groundedScript = GameObject.Find("Ground Ray Object").GetComponent<isGroundedScript>();
+        groundedScript = GameObject.FindGameObjectWithTag("GroundRay").GetComponent<isGroundedScript>();
         hinge = GetComponent<HingeJoint2D>();
         // grab arms
 
@@ -201,7 +202,7 @@ public class Abilities : MonoBehaviour
     #endregion
 
 
-    #region New Arm Ability Elyjah
+    #region Arm Ability
 
     private void Grab(){
 
@@ -239,6 +240,7 @@ public class Abilities : MonoBehaviour
         {
             if (!groundedScript.isGrounded())
             {
+                player.gameObject.transform.rotation = new Quaternion(0, 0, 0, 0);
                 hinge.enabled = true;
                 hinge.autoConfigureConnectedAnchor = false;
                 hinge.useLimits = true;
@@ -277,11 +279,11 @@ public class Abilities : MonoBehaviour
     }
 
     void FixedUpdate() {
-        armCol = Physics2D.OverlapCircle(transform.position, armColRadius, vineLayer);
+        armCol = Physics2D.OverlapCircle(transform.position + new Vector3(0, .5f, 0), armColRadius, vineLayer);
     }
 
     private void OnDrawGizmos() {
-        Gizmos.DrawWireSphere(transform.position, armColRadius);
+        Gizmos.DrawWireSphere(transform.position + new Vector3(0, .5f, 0), armColRadius);
     }
 
 
