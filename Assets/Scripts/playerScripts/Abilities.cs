@@ -27,7 +27,7 @@ public class Abilities : MonoBehaviour
     [SerializeField]float dashDelay;
 
     [SerializeField]float yDashModifier;
-    [SerializeField] float dashInputForgivenessTime;
+    [SerializeField] float dashInputForgivenessTime = 0.2f;
     bool tryingToDash;
     float attemptingToDashTimer;
     #endregion
@@ -201,7 +201,7 @@ public class Abilities : MonoBehaviour
     #endregion
 
 
-    #region New Arm Ability Elyjah
+    #region Arm Ability
 
     private void Grab(){
 
@@ -239,6 +239,7 @@ public class Abilities : MonoBehaviour
         {
             if (!groundedScript.isGrounded())
             {
+                player.gameObject.transform.rotation = new Quaternion(0, 0, 0, 0);
                 hinge.enabled = true;
                 hinge.autoConfigureConnectedAnchor = false;
                 hinge.useLimits = true;
@@ -277,11 +278,11 @@ public class Abilities : MonoBehaviour
     }
 
     void FixedUpdate() {
-        armCol = Physics2D.OverlapCircle(transform.position, armColRadius, vineLayer);
+        armCol = Physics2D.OverlapCircle(transform.position + new Vector3(0, .5f, 0), armColRadius, vineLayer);
     }
 
     private void OnDrawGizmos() {
-        Gizmos.DrawWireSphere(transform.position, armColRadius);
+        Gizmos.DrawWireSphere(transform.position + new Vector3(0, .5f, 0), armColRadius);
     }
 
 

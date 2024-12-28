@@ -15,6 +15,9 @@ TagManager:
   - sfx
   - MusicChange
   - GroundRay
+  - MusicChange2
+  - ThoughtBubble
+  - GM
   layers:
   - Default
   - TransparentFX
