@@ -2,26 +2,58 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class testScript : MonoBehaviour
+public class TestScript : MonoBehaviour
 {
-    Rigidbody2D rb;
+
+    private Collider2D hit;
+    [SerializeField]private LayerMask hitLayer;
+    [SerializeField]private float hitFloat;
+
+    [SerializeField]private bool isConnected;
+
+    [SerializeField]private SpringJoint2D spring;
+
+    public Transform hittransform;
+
     // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        spring = GetComponent<SpringJoint2D>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (hit != null)
+        {
+            print("NUll");
+
+
+            if (Input.GetKeyDown(KeyCode.K))
+            {
+                spring.connectedBody = hit.GetComponent<Rigidbody2D>();
+                //spring.connectedAnchor = hittransform.localPosition;
+                isConnected = true;
+            }
+        }
+
+        
+        if (isConnected)
+        {
+            if (Input.GetKeyDown(KeyCode.L))
+            {
+                spring.connectedBody = null;
+                isConnected = false;
+            }
+        }
         
     }
 
-    /// <summary>
-    /// This function is called every fixed framerate frame, if the MonoBehaviour is enabled.
-    /// </summary>
-    void FixedUpdate()
-    {
-        rb.AddForce(new Vector2(0, 9.81f * 50) * Time.fixedDeltaTime);
+    void FixedUpdate() {
+        hit = Physics2D.OverlapCircle(transform.position, hitFloat, hitLayer);
+    }
+
+    private void OnDrawGizmos() {
+        Gizmos.DrawWireSphere(transform.position, hitFloat);
     }
 }
