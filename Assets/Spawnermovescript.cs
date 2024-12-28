@@ -16,7 +16,7 @@ public class Spawnermovescript : MonoBehaviour
 	{
 		if (collision.gameObject.tag == "Player")
 		{
-			spawner.transform.position = newSpawnPos.transform.position;
+			//spawner.transform.position = newSpawnPos.transform.position;
 			spawner.SetActive(false);
 		}
 	}
