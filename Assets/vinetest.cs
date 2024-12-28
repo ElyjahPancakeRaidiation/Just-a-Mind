@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(HingeJoint2D))]
 public class vinetest : MonoBehaviour
 {
-
     public Transform transformTest;
     private Rigidbody2D rb;
     public bool onVine;

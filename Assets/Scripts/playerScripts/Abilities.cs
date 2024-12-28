@@ -211,7 +211,7 @@ public class Abilities : MonoBehaviour
     #endregion
 
 
-    #region New Arm Ability Elyjah
+    #region Arm Ability
 
     private void Grab(){
 
@@ -249,6 +249,7 @@ public class Abilities : MonoBehaviour
         {
             if (!groundedScript.isGrounded())
             {
+                player.gameObject.transform.rotation = new Quaternion(0, 0, 0, 0);
                 hinge.enabled = true;
                 hinge.autoConfigureConnectedAnchor = false;
                 hinge.useLimits = true;

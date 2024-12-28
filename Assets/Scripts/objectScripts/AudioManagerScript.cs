@@ -16,6 +16,7 @@ public class AudioManagerScript : MonoBehaviour
     
     public AudioClip[] movingClips;
     public AudioClip[] soundTrack;
+    public AudioClip[] soundFX;
 
     public AudioClip currentMusic; 
     public AudioClip currentSfx;
