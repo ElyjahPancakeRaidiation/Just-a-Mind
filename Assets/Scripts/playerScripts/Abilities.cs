@@ -30,13 +30,14 @@ public class Abilities : MonoBehaviour
     [SerializeField] float dashInputForgivenessTime = 0.2f;
     bool tryingToDash;
     float attemptingToDashTimer;
+    float afterJumpDelay = .23f;
+    float afterJumpTimer = 0;
     #endregion
 
 
     #region Pogo Jumpy up up variables
 
     [Header("Pogo Variables")]
-    public float jumpForce;
     public float superJumpForce;
     public Transform groundPoint;
     public bool canSuperJump = false;
@@ -76,7 +77,7 @@ public class Abilities : MonoBehaviour
 
     void Update()
     {
-
+        coyotoeTimer -= Time.deltaTime; 
         // We must call in update because input breaks if we dont
         switch (PlayerController.playerForm)
         {
@@ -100,12 +101,16 @@ public class Abilities : MonoBehaviour
                 StartCoroutine(Swinging());
             }
         }
+        if (afterJumpTimer < 1)
+        {
+            afterJumpTimer += Time.deltaTime;
+        }
     }
 
     IEnumerator ignoreResistences()
     {
         player.ignoreResistences = true;
-        yield return new WaitForSeconds(.25f);
+        yield return new WaitForSeconds(.17f);
         player.ignoreResistences = false;
     }
     
@@ -128,7 +133,7 @@ public class Abilities : MonoBehaviour
             }
             if (tryingToDash && !isDashing && player.horiLatestInput != 0)
             {
-                if (dashAmount > 0 || bonusCharges > 0)
+                if ((dashAmount > 0 || bonusCharges > 0) && afterJumpDelay < afterJumpTimer)
                 {
                     StartCoroutine(Dashing(dashingDuration));
                     StartCoroutine(ignoreResistences());
@@ -154,12 +159,20 @@ public class Abilities : MonoBehaviour
         {
             player.rb.angularVelocity -= 300 * player.horizontal;
         }
+        float temp = yDashModifier;
+        // Remove the yDashing if already has a lot of y speed
+        if (player.rb.velocity.y > 4)
+        {
+            yDashModifier = yDashModifier / 5;
+        }
         // We then add the dash force
         player.rb.AddForce(new Vector2(player.horiLatestInput * DASHPOWER, yDashModifier * DASHPOWER), ForceMode2D.Impulse);//dash in any direction boom kachow
-        isDashing = true;        
+        isDashing = true;  
+        yDashModifier = temp;      
         // wait then turn off cammera shake
         yield return new WaitForSeconds(duration);
         yield return new WaitUntil(() => groundedScript.isGrounded());
+        yield return new WaitForSeconds(.1f);
         ResetDash();
         // after we reset the dassh we can then transition to an arm boost which may allow more arier movement
     }
@@ -176,15 +189,12 @@ public class Abilities : MonoBehaviour
         {
             coyotoeTimer = coyoteTimeVar;
         }
-		else
-		{
-            coyotoeTimer -= Time.deltaTime; 
-		}
-
         if (coyotoeTimer > 0f && Input.GetKeyDown(abilityKey))
         {
+            coyotoeTimer = -1;
             StartCoroutine(ignoreResistences());
             player.rb.AddForce(new Vector2(0, superJumpForce), ForceMode2D.Impulse);
+            afterJumpTimer = 0;
             coyotoeTimer = 0f;
         }
 
@@ -260,11 +270,18 @@ public class Abilities : MonoBehaviour
 
             hinge.connectedBody = null;
             hinge.enabled = false;
-            player.rb.AddForce(new Vector2(player.horizontal * boostX, boostY), ForceMode2D.Impulse);
+            int tempDir = 1;
+            if (player.rb.velocity.x < 0)
+            {
+                tempDir = -1;
+            }
+            player.rb.AddForce(new Vector2(tempDir * boostX, boostY), ForceMode2D.Impulse);
             player.gameObject.transform.rotation = new Quaternion(0, 0, 0, 0);
             armCol.GetComponent<vinetest>().onVine = false;
             isConnected = !isConnected;
             StopCoroutine(Swinging());
+            StopCoroutine(Dashing(dashingDuration));
+            ResetDash();
         }
     }
 
@@ -278,11 +295,11 @@ public class Abilities : MonoBehaviour
     }
 
     void FixedUpdate() {
-        armCol = Physics2D.OverlapCircle(transform.position + new Vector3(0, .5f, 0), armColRadius, vineLayer);
+        armCol = Physics2D.OverlapCircle(transform.position + new Vector3(0, 0.6f, 0), armColRadius, vineLayer);
     }
 
     private void OnDrawGizmos() {
-        Gizmos.DrawWireSphere(transform.position + new Vector3(0, .5f, 0), armColRadius);
+        Gizmos.DrawWireSphere(transform.position + new Vector3(0, 0.6f, 0), armColRadius);
     }
 
 

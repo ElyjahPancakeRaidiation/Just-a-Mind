@@ -118,10 +118,9 @@ MonoBehaviour:
   maxDashAmount: 1
   dashDelay: 1.25
   yDashModifier: 1.3
-  dashInputForgivenessTime: 0.2
-  jumpForce: 15
+  dashInputForgivenessTime: 0.1
   superJumpForce: 22
-  groundPoint: {fileID: 2176744918269047992}
+  groundPoint: {fileID: 0}
   canSuperJump: 0
   keyHoldDown: 0
   coyoteTimeVar: 0.2
@@ -134,8 +133,8 @@ MonoBehaviour:
   isConnected: 0
   boostX: 10
   boostY: 6
-  grabBoostX: 5
-  grabboostY: 4
+  grabBoostX: 7
+  grabboostY: 5
   rightSide: {x: 1.52, y: 0.15}
   leftSide: {x: -1.51, y: 0.51}
 --- !u!114 &1484820306327863335
@@ -156,15 +155,15 @@ MonoBehaviour:
   neareastSpawner: 0
   timer: 0
   maxTime: 7
-  textOffsetX: 1
+  textOffsetX: 0
   textOffsetY: 0
-  spherePoint: {fileID: 2971793376097661198}
+  spherePoint: {fileID: 0}
   gm: {fileID: 0}
-  playerSpriteRender: {fileID: 2706923324837483880}
+  playerSpriteRender: {fileID: 0}
   playerFormSprite:
   - {fileID: 21300000, guid: c48159bb276b640a9b80ce9eebed5a59, type: 3}
   - {fileID: 21300000, guid: 91976d33e7ae9704591ceeeebbf2e155, type: 3}
-  anim: {fileID: 3241892106689099501}
+  anim: {fileID: 0}
   jumpTime: 0.1
   AMS: {fileID: 0}
   soundTrigger: {fileID: 0}
@@ -180,7 +179,7 @@ MonoBehaviour:
   cam: {fileID: 0}
   canMove: 1
   isMoving: 0
-  rb: {fileID: 3337410901015035955}
+  rb: {fileID: 0}
   horizontal: 0
   vertical: 0
   horiLatestInput: 0
@@ -203,13 +202,13 @@ MonoBehaviour:
   ignoreResistences: 0
   coefficientOfAirResistence: 0.075
   coefficientOfFriction: 0.3
-  groundedScript: {fileID: 4822938141585243739}
-  ballCol: {fileID: 8463250702516011933}
-  pogoCol: {fileID: 5809341814163335841}
+  groundedScript: {fileID: 0}
+  ballCol: {fileID: 0}
+  pogoCol: {fileID: 0}
   canJump: 1
-  leftArm: {fileID: 6593232511100398089}
-  rightArm: {fileID: 501638591612465399}
-  hasArms: 0
+  leftArm: {fileID: 0}
+  rightArm: {fileID: 0}
+  hasArms: 1
 --- !u!50 &3337410901015035955
 Rigidbody2D:
   serializedVersion: 4
@@ -607,11 +606,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4cc171873d12a474e86f4033a3f5ba3e, type: 3}
---- !u!1 &6593232511100398089 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8959047561477708021, guid: 4cc171873d12a474e86f4033a3f5ba3e, type: 3}
-  m_PrefabInstance: {fileID: 2822402656101167868}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7123662681204943722 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5041609582664358294, guid: 4cc171873d12a474e86f4033a3f5ba3e, type: 3}
@@ -674,11 +668,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4d22c547432fa1245ab795ff171185f7, type: 3}
---- !u!1 &501638591612465399 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4075926727379718367, guid: 4d22c547432fa1245ab795ff171185f7, type: 3}
-  m_PrefabInstance: {fileID: 4496479633546223656}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7773877354822911657 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6162305429132109441, guid: 4d22c547432fa1245ab795ff171185f7, type: 3}

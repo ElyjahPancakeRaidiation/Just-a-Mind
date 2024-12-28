@@ -347,6 +347,7 @@ public class PlayerController : MonoBehaviour
         rb.AddForce(jumpForce, ForceMode2D.Impulse);
         yield return new WaitForSeconds(.5f);
 		yield return new WaitUntil (() => groundedScript.isGrounded());
+        yield return new WaitForSeconds(.1f);
 		canJump = true;
     }
 
